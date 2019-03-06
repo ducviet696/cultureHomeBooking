@@ -3,10 +3,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.swp.culturehomestay.fragments.main.AccountFragment;
+import com.swp.culturehomestay.fragments.main.BookingFragment;
 import com.swp.culturehomestay.fragments.main.FavoriteFragment;
 import com.swp.culturehomestay.fragments.main.HomeFragment;
 import com.swp.culturehomestay.fragments.main.MoreFragment;
 import com.swp.culturehomestay.fragments.main.NotificationFragment;
+import com.swp.culturehomestay.fragments.main.WishlistFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     public ViewPagerAdapter(FragmentManager fm) {
@@ -20,11 +23,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new HomeFragment();
             case 1:
-                return new FavoriteFragment();
+                return new WishlistFragment();
             case 2:
-                return new NotificationFragment();
+                return new BookingFragment();
             case 3:
-                return new MoreFragment();
+                return new AccountFragment();
             default:
                 return new HomeFragment();
         }
@@ -34,4 +37,5 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return 4;
     }
+
 }

@@ -12,10 +12,10 @@ import com.swp.culturehomestay.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MoreFragment extends Fragment {
+public class WishlistFragment extends Fragment {
 
 
-    public MoreFragment() {
+    public WishlistFragment() {
         // Required empty public constructor
     }
 
@@ -24,9 +24,7 @@ public class MoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_more, container, false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_wishlist, container, false);
     }
 
 }

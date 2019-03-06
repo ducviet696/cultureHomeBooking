@@ -7,17 +7,17 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_favorite"
+        android:id="@+id/navigation_wishlist"
         android:icon="@drawable/ic_heart"
-        android:title="@string/title_favorite" />
+        android:title="@string/lbl_wishlist" />
 
     <item
-        android:id="@+id/navigation_notifications"
-        android:icon="@drawable/ic_notifications_black_24dp"
-        android:title="@string/title_notifications" />
+        android:id="@+id/navigation_booking"
+        android:icon="@drawable/ic_calendar"
+        android:title="@string/lbl_booking" />
 
     <item
         android:id="@+id/navigation_more"
-        android:icon="@drawable/ic_menu"
-        android:title="@string/title_more" />
+        android:icon="@drawable/ic_user"
+        android:title="@string/lbl_account" />
 </menu>

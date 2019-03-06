@@ -3,9 +3,7 @@ package com.swp.culturehomestay.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -13,10 +11,6 @@ import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.ViewPagerAdapter;
-import com.swp.culturehomestay.fragments.main.FavoriteFragment;
-import com.swp.culturehomestay.fragments.main.HomeFragment;
-import com.swp.culturehomestay.fragments.main.MoreFragment;
-import com.swp.culturehomestay.fragments.main.NotificationFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     pager.setCurrentItem(0);
                     return true;
-                case R.id.navigation_favorite:
+                case R.id.navigation_wishlist:
                     pager.setCurrentItem(1);
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.navigation_booking:
                     pager.setCurrentItem(2);
                     return true;
                 case R.id.navigation_more:
@@ -52,11 +46,40 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         fm = getSupportFragmentManager();
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+            }
+
+            @Override
+            public void onPageSelected(int pos) {
+                switch (pos){
+                    case 0:
+                        navigation.getMenu().getItem(0).setChecked(true);
+                        break;
+                    case 1:
+                        navigation.getMenu().getItem(1).setChecked(true);
+                        break;
+                    case 2:
+                        navigation.getMenu().getItem(2).setChecked(true);
+                        break;
+                    case 3:
+                        navigation.getMenu().getItem(3).setChecked(true);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
 }
