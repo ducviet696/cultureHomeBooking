@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.adapter.ViewPagerAdapter;
 import com.swp.culturehomestay.fragments.main.FavoriteFragment;
 import com.swp.culturehomestay.fragments.main.HomeFragment;
 import com.swp.culturehomestay.fragments.main.MoreFragment;
@@ -27,23 +28,19 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction fragmentTransaction = fm.beginTransaction();
+            ViewPager pager = (ViewPager) findViewById(R.id.pager);
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    fragmentTransaction.replace(R.id.fragment,new HomeFragment());
-                    fragmentTransaction.commit();
+                    pager.setCurrentItem(0);
                     return true;
                 case R.id.navigation_favorite:
-                    fragmentTransaction.replace(R.id.fragment,new FavoriteFragment());
-                    fragmentTransaction.commit();
+                    pager.setCurrentItem(1);
                     return true;
                 case R.id.navigation_notifications:
-                    fragmentTransaction.replace(R.id.fragment,new NotificationFragment());
-                    fragmentTransaction.commit();
+                    pager.setCurrentItem(2);
                     return true;
                 case R.id.navigation_more:
-                    fragmentTransaction.replace(R.id.fragment,new MoreFragment());
-                    fragmentTransaction.commit();
+                    pager.setCurrentItem(3);
                     return true;
             }
             return false;
@@ -58,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         fm = getSupportFragmentManager();
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
     }
 
 }
