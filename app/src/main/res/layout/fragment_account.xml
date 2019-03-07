@@ -14,7 +14,7 @@
             android:id="@+id/btn_signin_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lbl_signin_create"/>
+            android:text="@string/logout"/>
     </LinearLayout>
 
 </FrameLayout>

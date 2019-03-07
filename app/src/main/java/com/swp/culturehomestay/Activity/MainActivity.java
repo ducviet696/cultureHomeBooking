@@ -1,5 +1,6 @@
 package com.swp.culturehomestay.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.ViewPagerAdapter;
 
@@ -16,6 +18,7 @@ import com.swp.culturehomestay.adapter.ViewPagerAdapter;
 public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     private FragmentManager fm;
+    AccessToken accessToken;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -33,7 +36,14 @@ public class MainActivity extends AppCompatActivity {
                     pager.setCurrentItem(2);
                     return true;
                 case R.id.navigation_more:
-                    pager.setCurrentItem(3);
+                    accessToken = AccessToken.getCurrentAccessToken();
+                    boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+                    if(isLoggedIn){
+                        pager.setCurrentItem(3);
+                    }else{
+                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                     return true;
             }
             return false;
