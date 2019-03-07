@@ -14,7 +14,6 @@ import com.swp.culturehomestay.adapter.ViewPagerAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
-
     private TextView mTextMessage;
     private FragmentManager fm;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
