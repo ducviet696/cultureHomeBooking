@@ -1,7 +1,6 @@
 package com.swp.culturehomestay.activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -34,16 +33,11 @@ public class LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.btn_facebook_login);
-        loginButton.setReadPermissions("user_friends");
-        loginButton.setReadPermissions("public_profile");
-        loginButton.setReadPermissions("email");
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.putExtra("checkFragment",3);
                 startActivity(intent);
                 Log.d(TAG, "fb Login success.");
             }

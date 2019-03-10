@@ -7,51 +7,14 @@
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
-        android:id="@+id/noLogin_Account"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
-
+        android:orientation="vertical">
         <Button
             android:id="@+id/btn_signin_create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="50"
-            android:text="@string/lbl_signin_create" />
-
-        <Button
-            android:id="@+id/btn_signup_create"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/btn_signin_create"
-            android:layout_weight="50"
-            android:text="@string/lbl_signup_create" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/login_Account"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
-        <ImageView
-            android:layout_marginTop="40dp"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:layout_gravity="center_horizontal"
-            android:padding="5dp"
-            tools:src="@drawable/avatar" />
-        <TextView
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Viet Anh"
-            android:textSize="20dp"/>
-
-        <Button
-            android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/logout" />
+            android:text="@string/logout"/>
     </LinearLayout>
+
 </FrameLayout>
