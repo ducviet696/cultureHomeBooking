@@ -1186,7 +1186,9 @@ id bottom
 id box_count
 id btn_facebook_login
 id btn_login
+id btn_logout
 id btn_signin_create
+id btn_signup_create
 id button
 id buttonPanel
 id cancel_action
@@ -1271,6 +1273,7 @@ id line3
 id link_signup
 id listMode
 id list_item
+id login_Account
 id masked
 id media_actions
 id message
@@ -1287,6 +1290,7 @@ id navigation_more
 id navigation_wishlist
 id never
 id never_display
+id noLogin_Account
 id none
 id normal
 id notification_background
@@ -1583,6 +1587,7 @@ string language
 string lbl_account
 string lbl_booking
 string lbl_signin_create
+string lbl_signup_create
 string lbl_wishlist
 string login
 string login_with_fb
