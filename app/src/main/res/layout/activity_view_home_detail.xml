@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/default_padding"
+    tools:context=".activity.ViewHomeDetailActivity">
+
+    <ViewFlipper
+        android:id="@+id/vfHome"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_marginBottom="@dimen/default_padding"></ViewFlipper>
+
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTypeHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Villa"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/BedRoomNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tvTypeHome"
+            android:text=" - 5 Bed Rooms"
+            android:textColor="@color/colorBlack" />
+    </TableRow>
+
+    <TextView
+        android:id="@+id/tvNameHome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvTypeHome"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:text="La Villa Angelina"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+
+    <RatingBar
+        android:id="@+id/ratingBar2"
+        style="?android:attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:numStars="5"
+        android:rating="4" />
+
+    <TextView
+        android:id="@+id/tvCodeList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Code listing: 12345" />
+
+    <TextView
+        android:id="@+id/tvLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvPricePerNight"
+        android:layout_toRightOf="@+id/iconMap"
+        android:drawableLeft="@drawable/ic_marker"
+        android:text="Thạch Thất, Hòa lạc"
+        android:textColor="@color/colorBlack" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HOSTED BY" />
+
+        <TextView
+            android:id="@+id/tvHostName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Host Name" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:background="@color/colorGray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/default_padding"
+        android:weightSum="4">
+
+        <TextView
+            android:id="@+id/tvPeople"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_people"
+            android:text="8 people"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tvRoomNm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_door"
+            android:text="3"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tvBedNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_bed"
+            android:text="3 beds"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/tvBathNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/ic_bathroom"
+            android:text="3"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Another Details"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/large_text"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Check-in" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Check-out"
+                android:textAlignment="viewEnd" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2:0 PM"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/normal_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="10:0 AM"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/normal_text" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:paddingTop="@dimen/default_padding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/need_help" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
+
+</LinearLayout>
