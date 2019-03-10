@@ -432,10 +432,6 @@
         "source": "C:\\Users\\Anhndv\\.gradle\\caches\\transforms-1\\files-1.1\\facebook-login-4.41.0.aar\\37743b9a58a5501cf858ff1ca83987a7\\res\\drawable-hdpi-v4\\com_facebook_tooltip_black_background.9.png"
     },
     {
-        "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_avatar.JPG.flat",
-        "source": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\src\\main\\res\\drawable\\avatar.JPG"
-    },
-    {
         "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\layout_abc_alert_dialog_title_material.xml.flat",
         "source": "C:\\Users\\Anhndv\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\d419a940442477b9f1378bdd6f62e70e\\res\\layout\\abc_alert_dialog_title_material.xml"
     },
@@ -1396,10 +1392,6 @@
         "source": "C:\\Users\\Anhndv\\.gradle\\caches\\transforms-1\\files-1.1\\facebook-login-4.41.0.aar\\37743b9a58a5501cf858ff1ca83987a7\\res\\drawable-mdpi-v4\\com_facebook_tooltip_blue_bottomnub.png"
     },
     {
-        "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_favorite.xml.flat",
-        "source": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\src\\main\\res\\layout\\fragment_favorite.xml"
-    },
-    {
         "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi-v4_abc_tab_indicator_mtrl_alpha.9.png.flat",
         "source": "C:\\Users\\Anhndv\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-28.0.0.aar\\d419a940442477b9f1378bdd6f62e70e\\res\\drawable-xxxhdpi-v4\\abc_tab_indicator_mtrl_alpha.9.png"
     },
@@ -1494,10 +1486,6 @@
     {
         "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_navigation_empty_icon.xml.flat",
         "source": "C:\\Users\\Anhndv\\.gradle\\caches\\transforms-1\\files-1.1\\design-28.0.0.aar\\8c9969d78172ae4e807a1420c2a9454f\\res\\drawable\\navigation_empty_icon.xml"
-    },
-    {
-        "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_more.xml.flat",
-        "source": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\src\\main\\res\\layout\\fragment_more.xml"
     },
     {
         "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\color_common_google_signin_btn_text_light.xml.flat",
@@ -1790,10 +1778,6 @@
     {
         "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\drawable_common_google_signin_btn_icon_dark_normal.xml.flat",
         "source": "C:\\Users\\Anhndv\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-base-16.0.1.aar\\f4d15f699962aa213ef3fab3f2f3e83b\\res\\drawable\\common_google_signin_btn_icon_dark_normal.xml"
-    },
-    {
-        "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_notification.xml.flat",
-        "source": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\src\\main\\res\\layout\\fragment_notification.xml"
     },
     {
         "merged": "E:\\Project\\Source\\CapstoneProjectFPT_Android\\app\\build\\intermediates\\res\\merged\\debug\\anim_abc_popup_enter.xml.flat",
