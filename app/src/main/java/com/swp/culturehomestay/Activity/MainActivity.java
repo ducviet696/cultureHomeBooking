@@ -16,9 +16,9 @@ import com.swp.culturehomestay.adapter.ViewPagerAdapter;
 
 
 public class MainActivity extends AppCompatActivity {
+    AccessToken accessToken;
     private TextView mTextMessage;
     private FragmentManager fm;
-    AccessToken accessToken;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -36,14 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     pager.setCurrentItem(2);
                     return true;
                 case R.id.navigation_more:
-                    accessToken = AccessToken.getCurrentAccessToken();
-                    boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-                    if(isLoggedIn){
-                        pager.setCurrentItem(3);
-                    }else{
-                        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                    }
+                    pager.setCurrentItem(3);
                     return true;
             }
             return false;
@@ -54,12 +47,35 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mTextMessage = (TextView) findViewById(R.id.message);
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         final BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         fm = getSupportFragmentManager();
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager()));
+        Intent intent = getIntent();
+        int checkFragment = intent.getIntExtra("checkFragment", 0);
+        switch (checkFragment) {
+            case 0:
+                pager.setCurrentItem(0);
+                navigation.getMenu().getItem(0).setChecked(true);
+                break;
+            case 1:
+                navigation.getMenu().getItem(1).setChecked(true);
+                pager.setCurrentItem(1);
+                break;
+            case 2:
+                navigation.getMenu().getItem(2).setChecked(true);
+                pager.setCurrentItem(2);
+                break;
+            case 3:
+                navigation.getMenu().getItem(3).setChecked(true);
+                pager.setCurrentItem(3);
+                break;
+            default:
+                navigation.getMenu().getItem(0).setChecked(true);
+                pager.setCurrentItem(0);
+                break;
+        }
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -67,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int pos) {
-                switch (pos){
+                switch (pos) {
                     case 0:
                         navigation.getMenu().getItem(0).setChecked(true);
                         break;
@@ -81,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
                         navigation.getMenu().getItem(3).setChecked(true);
                         break;
                 }
-
             }
 
             @Override
