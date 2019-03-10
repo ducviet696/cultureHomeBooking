@@ -70,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="24dp"
+                android:padding="12dp"
                 facebook:com_facebook_login_text="@string/login_with_fb"
                 facebook:com_facebook_logout_text="@string/logout"/>
         </LinearLayout>
