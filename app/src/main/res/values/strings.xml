@@ -26,4 +26,12 @@
     <string name="need_help">If you need any support related to the request of early check-in and late check-
 out time. Please contact us at 18001990
 for best support.</string>
+
+    <!-- String of HomePage -->
+    <string name="check_in_date">check in date</string>
+    <string name="check_out_date">check out date</string>
+    <string name="amount_of_people">amount of people</string>
+    <string name="button_search">Search</string>
+
+
 </resources>

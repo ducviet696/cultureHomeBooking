@@ -3,26 +3,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.main.HomeFragment"
-    android:background="@drawable/homestay">
+    android:background="@drawable/homestay"
+    tools:context=".fragments.main.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView
+        android:id="@+id/View"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="1000px"
+            android:layout_width="340dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:layout_marginTop="200px"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/layoutcommon"
+            android:orientation="vertical">
+
             <SearchView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"></SearchView>
+                android:layout_width="310dp"
+                android:layout_height="50dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="155dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/textview"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/check_in_date" />
+
+                <TextView
+                    android:layout_width="155dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/textview"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/check_out_date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/textview">
+
+                <TextView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/person" />
+
+                <TextView
+                    android:layout_width="310dp"
+                    android:layout_height="50dp"
+                    android:gravity="left|center"
+                    android:text="@string/amount_of_people" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/layoutsearch">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/button_search" />
+            </LinearLayout>
         </LinearLayout>
+
+
     </ScrollView>
 </FrameLayout>
-
