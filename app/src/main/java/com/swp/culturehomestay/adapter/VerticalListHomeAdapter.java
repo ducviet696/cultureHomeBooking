@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
-import com.swp.culturehomestay.entity.HomeStay;
+import com.swp.culturehomestay.models.HomeStay;
 
 import java.util.ArrayList;
 

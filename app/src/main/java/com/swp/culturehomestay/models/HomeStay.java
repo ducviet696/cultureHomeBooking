@@ -1,4 +1,4 @@
-package com.swp.culturehomestay.entity;
+package com.swp.culturehomestay.models;
 
 public class HomeStay {
     private int imgUrl;
