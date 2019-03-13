@@ -20,15 +20,33 @@
             android:background="@drawable/layoutcommon"
             android:orientation="vertical">
 
-            <SearchView
-                android:layout_width="310dp"
-                android:layout_height="50dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/iconSearch"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_search_black_24dp" />
+
+                <EditText
+                    android:id="@+id/TextSearch"
+                    android:layout_width="310dp"
+                    android:layout_height="50dp"
+                    android:focusable="false"
+                    android:gravity="left|center"
+                    android:hint="@string/name_search"
+
+                    android:textColorLink="@color/colorSliderInactive" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/txtCheckInDate"
                     android:layout_width="155dp"
                     android:layout_height="50dp"
                     android:background="@drawable/textview"
@@ -37,6 +55,7 @@
                     android:text="@string/check_in_date" />
 
                 <TextView
+                    android:id="@+id/txtCheckOutDate"
                     android:layout_width="155dp"
                     android:layout_height="50dp"
                     android:background="@drawable/textview"
@@ -48,17 +67,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+
                 android:background="@drawable/textview">
 
                 <TextView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@drawable/person" />
 
                 <TextView
                     android:layout_width="310dp"
                     android:layout_height="50dp"
-                    android:gravity="left|center"
+                    android:gravity="center_vertical"
                     android:text="@string/amount_of_people" />
             </LinearLayout>
 

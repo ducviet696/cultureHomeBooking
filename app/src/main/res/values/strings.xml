@@ -28,10 +28,10 @@ out time. Please contact us at 18001990
 for best support.</string>
 
     <!-- String of HomePage -->
-    <string name="check_in_date">check in date</string>
-    <string name="check_out_date">check out date</string>
-    <string name="amount_of_people">amount of people</string>
+    <string name="check_in_date">Check in date</string>
+    <string name="check_out_date">Check out date</string>
+    <string name="amount_of_people">Amount</string>
     <string name="button_search">Search</string>
-
+    <string name="name_search">Name Of city or homestay</string>
 
 </resources>
