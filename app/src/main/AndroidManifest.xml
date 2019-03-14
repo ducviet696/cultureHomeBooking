@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.CustomerProfileActivity"></activity>
-        <!-- metadata Facebook -->
+        <activity android:name=".activity.TestSendDataFromHomeFragment"></activity>
+        <activity android:name=".activity.CustomerProfileActivity" /> <!-- metadata Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />

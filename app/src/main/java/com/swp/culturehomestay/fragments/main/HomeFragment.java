@@ -3,6 +3,8 @@ package com.swp.culturehomestay.fragments.main;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,10 +14,9 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
-import com.swp.culturehomestay.activity.MainActivity;
+import com.swp.culturehomestay.activity.TestSendDataFromHomeFragment;
 
 import java.util.Calendar;
 
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment {
 
     TextView txtCheckInDate, txtCheckOutDate, iconSearch, textAmount, iconAmount;
     EditText txtSearch;
+    Button btnSearch;
 
     Calendar c;
     DatePickerDialog dpd;
@@ -46,7 +48,9 @@ public class HomeFragment extends Fragment {
         txtSearch = (EditText) view.findViewById(R.id.TextSearch);
         iconAmount = (TextView) view.findViewById(R.id.iconAmount);
         textAmount = (TextView) view.findViewById(R.id.textAmount);
+        btnSearch = (Button) view.findViewById(R.id.btnSearch);
 
+        btnSearch.setOnClickListener(searchBtnClick);
         iconAmount.setOnClickListener(amountClick);
         textAmount.setOnClickListener(amountClick);
         iconSearch.setOnClickListener(searchClick);
@@ -109,12 +113,10 @@ public class HomeFragment extends Fragment {
             AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
             View mView = getLayoutInflater().inflate(R.layout.home_search_amount, null);
             final TextView txtAdd, txtRemove, txtAmountDetail;
-            Button btnSave;
 
             txtAdd = (TextView) mView.findViewById(R.id.add);
             txtRemove = (TextView) mView.findViewById(R.id.remove);
             txtAmountDetail = (TextView) mView.findViewById(R.id.amount);
-            btnSave = (Button) mView.findViewById(R.id.bntSave);
 
             // Acction of add click
             txtAdd.setOnClickListener(new View.OnClickListener() {
@@ -138,22 +140,29 @@ public class HomeFragment extends Fragment {
                 }
             });
 
-            // Acction of save click
-//            btnSave.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    View View = getLayoutInflater().inflate(R.layout.fragment_home, null);
-//                    TextView txtAmount;
-//                    txtAmount = (TextView) View.findViewById(R.id.amount);
-//                    Toast.makeText(MainActivity.this, ""+txtAmount.toString(), Toast.LENGTH_LONG).show();
-////                    txtAmount.setText(txtAmountDetail.getText().toString());
-//                }
-//            });
-
-            mBuilder.setView(mView);
+            mBuilder.setView(mView).setNegativeButton("Save", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    textAmount.setText(txtAmountDetail.getText() + " people booking");
+                }
+            });
             AlertDialog dialog = mBuilder.create();
             dialog.show();
         }
     };
+
+    View.OnClickListener searchBtnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openTestSendDataFromHomeFragmentActivity();
+        }
+    };
+
+    public void openTestSendDataFromHomeFragmentActivity() {
+        
+
+        Intent intent = new Intent(getActivity(), TestSendDataFromHomeFragment.class);
+        startActivity(intent);
+    }
 }
 
