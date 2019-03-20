@@ -1,23 +1,35 @@
 package com.swp.culturehomestay.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
-public class UserDetail {
+public class UserDetailModel {
+    @SerializedName("username")
     private String username;
+    @SerializedName("firstName")
     private String firstName;
+    @SerializedName("lastName")
     private String lastName;
+    @SerializedName("email")
     private String email;
+    @SerializedName("dob")
     private Date dob;
+    @SerializedName("gender")
     private boolean gender;
+    @SerializedName("inforDescription")
     private String infoDescription;
+    @SerializedName("phoneNumber")
     private String phoneNumber;
+    @SerializedName("profileImage")
     private String profileImage;
+    @SerializedName("address")
     private String address;
 
-    public UserDetail() {
+    public UserDetailModel() {
     }
 
-    public UserDetail(String username, String firstName, String lastName, String email, Date dob, boolean gender, String infoDescription, String phoneNumber, String profileImage, String address) {
+    public UserDetailModel(String username, String firstName, String lastName, String email, Date dob, boolean gender, String infoDescription, String phoneNumber, String profileImage, String address) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -35,4 +35,6 @@ for best support.</string>
     <string name="name_search">Name Of city or homestay</string>
     <string name="save">Save</string>
 
+    <!--String of Booking-->
+    <string name="lbl_myBooking">My Booking</string>
 </resources>

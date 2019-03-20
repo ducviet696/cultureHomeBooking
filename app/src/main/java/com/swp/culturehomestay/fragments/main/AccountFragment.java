@@ -21,7 +21,7 @@ import com.facebook.login.LoginManager;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.activity.CustomerProfileActivity;
 import com.swp.culturehomestay.activity.LoginActivity;
-import com.swp.culturehomestay.models.UserDetail;
+import com.swp.culturehomestay.models.UserDetailModel;
 
 import java.util.Date;
 
@@ -41,7 +41,7 @@ public class AccountFragment extends Fragment {
     View view;
     Button loginBtn;
     Button logoutBtn;
-    UserDetail userDetail;
+    UserDetailModel userDetailModel;
     TextView userName;
     RelativeLayout btnCusProfile;
     @Override
@@ -55,9 +55,9 @@ public class AccountFragment extends Fragment {
         viewLoginAccount = (LinearLayout) view.findViewById(R.id.login_Account);
         if(isLoggedIn){
             viewNoLoginAccount.setVisibility(View.GONE);
-            userDetail = new UserDetail("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
+            userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
             userName = (TextView) view.findViewById(R.id.lbl_userName);
-            userName.setText(userDetail.getFirstName()+" "+userDetail.getLastName());
+            userName.setText(userDetailModel.getFirstName()+" "+ userDetailModel.getLastName());
             viewLoginAccount.setVisibility(View.VISIBLE);
         }else{
             viewNoLoginAccount.setVisibility(View.VISIBLE);
