@@ -26,4 +26,21 @@
     <string name="need_help">If you need any support related to the request of early check-in and late check-
 out time. Please contact us at 18001990
 for best support.</string>
+    <string name="about_homestay">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</string>
+    <string name="room_rates">Room rates</string>
+    <string name="cancel_policy">Cancel Policy</string>
+    <string name="photos">Photos</string>
+    <string name="check_in_date">Check-in Date</string>
+    <string name="check_out_date">Check-out Date</string>
+    <string name="check_out_mess">Please select your check-out date</string>
+    <string name="check_in_mess">Please select your check-in date</string>
+    <string name="check_in">Check-in</string>
+    <string name="check_out">Check-out</string>
+    <string name="total_guests">Total guests</string>
+    <string name="contact_details">Contact details</string>
+    <string name="full_name">Full name</string>
+    <string name="phone">Phone</string>
+    <string name="email">Email</string>
+    <string name="total_invoice">Total Invoice</string>
+
 </resources>

@@ -1,6 +1,8 @@
 package com.swp.culturehomestay.entity;
 
-public class HomeStay {
+import java.io.Serializable;
+
+public class HomeStay implements Serializable {
     private int imgUrl;
     private String type;
     private int bedRoomNumber;

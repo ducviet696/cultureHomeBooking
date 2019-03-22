@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/default_margin"
+    android:weightSum="3"
+    android:orientation="vertical"
+    tools:context=".activity.BookingHomeDetailActivity">
+
+    <TextView
+        android:id="@+id/tvBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_previous"
+        android:keepScreenOn="true"
+        android:paddingVertical="@dimen/default_padding" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:text="Booking Detail"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_weight="3"
+        android:id="@+id/nsc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/homestay" />
+
+            <!--HomeStay Name-->
+            <TextView
+                android:id="@+id/tvNameHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTypeHome"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:text="La Villa Angelina"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/large_text"
+                android:textStyle="bold" />
+
+
+            <!--ID homeStay-->
+            <TextView
+                android:id="@+id/tvCodeList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Code listing: 12345" />
+
+            <!--Location-->
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPricePerNight"
+                android:layout_toRightOf="@+id/iconMap"
+                android:drawableLeft="@drawable/ic_marker"
+                android:text="Thạch Thất, Hòa lạc"
+                android:textColor="@color/colorBlack" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@color/colorGray" />
+
+            <!--Date-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:padding="@dimen/default_margin"
+                    android:text="Date" />
+
+                <TextView
+                    android:id="@+id/btnDatetoDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:cursorVisible="true"
+                    android:drawableRight="@drawable/ic_next"
+                    android:gravity="right|center"
+                    android:padding="@dimen/default_margin"
+                    android:text="Apr 30 - May 02" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@color/colorGray" />
+
+            <!--Guest-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:padding="@dimen/default_margin"
+                    android:text="Guest" />
+
+                <TextView
+                    android:id="@+id/btnTotalGuest"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_next"
+                    android:gravity="right|center"
+                    android:padding="@dimen/default_margin"
+                    android:text="2" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@color/colorGray" />
+
+            <!--Total-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|center"
+                    android:padding="@dimen/default_margin"
+                    android:text="Total" />
+
+                <TextView
+                    android:id="@+id/btnTotalPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_next"
+                    android:gravity="right|center"
+                    android:padding="@dimen/default_margin"
+                    android:text="$123.58" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:background="@color/colorGray" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+    <!--CardView BookNow-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom" >
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/colorPrimaryButtonActive"
+            android:text="Next"
+            android:textColor="@color/colorWhite" />
+    </android.support.v7.widget.CardView>
+    <!--End CardView BookNow-->
+
+
+</LinearLayout>
