@@ -4,11 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.main.BookingFragment">
-
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:padding="@dimen/default_padding">
+        <TextView
+            android:id="@+id/myBookingTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lbl_myBooking"
+            android:textSize="30dp"
+            android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/lbl_totalBooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Total booking: 10"
+            android:layout_below="@id/myBookingTitle"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/lbl_totalBooking"/>
+    </RelativeLayout>
+
 
 </FrameLayout>

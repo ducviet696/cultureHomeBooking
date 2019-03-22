@@ -30,8 +30,6 @@ for best support.</string>
     <string name="room_rates">Room rates</string>
     <string name="cancel_policy">Cancel Policy</string>
     <string name="photos">Photos</string>
-    <string name="check_in_date">Check-in Date</string>
-    <string name="check_out_date">Check-out Date</string>
     <string name="check_out_mess">Please select your check-out date</string>
     <string name="check_in_mess">Please select your check-in date</string>
     <string name="check_in">Check-in</string>
@@ -43,4 +41,16 @@ for best support.</string>
     <string name="email">Email</string>
     <string name="total_invoice">Total Invoice</string>
 
+</resources>
+
+    <!-- String of HomePage -->
+    <string name="check_in_date">Check in date</string>
+    <string name="check_out_date">Check out date</string>
+    <string name="amount_of_people">Amount</string>
+    <string name="button_search">Search</string>
+    <string name="name_search">Name Of city or homestay</string>
+    <string name="save">Save</string>
+
+    <!--String of Booking-->
+    <string name="lbl_myBooking">My Booking</string>
 </resources>

@@ -3,12 +3,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/homestay"
     tools:context=".fragments.main.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/View"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/layoutcommon"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/iconSearch"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/ic_search_black_24dp" />
+
+                <EditText
+                    android:id="@+id/TextSearch"
+                    android:layout_width="310dp"
+                    android:layout_height="50dp"
+                    android:focusable="false"
+                    android:gravity="left|center"
+                    android:hint="@string/name_search"
+
+                    android:textColorLink="@color/colorSliderInactive" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/txtCheckInDate"
+                    android:layout_width="155dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/textview"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/check_in_date" />
+
+                <TextView
+                    android:id="@+id/txtCheckOutDate"
+                    android:layout_width="155dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/textview"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="@string/check_out_date" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:background="@drawable/textview">
+
+                <TextView
+                    android:id="@+id/iconAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/person" />
+
+                <TextView
+                    android:id="@+id/textAmount"
+                    android:layout_width="310dp"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/amount_of_people" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/layoutsearch">
+
+                <Button
+                    android:id="@+id/btnSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/button_search" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </ScrollView>
 </FrameLayout>

@@ -35,22 +35,74 @@
         android:visibility="visible">
 
         <ImageView
-            android:layout_marginTop="40dp"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_gravity="center_horizontal"
-            android:padding="5dp"/>
+            android:layout_marginTop="40dp"
+            tools:src="@drawable/img_avatar" />
         <TextView
+            android:id="@+id/lbl_userName"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Viet Anh"
             android:textSize="20dp"/>
-
-        <Button
-            android:id="@+id/btn_logout"
+        <RelativeLayout
+            android:id="@+id/btn_cusProfile"
+            android:layout_margin="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/logout" />
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/cusIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_user"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Customer profile"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/cusIcon"/>
+            <!--<Button-->
+            <!--android:id="@+id/btn_logout"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/logout" />-->
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/btn_payMethod"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/payIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_payment_method"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment method"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/payIcon"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/btn_setting"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/settingIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_setting"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Setting"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/settingIcon"/>
+        </RelativeLayout>
+
     </LinearLayout>
+
 </FrameLayout>

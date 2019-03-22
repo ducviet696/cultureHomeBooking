@@ -17,7 +17,7 @@ import com.swp.culturehomestay.Interface.ILoadMore;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
-import com.swp.culturehomestay.entity.HomeStay;
+import com.swp.culturehomestay.models.HomeStay;
 
 import java.util.ArrayList;
 

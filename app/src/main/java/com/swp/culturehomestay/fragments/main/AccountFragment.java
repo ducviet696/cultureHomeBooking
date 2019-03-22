@@ -10,15 +10,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.activity.CustomerProfileActivity;
 import com.swp.culturehomestay.activity.LoginActivity;
+import com.swp.culturehomestay.models.UserDetailModel;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +41,9 @@ public class AccountFragment extends Fragment {
     View view;
     Button loginBtn;
     Button logoutBtn;
+    UserDetailModel userDetailModel;
+    TextView userName;
+    RelativeLayout btnCusProfile;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,6 +55,9 @@ public class AccountFragment extends Fragment {
         viewLoginAccount = (LinearLayout) view.findViewById(R.id.login_Account);
         if(isLoggedIn){
             viewNoLoginAccount.setVisibility(View.GONE);
+            userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
+            userName = (TextView) view.findViewById(R.id.lbl_userName);
+            userName.setText(userDetailModel.getFirstName()+" "+ userDetailModel.getLastName());
             viewLoginAccount.setVisibility(View.VISIBLE);
         }else{
             viewNoLoginAccount.setVisibility(View.VISIBLE);
@@ -54,10 +65,19 @@ public class AccountFragment extends Fragment {
         }
         loginBtn = (Button) viewNoLoginAccount.findViewById(R.id.btn_signin_create);
         loginBtn.setOnClickListener(onSignInClick);
-        logoutBtn = (Button) view.findViewById(R.id.btn_logout);
-        logoutBtn.setOnClickListener(onLogoutClick);
+        btnCusProfile = (RelativeLayout) view.findViewById(R.id.btn_cusProfile);
+        btnCusProfile.setOnClickListener(onCustomerProfileClick);
+//        logoutBtn = (Button) view.findViewById(R.id.btn_logout);
+//        logoutBtn.setOnClickListener(onLogoutClick);
         return view;
     }
+    View.OnClickListener onCustomerProfileClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), CustomerProfileActivity.class);
+            startActivity(intent);
+        }
+    };
 
     View.OnClickListener onSignInClick = new View.OnClickListener() {
         public void onClick(View v) {
