@@ -1,224 +1,420 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/default_padding"
-    tools:context=".activity.ViewHomeDetailActivity">
+    android:background="@android:color/background_light"
+    android:fitsSystemWindows="true">
 
-    <ViewFlipper
-        android:id="@+id/vfHome"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/main.appbar"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_marginBottom="@dimen/default_padding"></ViewFlipper>
+        android:layout_height="300dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/main.collapsing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="48dp"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/main.backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/homestay"
+                app:layout_collapseMode="parallax" />
 
-        <TextView
-            android:id="@+id/tvTypeHome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Villa"
-            android:textColor="@color/colorBlack" />
+            <android.support.v7.widget.Toolbar
 
-        <TextView
-            android:id="@+id/BedRoomNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tvTypeHome"
-            android:text=" - 5 Bed Rooms"
-            android:textColor="@color/colorBlack" />
-    </TableRow>
+                android:id="@+id/main_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title="La Villa Angelina"
 
-    <TextView
-        android:id="@+id/tvNameHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvTypeHome"
-        android:layout_marginTop="@dimen/default_padding"
-        android:layout_marginBottom="@dimen/default_padding"
-        android:text="La Villa Angelina"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/large_text"
-        android:textStyle="bold" />
+                />
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
-    <RatingBar
-        android:id="@+id/ratingBar2"
-        style="?android:attr/ratingBarStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="16dp"
-        android:numStars="5"
-        android:rating="4" />
-
-    <TextView
-        android:id="@+id/tvCodeList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Code listing: 12345" />
-
-    <TextView
-        android:id="@+id/tvLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tvPricePerNight"
-        android:layout_toRightOf="@+id/iconMap"
-        android:drawableLeft="@drawable/ic_marker"
-        android:text="Thạch Thất, Hòa lạc"
-        android:textColor="@color/colorBlack" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/default_padding"
-        android:layout_marginBottom="@dimen/default_padding"
-        android:background="@color/colorGray" />
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nsc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="HOSTED BY" />
-
-        <TextView
-            android:id="@+id/tvHostName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Host Name" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/default_padding"
-        android:background="@color/colorGray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/default_padding"
-        android:weightSum="4">
-
-        <TextView
-            android:id="@+id/tvPeople"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_people"
-            android:text="8 people"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tvRoomNm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_door"
-            android:text="3"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tvBedNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_bed"
-            android:text="3 beds"
-            android:textAlignment="center" />
-
-        <TextView
-            android:id="@+id/tvBathNum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableTop="@drawable/ic_bathroom"
-            android:text="3"
-            android:textAlignment="center" />
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/default_padding"
-        android:layout_marginBottom="@dimen/default_padding"
-        android:background="@color/colorGray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Another Details"
+            android:layout_margin="@dimen/default_padding"
+            android:orientation="vertical">
+            <!--Type + Room Number-->
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_padding">
+
+                <TextView
+                    android:id="@+id/tvTypeHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Villa"
+                    android:textColor="@color/colorBlack" />
+
+                <TextView
+                    android:id="@+id/BedRoomNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/tvTypeHome"
+                    android:text=" - 5 Bed Rooms"
+                    android:textColor="@color/colorBlack" />
+            </TableRow>
+
+            <!--HomeStay Name-->
+            <TextView
+                android:id="@+id/tvNameHome"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvTypeHome"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:text="La Villa Angelina"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/large_text"
+                android:textStyle="bold" />
+
+            <!--Rating-->
+            <RatingBar
+                android:id="@+id/ratingBar2"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:numStars="5"
+                android:rating="4" />
+
+            <!--ID homeStay-->
+            <TextView
+                android:id="@+id/tvCodeList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Code listing: 12345" />
+
+            <!--Location-->
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvPricePerNight"
+                android:layout_toRightOf="@+id/iconMap"
+                android:drawableLeft="@drawable/ic_marker"
+                android:text="Thạch Thất, Hòa lạc"
+                android:textColor="@color/colorBlack" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@color/colorGray" />
+
+            <!--HOST Info-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="HOSTED BY" />
+
+                <TextView
+                    android:id="@+id/tvHostName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Host Name" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:background="@color/colorGray" />
+            <!--Tong Quan-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_padding"
+                android:weightSum="4">
+
+                <TextView
+                    android:id="@+id/tvPeople"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_people"
+                    android:text="8 people"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/tvRoomNm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_door"
+                    android:text="3"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/tvBedNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_bed"
+                    android:text="3 beds"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/tvBathNum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_bathroom"
+                    android:text="3"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/default_padding"
+                android:text="@string/need_help" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:background="@color/colorGray" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Another Details"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/large_text"
+                    android:textStyle="bold" />
+
+                <!--Another Detail-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/check_in" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/check_out"
+                        android:textAlignment="viewEnd" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/tvCheckin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2:0 PM"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/normal_text" />
+
+                    <TextView
+                        android:id="@+id/tvCheckout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="10:0 AM"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/normal_text" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:background="@color/colorGray" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="About Homestay"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/large_text"
+                    android:textStyle="bold" />
+                <!--About Home-->
+                <com.borjabravo.readmoretextview.ReadMoreTextView
+                    android:id="@+id/tvAboutHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/about_homestay"
+                    app:colorClickableText="@color/colorPrimaryButtonActive"
+                    app:trimCollapsedText="Show less"
+                    app:trimExpandedText="Show more"
+                    app:trimLength="200"
+                    app:trimMode="trimModeLength" />
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:background="@color/colorGray" />
+                <!--Tien ich    -->
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_earth" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_earth" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:background="@color/colorGray" />
+                <TextView
+                    android:id="@+id/btnRoomRate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_next"
+                    android:padding="@dimen/default_margin"
+                    android:text="@string/room_rates" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:background="@color/colorGray" />
+
+                <TextView
+                    android:id="@+id/btnCancelPolicy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_next"
+                    android:padding="@dimen/default_margin"
+                    android:text="@string/cancel_policy" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/default_padding"
+                    android:layout_marginBottom="@dimen/default_padding"
+                    android:background="@color/colorGray" />
+
+                <TextView
+                    android:id="@+id/btnPhotoList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@drawable/ic_next"
+                    android:padding="@dimen/default_margin"
+                    android:text="@string/photos"></TextView>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/colorWhite" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <!--Wishlist-->
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:src="@drawable/ic_fav_white"
+        app:layout_anchor="@id/main.appbar"
+        app:layout_anchorGravity="bottom|right|end" />
+    <!--End Wishlist-->
+    <!--CardView BookNow-->
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="10dp">
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="500$  per night"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/large_text"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btnBooking"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Check-in" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Check-out"
-                android:textAlignment="viewEnd" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="2:0 PM"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/normal_text" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="10:0 AM"
-                android:textAlignment="viewEnd"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/normal_text" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:paddingTop="@dimen/default_padding"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/need_help" />
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="@dimen/default_padding"
-        android:layout_marginBottom="@dimen/default_padding"
-        android:background="@color/colorGray" />
-
-</LinearLayout>
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/default_padding"
+            android:width="150dp"
+            android:background="@color/colorPrimaryButtonActive"
+            android:text="Book Now"
+            android:textColor="@color/colorWhite" />
+    </android.support.v7.widget.CardView>
+    <!--End CardView BookNow-->
+</android.support.design.widget.CoordinatorLayout>
