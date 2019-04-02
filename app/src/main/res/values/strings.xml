@@ -37,4 +37,5 @@ for best support.</string>
 
     <!--String of Booking-->
     <string name="lbl_myBooking">My Booking</string>
+    <string name="title_activity_basic">BasicActivity</string>
 </resources>
