@@ -46,27 +46,6 @@ public class BookingFragment extends Fragment {
         BookingAdapter adapter = new BookingAdapter(orders);
         rv.setAdapter(adapter);
         rv.setLayoutManager( new LinearLayoutManager(getActivity()));
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        HomeStayService hsService = retrofit.create(HomeStayService.class);
-        SearchBody sb = new SearchBody(0,6,2,"","18814f86-4865-4571-b016-312fc00cecbe",1556582400000l,1556582400000l);
-
-        Call<List<HomeStay>> res = hsService.getHomeStayById(sb);
         return view;
     }
-
-    private class SearchHomeStay extends AsyncTask<String, Void, String>{
-
-        @Override
-        protected String doInBackground(String... strings) {
-            return null;
-        }
-        @Override
-        protected void onPostExecute(String string) {
-            super.onPostExecute(string);
-        }
-    }
-
 }
