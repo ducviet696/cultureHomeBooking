@@ -1,5 +1,7 @@
 package com.swp.culturehomestay.services;
 
+import com.swp.culturehomestay.utils.Constants;
+
 import java.io.IOException;
 import java.security.cert.CertificateException;
 
@@ -43,11 +45,11 @@ public class ApiClient {
     }
 
 
-    public static final String BASE_URL = "http://222.252.30.110:8765/";
+
     public static Retrofit retrofit;
     public static Retrofit  getApiClient() {
         if(retrofit == null) {
-            retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+            retrofit = new Retrofit.Builder().baseUrl(Constants.BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(getUnsafeOkHttpClient().build())
                     .build();

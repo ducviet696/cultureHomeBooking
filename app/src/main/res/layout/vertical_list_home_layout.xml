@@ -22,11 +22,6 @@
                 android:scaleType="fitXY"
                 android:layout_width="match_parent"
                 android:layout_height="240dp" />
-            <ProgressBar
-                style="@android:style/Widget.ProgressBar.Small"
-                android:id="@+id/progress_load_photo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
             <ImageView
                 android:id="@+id/btnDelete"
                 android:layout_gravity="right"

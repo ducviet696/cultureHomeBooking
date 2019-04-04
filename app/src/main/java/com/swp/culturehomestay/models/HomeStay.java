@@ -34,6 +34,9 @@ public class HomeStay {
     @SerializedName("numberRoom")
     @Expose
     private Integer numberRoom;
+    @SerializedName("bathRoom")
+    @Expose
+    private Integer bathRoom;
     @SerializedName("createdDate")
     @Expose
     private long createdDate;
@@ -162,6 +165,13 @@ public class HomeStay {
 
     public void setNumberRoom(Integer numberRoom) {
         this.numberRoom = numberRoom;
+    }
+    public Integer getBathRoom() {
+        return bathRoom;
+    }
+
+    public void setBathRoom(Integer bathRoom) {
+        this.bathRoom = bathRoom;
     }
 
     public long getCreatedDate() {

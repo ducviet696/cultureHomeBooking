@@ -2,10 +2,14 @@ package com.swp.culturehomestay.fragments.main;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.swp.culturehomestay.Interface.ILoadMore;
@@ -22,6 +27,7 @@ import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
+import com.swp.culturehomestay.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,8 +45,7 @@ import retrofit2.Response;
 public class WishlistFragment extends Fragment {
 
 
-    public static final String USER_ID ="624daf76-c874-4ff3-a6ad-caf1bacce6e6";
-    private List<HomeStay> articles = new ArrayList<>();
+    private List<HomeStay> homestays = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private VerticalListHomeAdapter adapter;
@@ -68,24 +73,19 @@ public class WishlistFragment extends Fragment {
 
     private void loadJson() {
         IApi iApi = ApiClient.getApiClient().create(IApi.class);
-//        String q = "us";
-//        Date todayDate = Calendar.getInstance().getTime();
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//        String dateFrom = formatter.format(todayDate);
-//        Call<HomeStay> call = iApi.getHomeStaySearch(q,dateFrom,"publishedAt",API_KEY);
-//        Call<String> homeid = iApi.getHomeStay("");
-        Call<List<HomeStay>> call = iApi.getWishList(USER_ID);
+        Call<List<HomeStay>> call = iApi.getWishList(Constants.USER_ID,"en");
         call.enqueue(new Callback<List<HomeStay>>() {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if(response.isSuccessful() && response.body()!= null) {
-                    if((!articles.isEmpty())){
-                        articles.clear();
+                    if((!homestays.isEmpty())){
+                        homestays.clear();
                     }
-                    articles = response.body();
-                    adapter = new VerticalListHomeAdapter(articles, getContext());
+                    homestays = response.body();
+                    adapter = new VerticalListHomeAdapter(homestays, getContext());
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
+                    initListener();
                 } else {
                     Toast.makeText(getContext(), "No result", Toast.LENGTH_SHORT).show();
                 }
@@ -93,10 +93,28 @@ public class WishlistFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<HomeStay>> call, Throwable t) {
-                Toast.makeText(getContext(), "wwtf", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Fail to loading", Toast.LENGTH_SHORT).show();
                 Log.d("AAA", "onFailure: "+t.getMessage());
             }
         });
     }
+
+    //event when click homestay
+    private void initListener(){
+
+        adapter.setOnItemClickListener(new VerticalListHomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getContext(), ViewHomeDetailActivity.class);
+
+                HomeStay homeStay = homestays.get(position);
+                intent.putExtra("homestayId",  homeStay.getHomestayId());
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
 
 }
