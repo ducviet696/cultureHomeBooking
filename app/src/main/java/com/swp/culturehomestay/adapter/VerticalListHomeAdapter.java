@@ -20,19 +20,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-import com.swp.culturehomestay.Interface.ILoadMore;
 import com.swp.culturehomestay.R;
 
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
 import java.util.ArrayList;
@@ -41,7 +33,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListHomeAdapter.MyViewHolder>{
+public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListHomeAdapter.MyViewHolder> {
+
     private List<HomeStay> homeStays;
     private Context context;
     private OnItemClickListener onItemClickListener;
@@ -62,39 +55,13 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
     public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
         HomeStay homeStay = homeStays.get(position);
-//        RequestOptions requestOptions = new RequestOptions();
-//        requestOptions.placeholder(Utils.getRandomDrawbleColor());
-//        requestOptions.error(Utils.getRandomDrawbleColor());
-//        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
-//        requestOptions.centerCrop();
-
-        Glide.with(context)
-//                .load(homeStay.getImageProfileUrl())
-                .load("https://cdn.luxstay.com/rooms/11951/large/1516179293_NDT05162.JPG")
-//                .apply(requestOptions)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.GONE);
-                        Log.d("HA", "onLoadFailed: "+ homeStay.getImageProfileUrl());
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        holder.progressBar.setVisibility(View.GONE);
-                        Log.d("HA", "onLoadFailed: "+ homeStay.getImageProfileUrl());
-                        return false;
-                    }
-                })
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(holder.ivHome);
-        holder.txtName.setText(homeStay.getHomestayMultis().get(1).getHomestayName());
+        String imgeUrl = Constants.BASE_URLIMG +homeStay.getImageProfileUrl();
+        Utils.loadImge(context,holder.ivHome,imgeUrl);
+        holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtType.setText(homeStay.getType());
         holder.txtBedroomNum.setText("\u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
         holder.txtPrice.setText("" +String.valueOf(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
-
     }
 
     @Override
@@ -123,8 +90,6 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         TextView txtBedroomNum;
         @BindView(R.id.tvPricePerNight)
         TextView txtPrice;
-        @BindView(R.id.progress_load_photo)
-        ProgressBar progressBar;
         @BindView(R.id.home_layout)
         CardView home_layout;
         OnItemClickListener onItemClickListener;
@@ -136,6 +101,9 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
             this.onItemClickListener = onItemClickListener;
 
         }
+
+
+
         @Override
         public void onClick(View v) {
             onItemClickListener.onItemClick(v, getAdapterPosition());

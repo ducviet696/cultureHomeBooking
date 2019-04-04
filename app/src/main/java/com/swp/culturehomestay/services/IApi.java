@@ -13,6 +13,16 @@ import retrofit2.http.Query;
 public interface IApi {
    @GET ("homestay/host/{id}")
     Call<List<HomeStay>> getWishList(
-           @Path("id") String id
+           @Path("id") String id,
+           @Query("lang") String language
    );
+   @GET ("homestay/{id}")
+    Call<HomeStay> getHomeById(
+           @Path("id") String id,
+           @Query("lang") String language
+   );
+
+
+
+
 }

@@ -1,7 +1,27 @@
 package com.swp.culturehomestay.utils;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
+import com.swp.culturehomestay.R;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -10,7 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
-
 public class Utils {
 
     public static ColorDrawable[] vibrantLightColorList =
@@ -65,7 +84,24 @@ public class Utils {
         return country.toLowerCase();
     }
 
-    public void checkStringNull(String name, String defaultName) {
+    public static void checkStringNull(TextView tv, String s) {
+        if(s==null || s.isEmpty()) {
+            tv.setText("unknow");
+        } else {
+            tv.setText(s);
+        }
+    }
+    //load imgae via glide
+    public static void loadImge(Context context, ImageView imageView, String imgeUrl){
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.hourglass);
+        requestOptions.error(R.drawable.image_not_found);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
 
+        Glide.with(context)
+                .load(imgeUrl)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView);
     }
 }
