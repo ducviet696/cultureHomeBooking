@@ -17,16 +17,19 @@ import android.widget.Toast;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.HomestayImage;
 import com.swp.culturehomestay.models.HomestayMulti;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,6 +67,10 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     Button btnBooking;
     @BindView(R.id.main_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tvPhotos)
+    TextView tvTotalPhoto;
+    public static List<HomestayImage> listHomeImg = new ArrayList<>();
+    public ArrayList<String> listUrlImg = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +107,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             public void onResponse(Call<HomeStay> call, Response<HomeStay> response) {
                 if(response.isSuccessful() && response.body()!= null) {
                     HomeStay homeStay = response.body();
+                    listHomeImg = homeStay.getHomestayImages();
                     Utils.loadImge(ViewHomeDetailActivity.this,ivHomeProfile, Constants.BASE_URLIMG+homeStay.getImageProfileUrl());
                     HomestayMulti homestayMulti = homeStay.getHomestayMultis().get(0);
                     homestayName = homestayMulti.getHomestayName();
@@ -118,6 +126,10 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     txtAboutHome.setText(homestayMulti.getDescription()
                             +"\n" + homestayMulti.getHouseRule());
                     txtprice.setText(String.valueOf(homeStay.getPriceNightly()) + "$/night");
+                    tvTotalPhoto.setText(String.valueOf(listHomeImg.size() +" Photos"));
+                    for(HomestayImage hom : listHomeImg){
+                        listUrlImg.add(hom.getImageUrl());
+                    }
 
                 } else {
                     Toast.makeText(ViewHomeDetailActivity.this, "No result", Toast.LENGTH_SHORT).show();
@@ -147,6 +159,22 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_homedetail, menu);
         return true;
+    }
+
+    //Event when click button
+    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate})
+    public void onClickView(View view) {
+        switch (view.getId()) {
+            case R.id.btnCancelPolicy:
+                break;
+            case R.id.btnShowAlbumPhoto:
+                Intent intent = new Intent(ViewHomeDetailActivity.this, ShowAlbumPhotoActivity.class);
+                intent.putStringArrayListExtra("listUrlImg", listUrlImg);
+                startActivity(intent);
+                break;
+            case R.id.btnRoomRate:
+                break;
+        }
     }
 
 

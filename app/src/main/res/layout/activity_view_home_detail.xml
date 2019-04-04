@@ -368,13 +368,33 @@
                     android:layout_marginBottom="@dimen/default_padding"
                     android:background="@color/colorGray" />
 
-                <TextView
-                    android:id="@+id/btnPhotoList"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/ic_next"
-                    android:padding="@dimen/default_margin"
-                    android:text="@string/photos"></TextView>
+                    android:orientation="horizontal"
+                    android:id="@+id/btnShowAlbumPhoto"
+                    android:clickable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left|center"
+                        android:padding="@dimen/default_margin"
+                        android:text="Photos"
+                        android:clickable="false"/>
+
+                    <TextView
+                        android:textColor="@color/colorPrimaryButtonActive"
+                        android:id="@+id/tvPhotos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="false"
+                        android:cursorVisible="true"
+                        android:drawableRight="@drawable/ic_next"
+                        android:gravity="right|center"
+                        android:padding="@dimen/default_margin"
+                        android:text="+100 photos" />
+                </LinearLayout>
 
 
                 <View

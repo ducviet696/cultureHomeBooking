@@ -94,9 +94,11 @@ public class Utils {
     //load imgae via glide
     public static void loadImge(Context context, ImageView imageView, String imgeUrl){
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.placeholder(R.drawable.hourglass);
+        requestOptions.placeholder(R.drawable.loading);
+//        requestOptions.placeholder(Utils.getRandomDrawbleColor());
         requestOptions.error(R.drawable.image_not_found);
-        requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        requestOptions.fitCenter();
 
         Glide.with(context)
                 .load(imgeUrl)
