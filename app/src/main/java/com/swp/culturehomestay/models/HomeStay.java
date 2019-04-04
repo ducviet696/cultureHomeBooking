@@ -36,13 +36,22 @@ public class HomeStay {
     private Integer numberRoom;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private long createdDate;
     @SerializedName("editedDate")
     @Expose
-    private Integer editedDate;
+    private long editedDate;
     @SerializedName("currency")
     @Expose
     private String currency;
+    @SerializedName("priceNightly")
+    @Expose
+    private Integer priceNightly;
+    @SerializedName("priceWeekend")
+    @Expose
+    private Integer priceWeekend;
+    @SerializedName("priceLongTerm")
+    @Expose
+    private Integer priceLongTerm;
     @SerializedName("cancelPolicy")
     @Expose
     private String cancelPolicy;
@@ -69,7 +78,7 @@ public class HomeStay {
     private List<HomestayMulti> homestayMultis = null;
     @SerializedName("priceSpecials")
     @Expose
-    private List<Object> priceSpecials = null;
+    private List<PriceSpecial> priceSpecials = null;
     @SerializedName("homestay_Cultures")
     @Expose
     private List<Object> homestayCultures = null;
@@ -155,19 +164,19 @@ public class HomeStay {
         this.numberRoom = numberRoom;
     }
 
-    public Integer getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Integer getEditedDate() {
+    public long getEditedDate() {
         return editedDate;
     }
 
-    public void setEditedDate(Integer editedDate) {
+    public void setEditedDate(long editedDate) {
         this.editedDate = editedDate;
     }
 
@@ -177,6 +186,30 @@ public class HomeStay {
 
     public void setCurrency(String currency) {
         this.currency = currency;
+    }
+
+    public Integer getPriceNightly() {
+        return priceNightly;
+    }
+
+    public void setPriceNightly(Integer priceNightly) {
+        this.priceNightly = priceNightly;
+    }
+
+    public Integer getPriceWeekend() {
+        return priceWeekend;
+    }
+
+    public void setPriceWeekend(Integer priceWeekend) {
+        this.priceWeekend = priceWeekend;
+    }
+
+    public Integer getPriceLongTerm() {
+        return priceLongTerm;
+    }
+
+    public void setPriceLongTerm(Integer priceLongTerm) {
+        this.priceLongTerm = priceLongTerm;
     }
 
     public String getCancelPolicy() {
@@ -243,11 +276,11 @@ public class HomeStay {
         this.homestayMultis = homestayMultis;
     }
 
-    public List<Object> getPriceSpecials() {
+    public List<PriceSpecial> getPriceSpecials() {
         return priceSpecials;
     }
 
-    public void setPriceSpecials(List<Object> priceSpecials) {
+    public void setPriceSpecials(List<PriceSpecial> priceSpecials) {
         this.priceSpecials = priceSpecials;
     }
 
