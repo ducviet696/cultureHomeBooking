@@ -13,6 +13,7 @@
             android:id="@+id/myBookingTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
             android:text="@string/lbl_myBooking"
             android:textSize="30dp"
             android:layout_marginTop="30dp"/>
@@ -20,6 +21,7 @@
             android:id="@+id/lbl_totalBooking"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack"
             android:text="Total booking: 10"
             android:layout_below="@id/myBookingTitle"/>
 

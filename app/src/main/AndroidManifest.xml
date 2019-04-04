@@ -14,9 +14,10 @@
         <activity android:name=".activity.DetailPhotoActivity"></activity>
         <activity android:name=".activity.ShowAlbumPhotoActivity" />
         <activity android:name=".activity.BookingHomeConfirmActivity" />
+        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.TestSendDataFromHomeFragment" />
         <activity android:name=".activity.BookingHomeDetailActivity" />
         <activity android:name=".activity.BookingHomePickDateActivity" /> <!-- metadata Facebook -->
-        <activity android:name=".activity.TestSendDataFromHomeFragment" />
         <activity android:name=".activity.CustomerProfileActivity" /> <!-- metadata Facebook -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

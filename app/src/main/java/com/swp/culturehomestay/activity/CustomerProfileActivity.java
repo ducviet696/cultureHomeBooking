@@ -3,7 +3,9 @@ package com.swp.culturehomestay.activity;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.swp.culturehomestay.R;
@@ -30,6 +32,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     TextInputEditText description;
     OkHttpClient client;
     String result;
+    ImageView btnCusBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +51,16 @@ public class CustomerProfileActivity extends AppCompatActivity {
         doGetRequest("http://dummy.restapiexample.com/api/v1/employees");
         userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
         fillDataCustomer(userDetailModel);
+        btnCusBack = (ImageView) findViewById(R.id.cusBack);
+        btnCusBack.setOnClickListener(onBackClick);
     }
+
+    View.OnClickListener onBackClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            onBackPressed();
+        }
+    };
 
     public void fillDataCustomer(UserDetailModel userDetailModel){
         if(userDetailModel.isGender()){

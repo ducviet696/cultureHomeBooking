@@ -35,13 +35,15 @@
         android:visibility="visible">
 
         <ImageView
+            android:id="@+id/profileImage"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            tools:src="@drawable/img_avatar" />
+            android:src="@drawable/com_facebook_profile_picture_blank_portrait" />
         <TextView
             android:id="@+id/lbl_userName"
+            android:layout_marginTop="10dp"
             android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

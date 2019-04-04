@@ -27,7 +27,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         ViewHolder viewHolder = new ViewHolder(itemBooingView);
         return viewHolder;
     }
-
+ 
     @Override
     public void onBindViewHolder(BookingAdapter.ViewHolder viewHolder, int position) {
         OrderBookingModel order = mOrders.get(position);

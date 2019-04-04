@@ -50,7 +50,9 @@ dependencies {
 
     // ADD OkHttp
     implementation 'com.squareup.okhttp3:okhttp:3.13.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
 
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
     //Image
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
