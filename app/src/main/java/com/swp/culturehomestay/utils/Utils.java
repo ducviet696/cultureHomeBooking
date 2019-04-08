@@ -25,6 +25,9 @@ import com.swp.culturehomestay.R;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -90,6 +93,24 @@ public class Utils {
         } else {
             tv.setText(s);
         }
+    }
+
+    public static String formatDate(Date date) {
+        DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
+        return DATE_FORMAT.format(date);
+    }
+
+    public static String formatDateShort(Date date) {
+        DateFormat DATE_FORMAT = new SimpleDateFormat("MMM dd");
+        return DATE_FORMAT.format(date);
+    }
+
+    public static String formatPrice(Integer price) {
+        NumberFormat PRICE_FORMAT = new DecimalFormat("###,###.## $");
+        return PRICE_FORMAT.format(price);
+    }
+    public static boolean isNullOrEmpty(String s) {
+        return s == null || s.isEmpty();
     }
     //load imgae via glide
     public static void loadImge(Context context, ImageView imageView, String imgeUrl){

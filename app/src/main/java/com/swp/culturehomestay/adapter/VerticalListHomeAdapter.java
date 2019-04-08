@@ -59,8 +59,8 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         Utils.loadImge(context,holder.ivHome,imgeUrl);
         holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtType.setText(homeStay.getType());
-        holder.txtBedroomNum.setText("\u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
-        holder.txtPrice.setText("" +String.valueOf(homeStay.getPriceNightly()));
+        holder.txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
+        holder.txtPrice.setText(Utils.formatPrice(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
     }
 

@@ -3,7 +3,9 @@ package com.swp.culturehomestay.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Amenity {
+import java.io.Serializable;
+
+public class Amenity implements Serializable {
 
     @SerializedName("amenityId")
     @Expose

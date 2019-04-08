@@ -11,11 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
-import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
+import com.swp.culturehomestay.models.Amenity;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.HomestayImage;
 import com.swp.culturehomestay.models.HomestayMulti;
@@ -36,7 +37,6 @@ import retrofit2.Response;
 
 public class ViewHomeDetailActivity extends AppCompatActivity {
 
-    String homestayName ="";
     @BindView(R.id.ivHomeProfile)
     ImageView ivHomeProfile;
     @BindView(R.id.tvTypeHome)
@@ -69,8 +69,20 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.tvPhotos)
     TextView tvTotalPhoto;
+    @BindView(R.id.layoutFeature)
+    LinearLayout layoutFeatur;
+    @BindView(R.id.tvFeature)
+    TextView txtFeature;
+    @BindView(R.id.tvTotalAmen)
+    TextView txtTotalAmen;
+    @BindView(R.id.tvCancelType)
+    TextView txtCancelType;
     public static List<HomestayImage> listHomeImg = new ArrayList<>();
     public ArrayList<String> listUrlImg = new ArrayList<>();
+    public ArrayList<String> listAmen = new ArrayList<>();
+    public List<Amenity> listAmenity = new ArrayList<>();
+    String homestayID;
+    String cancelType, standartGuest, maximunGuest, priceNightly, priceWeekend, priceLongTerm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +92,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         //get homestayid from wishlistFragment
         Intent intent = getIntent();
-        String homestayID = intent.getStringExtra("homestayId");
-
+        homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
         loadJson(homestayID);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
@@ -93,6 +104,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewHomeDetailActivity.this, BookingHomePickDateActivity.class);
+                intent.putExtra(Constants.HOMESTAY_ID, homestayID);
                 startActivity(intent);
             }
         });
@@ -108,9 +120,10 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body()!= null) {
                     HomeStay homeStay = response.body();
                     listHomeImg = homeStay.getHomestayImages();
+                    listAmenity = homeStay.getAmenities();
                     Utils.loadImge(ViewHomeDetailActivity.this,ivHomeProfile, Constants.BASE_URLIMG+homeStay.getImageProfileUrl());
                     HomestayMulti homestayMulti = homeStay.getHomestayMultis().get(0);
-                    homestayName = homestayMulti.getHomestayName();
+                    String homestayName = homestayMulti.getHomestayName();
                     CollapsingToolbarLayout mCollapsingToolbarLayout = findViewById(R.id.main_collapsing);
                     mCollapsingToolbarLayout.setTitle(homestayName);
                     txtName.setText(homestayName);
@@ -122,14 +135,32 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     txtMaximunGuest.setText(homeStay.getMaximunGuest().toString());
                     txtnumberRoom.setText(String.valueOf(homeStay.getNumberRoom()));
                     txtBedNum.setText(String.valueOf(homeStay.getNumberRoom()*2));
-                    Utils.checkStringNull(txtBathNum, homeStay.getBathRoom().toString());
-                    txtAboutHome.setText(homestayMulti.getDescription()
-                            +"\n" + homestayMulti.getHouseRule());
-                    txtprice.setText(String.valueOf(homeStay.getPriceNightly()) + "$/night");
-                    tvTotalPhoto.setText(String.valueOf(listHomeImg.size() +" Photos"));
+                    Utils.checkStringNull(txtBathNum, String.valueOf(homeStay.getBathRoom()));
+                    txtAboutHome.setText(homestayMulti.getDescription());
+                    txtprice.setText(Utils.formatPrice(homeStay.getPriceNightly()) + "/night");
+                    txtTotalAmen.setText("+ "+String.valueOf(listAmenity.size()));
+                    tvTotalPhoto.setText(String.valueOf("+ "+listHomeImg.size()));
+                    cancelType = homeStay.getCancelPolicy();
+                    txtCancelType.setText(cancelType.toUpperCase());
+
+                    if(!Utils.isNullOrEmpty(homestayMulti.getDesUnifuture())) {
+                        layoutFeatur.setVisibility(View.VISIBLE);
+                        txtFeature.setText(homestayMulti.getDesUnifuture());
+                    } else {
+                        layoutFeatur.setVisibility(View.GONE);
+
+                    }
                     for(HomestayImage hom : listHomeImg){
                         listUrlImg.add(hom.getImageUrl());
                     }
+                    for(Amenity amenity : homeStay.getAmenities()){
+                        listAmen.add(amenity.getEnglishName());
+                    }
+                    standartGuest = String.valueOf(homeStay.getStandartGuest());
+                    maximunGuest = String.valueOf(homeStay.getMaximunGuest());
+                    priceNightly = Utils.formatPrice(homeStay.getPriceNightly());
+                    priceWeekend = Utils.formatPrice(homeStay.getPriceWeekend());
+                    priceLongTerm = Utils.formatPrice(homeStay.getPriceLongTerm());
 
                 } else {
                     Toast.makeText(ViewHomeDetailActivity.this, "No result", Toast.LENGTH_SHORT).show();
@@ -162,17 +193,35 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     //Event when click button
-    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate})
+    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity})
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btnCancelPolicy:
+                Intent intentCancel = new Intent(ViewHomeDetailActivity.this, CancelPolicyActivity.class);
+                intentCancel.putExtra(Constants.CANCEL_TYPE, cancelType);
+                startActivity(intentCancel);
                 break;
             case R.id.btnShowAlbumPhoto:
-                Intent intent = new Intent(ViewHomeDetailActivity.this, ShowAlbumPhotoActivity.class);
-                intent.putStringArrayListExtra("listUrlImg", listUrlImg);
-                startActivity(intent);
+                Intent intentPhoto = new Intent(ViewHomeDetailActivity.this, ShowAlbumPhotoActivity.class);
+                intentPhoto.putStringArrayListExtra("listUrlImg", listUrlImg);
+                startActivity(intentPhoto);
                 break;
             case R.id.btnRoomRate:
+                Intent intentRate = new Intent(ViewHomeDetailActivity.this, RoomRateActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("standartGuest", standartGuest);
+                bundle.putString("maximunGuest", maximunGuest);
+                bundle.putString("priceNightly", priceNightly);
+                bundle.putString("priceWeekend", priceWeekend);
+                bundle.putString("priceLongTerm", priceLongTerm);
+                intentRate.putExtra(Constants.BUNDLE, bundle);
+                startActivity(intentRate);
+                break;
+            case R.id.btnAmenity:
+                Intent intent2 = new Intent(ViewHomeDetailActivity.this, ShowAmenityActivity.class);
+//                intent2.putStringArrayListExtra("listAmen",listAmen);
+                intent2.putExtra(Constants.HOMESTAY_ID,homestayID);
+                startActivity(intent2);
                 break;
         }
     }

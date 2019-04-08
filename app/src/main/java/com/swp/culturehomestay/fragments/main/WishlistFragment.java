@@ -68,6 +68,9 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     Button btnRetry;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.topheadelines    )
+    TextView topHeadline;
+
 
 
     @Override
@@ -90,22 +93,28 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     private void loadJson() {
         errorLayout.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
+
         IApi iApi = ApiClient.getApiClient().create(IApi.class);
         Call<List<HomeStay>> call = iApi.getWishList(Constants.USER_ID, "en");
         call.enqueue(new Callback<List<HomeStay>>() {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+
                     if ((!homestays.isEmpty())) {
                         homestays.clear();
                     }
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                     homestays = response.body();
                     adapter = new VerticalListHomeAdapter(homestays, getContext());
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
                     initListener();
+                    topHeadline.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
                 } else {
+                    swipeRefreshLayout.setVisibility(View.GONE);
+                    topHeadline.setVisibility(View.INVISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
 
                     String errorCode;
@@ -131,6 +140,8 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
 
             @Override
             public void onFailure(Call<List<HomeStay>> call, Throwable t) {
+                swipeRefreshLayout.setVisibility(View.GONE);
+                topHeadline.setVisibility(View.INVISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
                 showErrorMessage(
                         R.drawable.oops,
@@ -148,9 +159,8 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getContext(), ViewHomeDetailActivity.class);
-
                 HomeStay homeStay = homestays.get(position);
-                intent.putExtra("homestayId", homeStay.getHomestayId());
+                intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
                 startActivity(intent);
 
             }

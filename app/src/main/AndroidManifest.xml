@@ -11,7 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.DetailPhotoActivity"></activity>
+        <activity android:name=".activity.PickDateActivity"></activity>
+        <activity android:name=".activity.CancelPolicyActivity" />
+        <activity android:name=".activity.RoomRateActivity" />
+        <activity android:name=".activity.ShowAmenityActivity" />
+        <activity android:name=".activity.DetailPhotoActivity" />
         <activity android:name=".activity.ShowAlbumPhotoActivity" />
         <activity android:name=".activity.BookingHomeConfirmActivity" />
         <activity android:name=".activity.SettingActivity" />

@@ -42,8 +42,8 @@ for best support.</string>
     <string name="total_invoice">Total Invoice</string>
 
     <!-- String of HomePage -->
-    <string name="check_in_date">Check in date</string>
-    <string name="check_out_date">Check out date</string>
+    <string name="check_in_date">Check-in date</string>
+    <string name="check_out_date">Check-out date</string>
     <string name="amount_of_people">Amount</string>
     <string name="button_search">Search</string>
     <string name="name_search">Name Of city or homestay</string>
@@ -52,4 +52,9 @@ for best support.</string>
     <!--String of Booking-->
     <string name="lbl_myBooking">My Booking</string>
     <string name="title_activity_basic">BasicActivity</string>
+    <string name="unique_features">Unique features</string>
+    <string name="cancel_flex">100% of total cost will be refunded if guests cancel 5 days prior to the check-in day.</string>
+    <string name="cancel_mod">50% of total cost will be refunded if guests cancel 7 days prior to the check-in day.</string>
+    <string name="flexible_type">Flexible</string>
+    <string name="moderate_type">Moderate</string>
 </resources>
