@@ -41,6 +41,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,8 +69,9 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     Button btnRetry;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @BindView(R.id.topheadelines    )
+    @BindView(R.id.topheadelines)
     TextView topHeadline;
+
 
 
 
@@ -162,11 +164,13 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
                 HomeStay homeStay = homestays.get(position);
                 intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
                 startActivity(intent);
-
             }
         });
 
+
     }
+
+
 
     @Override
     public void onRefresh() {
