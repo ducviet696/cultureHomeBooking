@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.swp.culturehomestay.R;
 
+
 import gr.net.maroulis.library.EasySplashScreen;
 
 public class SplashScreenActivity extends AppCompatActivity {

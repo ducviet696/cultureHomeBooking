@@ -64,4 +64,6 @@ dependencies {
     //Times Formater
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
+    implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
+
 }
