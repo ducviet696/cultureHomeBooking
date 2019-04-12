@@ -48,7 +48,7 @@ public class PickDateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pick_date);
         ButterKnife.bind(this);
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("Bundle");
+        Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         previousActtivity = bundle.getString(Constants.ACTIVITY_NAME);
 //        Constants.dateList = (List<Date>) bundle.getSerializable("listDate");
         Date today = new Date();
@@ -98,7 +98,6 @@ public class PickDateActivity extends AppCompatActivity {
         Log.d("btnSaveClicked", "btnSaveClicked: "+previousActtivity);
         if (previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)) {
             Intent intent = new Intent();
-//            intent.putExtra("listDate1", (Serializable) dateList);
             setResult(RESULT_OK,intent);
             finish();
         }

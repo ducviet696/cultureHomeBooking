@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.ChangeNumberOfGuestActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.PickDateActivity" />
         <activity android:name=".activity.CancelPolicyActivity" />
         <activity android:name=".activity.RoomRateActivity" />

@@ -18,5 +18,6 @@ public class Constants {
     public static final String BOOKING_INS = "ins";
     public static final int REQUEST_CODE = 9696;
     public static final String BUNDLE = "BUNDLE";
+    public static final int RESULT_CODE_CHANGE_GUEST = 22 ;
     public static List<Date> dateList = new ArrayList<>();
 }
