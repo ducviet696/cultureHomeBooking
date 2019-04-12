@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,7 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Api;
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.adapter.HorizontalListHomeAdapter;
+import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.models.Amenity;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.HomestayImage;
@@ -77,12 +82,16 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     TextView txtTotalAmen;
     @BindView(R.id.tvCancelType)
     TextView txtCancelType;
+    @BindView(R.id.rvSimilarListing)
+    RecyclerView rvSimilarListing;
     public static List<HomestayImage> listHomeImg = new ArrayList<>();
     public ArrayList<String> listUrlImg = new ArrayList<>();
     public ArrayList<String> listAmen = new ArrayList<>();
     public List<Amenity> listAmenity = new ArrayList<>();
+    public List<HomeStay> homestays = new ArrayList<>();
     String homestayID;
     String cancelType, standartGuest, maximunGuest, priceNightly, priceWeekend, priceLongTerm;
+    private HorizontalListHomeAdapter horAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +103,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
         loadJson(homestayID);
+        loadJsonSimilarList();
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -174,6 +184,30 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         });
     }
 
+    public void loadJsonSimilarList(){
+        IApi iApi = ApiClient.getApiClient().create(IApi.class);
+        Call<List<HomeStay>> call = iApi.getWishList(Constants.USER_ID, "en");
+        call.enqueue(new Callback<List<HomeStay>>() {
+            @Override
+            public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
+                if(response.isSuccessful() && response.body()!=null ) {
+                    homestays = response.body();
+                    horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homestays);
+                    rvSimilarListing.setLayoutManager(new LinearLayoutManager(ViewHomeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                    rvSimilarListing.setAdapter(horAdapter);
+                    horAdapter.notifyDataSetChanged();
+                    initListener();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<HomeStay>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -224,6 +258,23 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
         }
+    }
+
+
+    //event when click homestay
+    private void initListener() {
+
+        horAdapter.setOnItemClickListener(new HorizontalListHomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(ViewHomeDetailActivity.this, ViewHomeDetailActivity.class);
+                HomeStay homeStay = homestays.get(position);
+                intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
+                startActivity(intent);
+
+            }
+        });
+
     }
 
 
