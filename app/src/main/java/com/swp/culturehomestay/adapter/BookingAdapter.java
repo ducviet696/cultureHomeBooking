@@ -9,8 +9,10 @@ import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.OrderBookingModel;
+import com.swp.culturehomestay.models.ReservationModel;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHolder> {
@@ -27,21 +29,26 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         ViewHolder viewHolder = new ViewHolder(itemBooingView);
         return viewHolder;
     }
- 
+
     @Override
     public void onBindViewHolder(BookingAdapter.ViewHolder viewHolder, int position) {
-        OrderBookingModel order = mOrders.get(position);
+        ReservationModel order = mOrders.get(position);
         SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
         TextView homestayName = viewHolder.homestayName;
         TextView totalPayment = viewHolder.totalPayment;
         TextView roomname = viewHolder.roomname;
         TextView dateCheckIn = viewHolder.dateCheckIn;
         TextView dateCheckOut = viewHolder.dateCheckOut;
-        homestayName.setText(order.getHomestayName());
-        totalPayment.setText(order.getTotalPayment().toString()+"$");
-        roomname.setText(order.getRoomName());
-        dateCheckIn.setText(sf.format(order.getDateCheckIn()));
-        dateCheckOut.setText(sf.format(order.getDateCheckOut()));
+        homestayName.setText(order.getHomestayId());
+        totalPayment.setText(order.getPaymentWant().getCurrency());
+        if(order.getNumRoom()!= null){
+            roomname.setText(order.getNumRoom().toString());
+        }else{
+            roomname.setText("");
+        }
+        dateCheckIn.setText(sf.format(new Date(order.getDStart())));
+        dateCheckOut.setText(sf.format(new Date(order.getDEnd())));
+
     }
 
     @Override
@@ -66,11 +73,10 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
             dateCheckOut = (TextView) itemView.findViewById(R.id.date_checkout);
         }
     }
-    private List<OrderBookingModel> mOrders;
+    private List<ReservationModel> mOrders;
 
     // Pass in the contact array into the constructor
-    public BookingAdapter(List<OrderBookingModel> orders) {
+    public BookingAdapter(List<ReservationModel> orders) {
         mOrders= orders;
     }
-
 }
