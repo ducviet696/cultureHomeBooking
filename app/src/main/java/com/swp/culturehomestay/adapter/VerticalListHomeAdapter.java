@@ -51,6 +51,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         return new MyViewHolder(view,onItemClickListener);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
@@ -62,6 +63,13 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         holder.txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
         holder.txtPrice.setText(Utils.formatPrice(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "delete home "+ position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -80,6 +88,8 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
 
         @BindView(R.id.ivHome)
         ImageView ivHome;
+        @BindView(R.id.btnDelete)
+        ImageView btnDelete;
         @BindView(R.id.tvTypeHome)
         TextView txtType;
         @BindView(R.id.tvNameHome)

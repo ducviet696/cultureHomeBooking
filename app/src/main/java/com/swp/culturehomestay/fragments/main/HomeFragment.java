@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
-import com.swp.culturehomestay.activity.TestSendDataFromHomeFragment;
 
 import java.util.Calendar;
 
@@ -50,7 +49,6 @@ public class HomeFragment extends Fragment {
         textAmount = (TextView) view.findViewById(R.id.textAmount);
         btnSearch = (Button) view.findViewById(R.id.btnSearch);
 
-        btnSearch.setOnClickListener(searchBtnClick);
         iconAmount.setOnClickListener(amountClick);
         textAmount.setOnClickListener(amountClick);
         iconSearch.setOnClickListener(searchClick);
@@ -150,19 +148,5 @@ public class HomeFragment extends Fragment {
             dialog.show();
         }
     };
-
-    View.OnClickListener searchBtnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            openTestSendDataFromHomeFragmentActivity();
-        }
-    };
-
-    public void openTestSendDataFromHomeFragmentActivity() {
-        
-
-        Intent intent = new Intent(getActivity(), TestSendDataFromHomeFragment.class);
-        startActivity(intent);
-    }
 }
 

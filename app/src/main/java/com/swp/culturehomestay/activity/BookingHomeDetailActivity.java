@@ -44,7 +44,11 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     @BindView(R.id.ivHomeProfile)
     ImageView ivHome;
     @BindView(R.id.tvDateBooking)
-    TextView tvDateBooking;
+    TextView txtDateBooking;
+    @BindView(R.id.tvTotalGuest)
+    TextView txtTotalGuest;
+    int minGuest, maxGuest;
+
     int guest = 1;
 
 //    List<Date> dateList;
@@ -54,7 +58,10 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==Constants.REQUEST_CODE) {
             if(resultCode==RESULT_OK){
-                tvDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
+                txtDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
+            } else if(resultCode ==Constants.RESULT_CODE_CHANGE_GUEST) {
+                guest = data.getIntExtra("totalGuest",minGuest);
+                txtTotalGuest.setText(String.valueOf(guest));
             }
         }
     }
@@ -73,7 +80,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("Bundle");
 //        dateList = (List<Date>) bundle.getSerializable("listDate");
         String homeStayId = bundle.getString(Constants.HOMESTAY_ID);
-        tvDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
+        txtDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
 
         loadJson(homeStayId);
 
@@ -89,6 +96,13 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btnTotalGuest:
+                Intent intentGuest = new Intent(BookingHomeDetailActivity.this, ChangeNumberOfGuestActivity.class);
+                Bundle bundleGuest = new Bundle();
+                bundleGuest.putInt("Min",minGuest);
+                bundleGuest.putInt("Max",maxGuest);
+                bundleGuest.putInt("Guest",guest);
+                intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
+                startActivityForResult(intentGuest,Constants.REQUEST_CODE);
                 break;
             case R.id.btnTotalPrice:
                 Intent intent = new Intent(BookingHomeDetailActivity.this, ShowAlbumPhotoActivity.class);
@@ -97,10 +111,8 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
             case R.id.btnDateBooking:
                 Intent intentDate = new Intent(BookingHomeDetailActivity.this, PickDateActivity.class);
                 Bundle bundle = new Bundle();
-//                bundle.putSerializable("listDate", (Serializable) dateList);
-//                Toast.makeText(BookingHomeDetailActivity.this, String.valueOf(dateList.size()), Toast.LENGTH_SHORT).show();
                 bundle.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
-                intentDate.putExtra("Bundle", bundle);
+                intentDate.putExtra(Constants.BUNDLE, bundle);
                 startActivityForResult(intentDate, Constants.REQUEST_CODE);
                 break;
             case R.id.btnNext:
@@ -124,7 +136,10 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     txtHomeName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
                     txtCodelist.setText(homestaysID);
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
-
+                    minGuest = homeStay.getStandartGuest();
+                    maxGuest = homeStay.getMaximunGuest();
+                    guest = minGuest;
+                    txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
                 }
             }
 

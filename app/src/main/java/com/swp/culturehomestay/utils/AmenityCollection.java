@@ -26,7 +26,7 @@ public class AmenityCollection {
         allAmen.put("Elevator",R.drawable.ic_elevator);
         allAmen.put("Cenimatograph",R.drawable.ic_elevator);
         allAmen.put("Massage chair",R.drawable.ic_elevator);
-        allAmen.put("Smart television",R.drawable.ic_smart_television);
+        allAmen.put("TV",R.drawable.ic_smart_television);
         allAmen.put("Wine Cabinets",R.drawable.ic_wine_cabinets);
         allAmen.put("Oven",R.drawable.ic_oven);
         allAmen.put("No smoking",R.drawable.ic_no_smoking);

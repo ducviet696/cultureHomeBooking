@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="180dp"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="10dp"
     android:id="@+id/home_layout">
@@ -21,14 +21,13 @@
                 android:src="@drawable/homestay"
                 android:scaleType="fitXY"
                 android:layout_width="match_parent"
-                android:layout_height="240dp" />
+                android:layout_height="100dp" />
             <ImageView
-                android:clickable="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
                 android:id="@+id/btnDelete"
                 android:layout_gravity="right"
-                android:src="@drawable/ic_wishlist_active"
+                android:src="@drawable/ic_wishlist"
                 android:layout_width="24dp"
                 android:layout_height="24dp" />
 
@@ -40,26 +39,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <TextView
-                android:text="Villa"
-                android:textColor="@color/colorBlack"
-                android:id="@+id/tvTypeHome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text=" - 5 Bed Rooms"
-                android:layout_toRightOf="@id/tvTypeHome"
-                android:textColor="@color/colorBlack"
-                android:id="@+id/BedRoomNum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
                 android:drawableLeft="@drawable/ic_home"
                 android:drawablePadding="@dimen/default_padding"
                 android:text="La Villa Angelina"
                 android:textColor="@color/colorBlack"
                 android:textStyle="bold"
                 android:layout_below="@id/tvTypeHome"
-                android:textSize="20sp"
                 android:id="@+id/tvNameHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

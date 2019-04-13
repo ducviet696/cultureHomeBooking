@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.PickDateActivity"></activity>
+        <activity android:name=".activity.ChangeNumberOfGuestActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.PickDateActivity" />
         <activity android:name=".activity.CancelPolicyActivity" />
         <activity android:name=".activity.RoomRateActivity" />
         <activity android:name=".activity.ShowAmenityActivity" />
@@ -19,7 +21,6 @@
         <activity android:name=".activity.ShowAlbumPhotoActivity" />
         <activity android:name=".activity.BookingHomeConfirmActivity" />
         <activity android:name=".activity.SettingActivity" />
-        <activity android:name=".activity.TestSendDataFromHomeFragment" />
         <activity android:name=".activity.BookingHomeDetailActivity" />
         <activity android:name=".activity.BookingHomePickDateActivity" /> <!-- metadata Facebook -->
         <activity android:name=".activity.CustomerProfileActivity" /> <!-- metadata Facebook -->
@@ -39,7 +40,7 @@
         </activity>
         <activity android:name=".activity.ViewHomeDetailActivity" />
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".activity.SplashScreenActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
