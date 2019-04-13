@@ -19,6 +19,8 @@ import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -47,8 +49,13 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     TextView txtDateBooking;
     @BindView(R.id.tvTotalGuest)
     TextView txtTotalGuest;
+    @BindView(R.id.tvTotalPrice)
+    TextView txtTotalPrice;
     int minGuest, maxGuest;
-
+    int priceNightly, priceWeekend, priceLongTerm, totalPrice, totalPricePerNight, totalPricePerWeekly;
+    List<Date> weeklyListBooking = new ArrayList<>();
+    List<Date> dayListBooking = new ArrayList<>();
+    String homeStayId;
     int guest = 1;
 
 //    List<Date> dateList;
@@ -59,6 +66,10 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         if(requestCode==Constants.REQUEST_CODE) {
             if(resultCode==RESULT_OK){
                 txtDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
+                weeklyListBooking.clear();
+                dayListBooking.clear();
+                countDayWeekly();
+                loadJson(homeStayId);
             } else if(resultCode ==Constants.RESULT_CODE_CHANGE_GUEST) {
                 guest = data.getIntExtra("totalGuest",minGuest);
                 txtTotalGuest.setText(String.valueOf(guest));
@@ -78,10 +89,9 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Bundle");
-//        dateList = (List<Date>) bundle.getSerializable("listDate");
-        String homeStayId = bundle.getString(Constants.HOMESTAY_ID);
+        homeStayId = bundle.getString(Constants.HOMESTAY_ID);
         txtDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
-
+        countDayWeekly();
         loadJson(homeStayId);
 
     }
@@ -105,8 +115,16 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                 startActivityForResult(intentGuest,Constants.REQUEST_CODE);
                 break;
             case R.id.btnTotalPrice:
-                Intent intent = new Intent(BookingHomeDetailActivity.this, ShowAlbumPhotoActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(BookingHomeDetailActivity.this, ShowPriceDetailActivity.class);
+                Bundle bundlePrice = new Bundle();
+                bundlePrice.putInt("priceNightly", priceNightly);
+                bundlePrice.putInt("priceWeekend", priceWeekend);
+                bundlePrice.putInt("priceLongTerm", priceLongTerm);
+                bundlePrice.putInt("numDayNormal", dayListBooking.size());
+                bundlePrice.putInt("numDayWeekly", weeklyListBooking.size());
+                bundlePrice.putInt("totalPrice", totalPrice);
+                intent.putExtra(Constants.BUNDLE, bundlePrice);
+                startActivityForResult(intent, Constants.REQUEST_CODE);
                 break;
             case R.id.btnDateBooking:
                 Intent intentDate = new Intent(BookingHomeDetailActivity.this, PickDateActivity.class);
@@ -138,8 +156,14 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
                     minGuest = homeStay.getStandartGuest();
                     maxGuest = homeStay.getMaximunGuest();
+                    priceNightly = homeStay.getPriceNightly();
+                    priceWeekend = homeStay.getPriceWeekend();
+                    priceLongTerm = homeStay.getPriceLongTerm();
                     guest = minGuest;
                     txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
+                    totalPrice = getTotalPrice();
+                    txtTotalPrice.setText(Utils.formatPrice(totalPrice));
+
                 }
             }
 
@@ -149,6 +173,24 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void  countDayWeekly(){
+        String[] weekly = {"Fri","Sat","Sun"};
+        ArrayList<String> listWeekly = new ArrayList<String>(Arrays.asList(weekly));
+        for(Date date : Constants.dateList) {
+            if(listWeekly.contains(Utils.formatDayOfWeek(date))){
+                weeklyListBooking.add(date);
+            } else {
+                dayListBooking.add(date);
+            }
+        }
+    }
+
+    public int getTotalPrice(){
+        totalPricePerNight = dayListBooking.size() * priceNightly;
+        totalPricePerWeekly = weeklyListBooking.size() * priceWeekend;
+        return totalPricePerNight + totalPricePerWeekly;
     }
 
 }
