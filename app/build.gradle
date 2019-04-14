@@ -64,6 +64,10 @@ dependencies {
     //Times Formater
     implementation 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 
+    // splash screen
     implementation 'gr.pantrif:easy-android-splash-screen:0.0.1'
+
+    // dialog loading
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
 }

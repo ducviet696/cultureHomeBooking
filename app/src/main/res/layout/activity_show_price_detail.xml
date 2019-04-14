@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="@dimen/default_margin"
-    tools:context=".activity.RoomRateActivity">
+    tools:context=".activity.ShowPriceDetailActivity">
     <TextView
         android:id="@+id/tvClose"
         android:layout_width="match_parent"
@@ -19,11 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/default_margin"
-        android:text="@string/room_rates"
+        android:text="Pricing Detail"
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/large_text"
         android:textStyle="bold" />
     <RelativeLayout
+        android:id="@+id/layoutNormalDay"
         android:layout_marginTop="@dimen/large_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,7 +35,8 @@
             android:layout_height="wrap_content"/>
         <TextView
             android:text="Everyday"
-            android:layout_below="@id/tvPricePerNight"
+            android:id="@+id/tvCalPriceDay"
+            android:layout_below="@id/tvTotalPricePerNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -42,12 +44,13 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
             android:text="$13"
-            android:id="@+id/tvPricePerNight"
+            android:id="@+id/tvTotalPricePerNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/layoutWeekly"
         android:layout_marginTop="@dimen/large_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -57,8 +60,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
+            android:id="@+id/tvCalWeekly"
             android:text="Holiday price may be applied"
-            android:layout_below="@id/tvPricePerWeekly"
+            android:layout_below="@id/tvTotalPricePerWeekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
@@ -66,17 +70,22 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
             android:text="$13"
-            android:id="@+id/tvPricePerWeekly"
+            android:id="@+id/tvTotalPricePerWeekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
     <RelativeLayout
         android:layout_marginTop="@dimen/large_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="Min stay"
+            android:text="Total"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -85,29 +94,11 @@
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
             android:text="6"
-            android:id="@+id/tvMinGuest"
+            android:id="@+id/tvTotalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_marginTop="@dimen/large_margin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:text="Max stay"
-            android:textColor="@color/colorBlack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:gravity="center_horizontal"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/colorBlack"
-            android:text="9"
-            android:id="@+id/tvMaxGuest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
 
 
 </LinearLayout>

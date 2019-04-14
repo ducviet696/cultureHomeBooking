@@ -22,6 +22,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.services.ApiClient;
+import com.swp.culturehomestay.services.IApi;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -105,8 +107,13 @@ public class Utils {
         return DATE_FORMAT.format(date);
     }
 
+    public static String formatDayOfWeek(Date date) {
+        DateFormat DATE_FORMAT = new SimpleDateFormat("E");
+        return DATE_FORMAT.format(date);
+    }
+
     public static String formatPrice(Integer price) {
-        NumberFormat PRICE_FORMAT = new DecimalFormat("###,###.## $");
+        NumberFormat PRICE_FORMAT = new DecimalFormat("$###,###.##");
         return PRICE_FORMAT.format(price);
     }
     public static boolean isNullOrEmpty(String s) {
@@ -126,5 +133,10 @@ public class Utils {
                 .apply(requestOptions)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageView);
+    }
+
+    //get API
+    public static IApi getAPI() {
+        return ApiClient.getApiClient().create(IApi.class);
     }
 }

@@ -1,6 +1,8 @@
 package com.swp.culturehomestay.fragments.main;
 
 
+
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,12 +28,14 @@ import android.widget.Toast;
 
 import com.swp.culturehomestay.Interface.ILoadMore;
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.activity.LoginActivity;
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
+import com.swp.culturehomestay.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,6 +46,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -71,9 +76,8 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.topheadelines)
     TextView topHeadline;
-
-
-
+    IApi mService;
+    boolean isLogin =true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,13 +85,19 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
         ButterKnife.bind(this,view);
+        mService = Utils.getAPI();
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
-        onLoadingSwipeRefresh();
+        if(isLogin){
+            onLoadingSwipeRefresh();
+        } else {
+            showMessageNotLogin(R.drawable.sad,"Please login to see your wishlish","");
+        }
+
         return view;
 
     }
@@ -95,25 +105,35 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     private void loadJson() {
         errorLayout.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
+//        AlertDialog alertDialog = new SpotsDialog.Builder()
+//                .setContext(getContext())
+//                .setCancelable(true)
+//                .setTheme(R.style.Custom)
+//                .build();
+//        alertDialog.show();
 
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<List<HomeStay>> call = iApi.getWishList(Constants.USER_ID, "en");
+        Call<List<HomeStay>> call = mService.getWishList(Constants.USER_ID, "en");
         call.enqueue(new Callback<List<HomeStay>>() {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    if ((!homestays.isEmpty())) {
-                        homestays.clear();
-                    }
-                    swipeRefreshLayout.setVisibility(View.VISIBLE);
                     homestays = response.body();
-                    adapter = new VerticalListHomeAdapter(homestays, getContext());
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
-                    initListener();
-                    topHeadline.setVisibility(View.VISIBLE);
-                    swipeRefreshLayout.setRefreshing(false);
+//                    homestays.clear();
+                    if ((!homestays.isEmpty())) {
+                        swipeRefreshLayout.setVisibility(View.VISIBLE);
+
+                        adapter = new VerticalListHomeAdapter(homestays, getContext());
+                        recyclerView.setAdapter(adapter);
+                        adapter.notifyDataSetChanged();
+                        initListener();
+                        topHeadline.setVisibility(View.VISIBLE);
+                        swipeRefreshLayout.setRefreshing(false);
+                    } else {
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        showMessageEmpty(R.drawable.empty_cart,"Wishlist is empty", "Plase back home to choose your homestay!");
+                    }
+
                 } else {
                     swipeRefreshLayout.setVisibility(View.GONE);
                     topHeadline.setVisibility(View.INVISIBLE);
@@ -204,6 +224,40 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
             @Override
             public void onClick(View v) {
                 onLoadingSwipeRefresh();
+            }
+        });
+
+    }
+
+    private void showMessageEmpty(int imageView, String title, String message) {
+
+        if (errorLayout.getVisibility() == View.GONE) {
+            errorLayout.setVisibility(View.VISIBLE);
+        }
+
+        errorImage.setImageResource(imageView);
+        errorTitle.setText(title);
+        errorMessage.setText(message);
+        btnRetry.setVisibility(View.GONE);
+
+    }
+
+    private void showMessageNotLogin(int imageView, String title, String message) {
+
+        if (errorLayout.getVisibility() == View.GONE) {
+            errorLayout.setVisibility(View.VISIBLE);
+        }
+
+        errorImage.setImageResource(imageView);
+        errorTitle.setText(title);
+        errorMessage.setText(message);
+        btnRetry.setText("Login/SignUp");
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 

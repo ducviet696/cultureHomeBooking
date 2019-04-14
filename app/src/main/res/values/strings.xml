@@ -57,4 +57,6 @@ for best support.</string>
     <string name="cancel_mod">50% of total cost will be refunded if guests cancel 7 days prior to the check-in day.</string>
     <string name="flexible_type">Flexible</string>
     <string name="moderate_type">Moderate</string>
+    <string name="normal_day">Monday - Thursday</string>
+    <string name="day_of_week">Firday - Sunday</string>
 </resources>
