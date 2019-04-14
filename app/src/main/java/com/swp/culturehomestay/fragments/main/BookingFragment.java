@@ -52,7 +52,7 @@ public class BookingFragment extends Fragment {
         OrderBookingModel obm = new OrderBookingModel();
         List<OrderBookingModel> orders = obm.createOrderRandom(5);
         reservationList = new ArrayList<>();
-        rv = view.findViewById(R.id.my_recycler_view);
+        rv = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         rv.setLayoutManager( new LinearLayoutManager(getActivity()));
         loadData();
         return view;

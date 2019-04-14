@@ -1,7 +1,9 @@
 package com.swp.culturehomestay.fragments.main;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -27,6 +29,7 @@ import com.swp.culturehomestay.activity.CustomerProfileActivity;
 import com.swp.culturehomestay.activity.LoginActivity;
 import com.swp.culturehomestay.activity.SettingActivity;
 import com.swp.culturehomestay.models.UserDetailModel;
+import com.swp.culturehomestay.utils.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +58,7 @@ public class AccountFragment extends Fragment {
     TextView userName;
     RelativeLayout btnCusProfile;
     RelativeLayout btnSetting;
+    SharedPreferences sharedpreferences;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,12 +66,13 @@ public class AccountFragment extends Fragment {
         // Inflate the layout for this fragment
         accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+        sharedpreferences = this.getActivity().getSharedPreferences(Constants.MyPREFERENCES, Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_account, container, false);
         viewNoLoginAccount = (LinearLayout)view.findViewById(R.id.noLogin_Account);
         viewLoginAccount = (LinearLayout) view.findViewById(R.id.login_Account);
         proImage = (ImageView) view.findViewById(R.id.profileImage);
         new LoadImage().execute("https://cdn3.iconfinder.com/data/icons/avatars-15/64/-26-512.png");
-        if(isLoggedIn){
+        if(checkLogin()){
             viewNoLoginAccount.setVisibility(View.GONE);
             userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
             userName = (TextView) view.findViewById(R.id.lbl_userName);
@@ -152,6 +157,14 @@ public class AccountFragment extends Fragment {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             proImage.setImageBitmap(bitmap);
+        }
+    }
+
+    private boolean checkLogin(){
+        if(sharedpreferences.getString("userId", "")==null|| sharedpreferences.getString("userId", "").isEmpty()){
+            return false;
+        }else{
+            return true;
         }
     }
 }

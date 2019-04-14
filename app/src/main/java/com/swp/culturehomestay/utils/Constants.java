@@ -20,4 +20,5 @@ public class Constants {
     public static final String BUNDLE = "BUNDLE";
     public static final int RESULT_CODE_CHANGE_GUEST = 22 ;
     public static List<Date> dateList = new ArrayList<>();
+    public static final String MyPREFERENCES = "MyPrefs";
 }
