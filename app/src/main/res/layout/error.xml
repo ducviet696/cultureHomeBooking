@@ -5,7 +5,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:id="@+id/errorLayout"
-    android:visibility="visible">
+    android:visibility="invisible">
 
     <ImageView
         android:id="@+id/errorImage"

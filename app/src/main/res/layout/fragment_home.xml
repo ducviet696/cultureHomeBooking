@@ -1,103 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/homestay"
-    tools:context=".fragments.main.HomeFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <ScrollView
-        android:id="@+id/View"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.main.HomeFragment"
+    android:nestedScrollingEnabled="true">
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
-            android:layout_width="340dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="430dp">
+     <ImageView
+         android:id="@+id/imgBackground"
+         android:scaleType="fitXY"
+         android:src="@drawable/head_background"
+         android:clickable="false"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.CardView
+        android:layout_alignParentBottom="true"
+    android:padding="@dimen/default_padding"
+    android:layout_margin="@dimen/large_margin"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_marginTop="@dimen/large_margin"
+            android:id="@+id/tvSearch"
+            android:drawablePadding="@dimen/default_padding"
+            android:hint="@string/location_or_homestay_name"
+            android:drawableLeft="@drawable/ic_marker_white"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="100dp"
-            android:background="@drawable/layoutcommon"
-            android:orientation="vertical">
+            android:padding="@dimen/default_padding"/>
+        <View
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/iconSearch"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:background="@drawable/ic_search_black_24dp" />
-
-                <EditText
-                    android:id="@+id/TextSearch"
-                    android:layout_width="310dp"
-                    android:layout_height="50dp"
-                    android:focusable="false"
-                    android:gravity="left|center"
-                    android:hint="@string/name_search"
-
-                    android:textColorLink="@color/colorSliderInactive" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/txtCheckInDate"
-                    android:layout_width="155dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/textview"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/check_in_date" />
-
-                <TextView
-                    android:id="@+id/txtCheckOutDate"
-                    android:layout_width="155dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/textview"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/check_out_date" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-
-                android:background="@drawable/textview">
-
-                <TextView
-                    android:id="@+id/iconAmount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="@drawable/person" />
-
-                <TextView
-                    android:id="@+id/textAmount"
-                    android:layout_width="310dp"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/amount_of_people" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/layoutsearch">
-
-                <Button
-                    android:id="@+id/btnSearch"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/button_search" />
-            </LinearLayout>
+            android:paddingVertical="5dp"
+            android:layout_below="@+id/tvSearch"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray" />
+        <LinearLayout
+            android:id="@+id/layoutCheckin"
+            android:layout_below="@+id/tvSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/default_padding"
+            android:weightSum="2">
+            <TextView
+                android:id="@id/tvCheckin"
+                android:gravity="left"
+                android:layout_weight="1"
+                android:text="@string/check_in"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@id/tvCheckout"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="@string/check_out"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+        <View
+            android:paddingVertical="5dp"
+            android:layout_below="@+id/layoutCheckin"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray" />
+        <TextView
+            android:gravity="bottom"
+            android:textColor="@color/colorBlack"
+            android:padding="@dimen/default_padding"
+            android:drawablePadding="@dimen/default_padding"
+            android:drawableLeft="@drawable/ic_group_people"
+            android:id="@+id/tvTotalGuest"
+            android:layout_below="@+id/layoutCheckin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1 Guest"/>
+        <View
+            android:id="@+id/line"
+            android:paddingVertical="5dp"
+            android:layout_below="@+id/tvTotalGuest"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray" />
+        <Button
+            android:layout_below="@+id/line"
+            android:id="@+id/btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginVertical="@dimen/default_margin"
+            android:background="@color/colorPrimaryButtonActive"
+            android:text="@string/search"
+            android:textColor="@color/colorWhite" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
+ </RelativeLayout>
+
+    <!--Show list-->
+
+    <!--Similar Listing-->
+    <TextView
+        android:padding="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Most Culture Listing"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+    <android.support.v7.widget.RecyclerView
+        android:padding="@dimen/default_padding"
+        android:nestedScrollingEnabled="false"
+        android:id="@+id/rvMostCulture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
 
 
-    </ScrollView>
-</FrameLayout>
+    <TextView
+        android:padding="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Homestay For Rick - Men"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+    <android.support.v7.widget.RecyclerView
+        android:padding="@dimen/default_padding"
+        android:nestedScrollingEnabled="false"
+        android:id="@+id/rvForRick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</LinearLayout>

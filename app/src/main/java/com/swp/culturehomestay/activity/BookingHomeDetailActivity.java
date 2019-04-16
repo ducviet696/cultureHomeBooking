@@ -111,6 +111,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                 bundleGuest.putInt("Min",minGuest);
                 bundleGuest.putInt("Max",maxGuest);
                 bundleGuest.putInt("Guest",guest);
+                bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
                 intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
                 startActivityForResult(intentGuest,Constants.REQUEST_CODE);
                 break;
@@ -152,7 +153,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     HomeStay homeStay = response.body();
                     Utils.loadImge(BookingHomeDetailActivity.this, ivHome, Constants.BASE_URLIMG+homeStay.getImageProfileUrl());
                     txtHomeName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
-                    txtCodelist.setText(homestaysID);
+                    txtCodelist.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
                     minGuest = homeStay.getStandartGuest();
                     maxGuest = homeStay.getMaximunGuest();

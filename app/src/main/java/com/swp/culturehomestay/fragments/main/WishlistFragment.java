@@ -32,11 +32,15 @@ import com.swp.culturehomestay.activity.LoginActivity;
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
+import com.swp.culturehomestay.services.WishlistService;
+import com.swp.culturehomestay.services.WishlistView;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,6 +50,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import dmax.dialog.SpotsDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,10 +59,11 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.OnRefreshListener{
+public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.OnRefreshListener, WishlistView {
 
 
     private List<HomeStay> homestays = new ArrayList<>();
+    private List<Wishlist> wishLists;
     @BindView(R.id.rvWish)
     RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
@@ -78,6 +84,7 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     TextView topHeadline;
     IApi mService;
     boolean isLogin =true;
+    WishlistService wishlistService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +93,7 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
         ButterKnife.bind(this,view);
         mService = Utils.getAPI();
+        wishlistService = new WishlistService(this);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         layoutManager = new LinearLayoutManager(getContext());
@@ -102,35 +110,29 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
 
     }
 
-    private void loadJson() {
-        errorLayout.setVisibility(View.GONE);
-        swipeRefreshLayout.setRefreshing(true);
-//        AlertDialog alertDialog = new SpotsDialog.Builder()
-//                .setContext(getContext())
-//                .setCancelable(true)
-//                .setTheme(R.style.Custom)
-//                .build();
-//        alertDialog.show();
+    private void displayWishList() {
 
-        Call<List<HomeStay>> call = mService.getWishList(Constants.USER_ID, "en");
-        call.enqueue(new Callback<List<HomeStay>>() {
+        swipeRefreshLayout.setRefreshing(true);
+        Call<List<Wishlist>> call = mService.getWishList(Constants.USER_ID, "en");
+        call.enqueue(new Callback<List<Wishlist>>() {
             @Override
-            public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
+            public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
                 if (response.isSuccessful() && response.body() != null) {
 
-                    homestays = response.body();
-//                    homestays.clear();
-                    if ((!homestays.isEmpty())) {
+                    wishLists = response.body();
+//                    wishLists.clear();
+                    if ((!wishLists.isEmpty())) {
                         swipeRefreshLayout.setVisibility(View.VISIBLE);
 
-                        adapter = new VerticalListHomeAdapter(homestays, getContext());
+                        adapter = new VerticalListHomeAdapter(wishLists, getContext());
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-                        initListener();
+//                        initListener();
                         topHeadline.setVisibility(View.VISIBLE);
                         swipeRefreshLayout.setRefreshing(false);
                     } else {
-                        swipeRefreshLayout.setVisibility(View.GONE);
+//                        swipeRefreshLayout.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
                         showMessageEmpty(R.drawable.empty_cart,"Wishlist is empty", "Plase back home to choose your homestay!");
                     }
 
@@ -161,7 +163,7 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
             }
 
             @Override
-            public void onFailure(Call<List<HomeStay>> call, Throwable t) {
+            public void onFailure(Call<List<Wishlist>> call, Throwable t) {
                 swipeRefreshLayout.setVisibility(View.GONE);
                 topHeadline.setVisibility(View.INVISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
@@ -175,13 +177,13 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     }
 
     //event when click homestay
-    private void initListener() {
+    private void initListener(List<Wishlist> wishLists) {
 
         adapter.setOnItemClickListener(new VerticalListHomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getContext(), ViewHomeDetailActivity.class);
-                HomeStay homeStay = homestays.get(position);
+                HomeStay homeStay = wishLists.get(position).getHomestay();
                 intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
                 startActivity(intent);
             }
@@ -194,23 +196,23 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        loadJson();
+        wishlistService.displayWishList();
     }
 
-    private void onLoadingSwipeRefresh() {
+    public void onLoadingSwipeRefresh() {
 
         swipeRefreshLayout.post(
                 new Runnable() {
                     @Override
                     public void run() {
-                        loadJson();
+                        wishlistService.displayWishList();
                     }
                 }
         );
 
     }
 
-    private void showErrorMessage(int imageView, String title, String message) {
+    public void showErrorMessage(int imageView, String title, String message) {
 
         if (errorLayout.getVisibility() == View.GONE) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -229,7 +231,7 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
 
     }
 
-    private void showMessageEmpty(int imageView, String title, String message) {
+    public void showMessageEmpty(int imageView, String title, String message) {
 
         if (errorLayout.getVisibility() == View.GONE) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -242,7 +244,7 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
 
     }
 
-    private void showMessageNotLogin(int imageView, String title, String message) {
+    public void showMessageNotLogin(int imageView, String title, String message) {
 
         if (errorLayout.getVisibility() == View.GONE) {
             errorLayout.setVisibility(View.VISIBLE);
@@ -264,4 +266,70 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
     }
 
 
+    @Override
+    public void showLoading() {
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onLoadWishlistSucces(List<Wishlist> wishLists) {
+        if ((!wishLists.isEmpty())) {
+//            swipeRefreshLayout.setVisibility(View.VISIBLE);
+            showSwipeLayout();
+            adapter = new VerticalListHomeAdapter(wishLists, getContext());
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            initListener(wishLists);
+//            topHeadline.setVisibility(View.VISIBLE);
+//            swipeRefreshLayout.setRefreshing(false);
+        } else {
+//                        swipeRefreshLayout.setVisibility(View.GONE);
+//            swipeRefreshLayout.setRefreshing(false);
+            showErrorLayout();
+            showMessageEmpty(R.drawable.empty_cart,"Wishlist is empty", "Plase back home to choose your homestay!");
+        }
+
+    }
+
+    @Override
+    public void onLoadWishlistError(String mess) {
+        hideLoading();
+        showErrorLayout();
+        showErrorMessage(
+                R.drawable.oops,
+                "Oops..",
+                "Network failure, Please Try Again\n" +
+                        mess);
+    }
+
+    @Override
+    public void showSwipeLayout() {
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+        topHeadline.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.GONE);
+
+    }
+
+
+    @Override
+    public void showErrorLayout() {
+        swipeRefreshLayout.setVisibility(View.GONE);
+        topHeadline.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick({R.id.errorLayout})
+    public void onLoadListAgain(){
+        onLoadingSwipeRefresh();
+    }
+
+    @Override
+    public void refreshWishlist() {
+        onRefresh();
+    }
 }

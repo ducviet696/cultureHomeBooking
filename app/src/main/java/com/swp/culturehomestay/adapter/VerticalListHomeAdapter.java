@@ -24,6 +24,8 @@ import com.swp.culturehomestay.R;
 
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.Wishlist;
+import com.swp.culturehomestay.services.WishlistService;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -35,12 +37,12 @@ import butterknife.ButterKnife;
 
 public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListHomeAdapter.MyViewHolder> {
 
-    private List<HomeStay> homeStays;
+    private List<Wishlist> wishlists;
     private Context context;
     private OnItemClickListener onItemClickListener;
 
-    public VerticalListHomeAdapter(List<HomeStay> homeStays, Context context) {
-        this.homeStays = homeStays;
+    public VerticalListHomeAdapter(List<Wishlist> wishlists, Context context) {
+        this.wishlists = wishlists;
         this.context = context;
     }
 
@@ -55,7 +57,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
-        HomeStay homeStay = homeStays.get(position);
+        HomeStay homeStay = wishlists.get(position).getHomestay();
         String imgeUrl = Constants.BASE_URLIMG +homeStay.getImageProfileUrl();
         Utils.loadImge(context,holder.ivHome,imgeUrl);
         holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
@@ -66,7 +68,9 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "delete home "+ position, Toast.LENGTH_SHORT).show();
+                new WishlistService().deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
+                notifyItemRemoved(position);
+                wishlists.remove(position);
             }
         });
 
@@ -74,7 +78,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
 
     @Override
     public int getItemCount() {
-        return homeStays.size();
+        return wishlists.size();
     }
 
     public interface OnItemClickListener {
@@ -109,10 +113,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
-
         }
-
-
 
         @Override
         public void onClick(View v) {

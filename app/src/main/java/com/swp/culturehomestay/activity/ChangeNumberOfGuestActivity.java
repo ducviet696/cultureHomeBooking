@@ -24,6 +24,7 @@ public class ChangeNumberOfGuestActivity extends AppCompatActivity {
     ImageView btnAdd;
     int minGuest, maxGuest;
     int guest;
+    String previousActtivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class ChangeNumberOfGuestActivity extends AppCompatActivity {
         maxGuest = bundle.getInt("Max");
         guest = bundle.getInt("Guest");
         txtGuestNum.setText(String.valueOf(guest));
+        previousActtivity = bundle.getString(Constants.ACTIVITY_NAME);
         setVisiableButton();
     }
     public void setVisiableButton(){
@@ -64,11 +66,19 @@ public class ChangeNumberOfGuestActivity extends AppCompatActivity {
                 txtGuestNum.setText(String.valueOf(guest));
                 break;
             case R.id.btnSave:
+                if (previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)) {
                 Intent intent = new Intent();
                 intent.putExtra("totalGuest",guest);
                 setResult(Constants.RESULT_CODE_CHANGE_GUEST,intent);
                 finish();
-                break;
+                break; }
+                else if (previousActtivity.equals(Constants.HOME_FRAGMENT)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("totalGuest",guest);
+                    setResult(Constants.RESULT_CODE_CHANGE_GUEST,intent);
+                    finish();
+                    break;
+                }
         }
     }
 

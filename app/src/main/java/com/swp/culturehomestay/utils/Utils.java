@@ -112,6 +112,11 @@ public class Utils {
         return DATE_FORMAT.format(date);
     }
 
+    public static String formatDayOfWeekFull(Date date) {
+        DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM\nEEEE");
+        return DATE_FORMAT.format(date);
+    }
+
     public static String formatPrice(Integer price) {
         NumberFormat PRICE_FORMAT = new DecimalFormat("$###,###.##");
         return PRICE_FORMAT.format(price);

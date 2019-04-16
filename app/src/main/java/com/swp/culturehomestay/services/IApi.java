@@ -5,20 +5,23 @@ import com.swp.culturehomestay.models.AuthenticatioModel;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.LoginCredentials;
 import com.swp.culturehomestay.models.ReservationModel;
+import com.swp.culturehomestay.models.Wishlist;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface IApi {
-   @GET ("homestay/host/{id}")
-    Call<List<HomeStay>> getWishList(
-           @Path("id") String id,
+   @GET ("user/{userid}/wishlists")
+    Call<List<Wishlist>> getWishList(
+           @Path("userid") String id,
            @Query("lang") String language
    );
    @GET ("homestay/{id}")
@@ -34,6 +37,20 @@ public interface IApi {
     @POST("auth")
     Call<AuthenticatioModel> doLogin(@Body LoginCredentials loginCredentials);
 
+    @POST("user/wishlist")
+    Call<Wishlist> addToWishlist(
+            @Body Wishlist wishlist
+    );
+
+//    @DELETE("user/wishlist")
+    @HTTP(method = "DELETE", path = "user/wishlist", hasBody = true)
+    Call<Wishlist> deleteWishlist(@Body Wishlist wishlist);
+
+    @GET ("homestay/host/{hostId}")
+    Call<List<HomeStay>> getListHomestayByHostId(
+            @Path("hostId") String id,
+            @Query("lang") String language
+    );
 
 
 

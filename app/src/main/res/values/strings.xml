@@ -59,4 +59,6 @@ for best support.</string>
     <string name="moderate_type">Moderate</string>
     <string name="normal_day">Monday - Thursday</string>
     <string name="day_of_week">Firday - Sunday</string>
+    <string name="location_or_homestay_name">Location or Homestay name</string>
+    <string name="search">Search</string>
 </resources>

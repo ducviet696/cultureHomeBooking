@@ -62,6 +62,9 @@
 
             <!--ID homeStay-->
             <TextView
+                android:textColor="@color/colorBlack"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/ic_codelist"
                 android:id="@+id/tvCodeList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,6 +72,7 @@
 
             <!--Location-->
             <TextView
+                android:drawablePadding="5dp"
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

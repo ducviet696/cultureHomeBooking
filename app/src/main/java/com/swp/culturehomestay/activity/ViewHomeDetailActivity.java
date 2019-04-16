@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,11 +26,13 @@ import com.swp.culturehomestay.models.Amenity;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.HomestayImage;
 import com.swp.culturehomestay.models.HomestayMulti;
+import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,10 +91,12 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     public ArrayList<String> listUrlImg = new ArrayList<>();
     public ArrayList<String> listAmen = new ArrayList<>();
     public List<Amenity> listAmenity = new ArrayList<>();
-    public List<HomeStay> homestays = new ArrayList<>();
+    public List<Wishlist> wishlists = new ArrayList<>();
+    public List<HomeStay> homeStays = new ArrayList<>();
     String homestayID;
     String cancelType, standartGuest, maximunGuest, priceNightly, priceWeekend, priceLongTerm;
     private HorizontalListHomeAdapter horAdapter;
+    IApi mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +104,12 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_home_detail);
         // Bind widget
         ButterKnife.bind(this);
+        mService = Utils.getAPI();
         //get homestayid from wishlistFragment
         Intent intent = getIntent();
         homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
+//        loadWishlist();
+        Log.d("Wishlist1", "Wishlist: "+String.valueOf(wishlists.size()));
         loadJson(homestayID);
         loadJsonSimilarList();
         setSupportActionBar(toolbar);
@@ -121,9 +129,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
     }
 
-    private void loadJson(String homestaysID) {
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<HomeStay> call = iApi.getHomeById(homestaysID,"en");
+    private void loadJson(String wishlistsID) {
+        Call<HomeStay> call = mService.getHomeById(wishlistsID,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
             public void onResponse(Call<HomeStay> call, Response<HomeStay> response) {
@@ -139,7 +146,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     txtName.setText(homestayName);
                     txtType.setText(homeStay.getType());
                     txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
-                    txtCode.setText(homestaysID);
+                    txtCode.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
                     txtHost.setText(homeStay.getHostEmail());
                     txtMaximunGuest.setText(homeStay.getMaximunGuest().toString());
@@ -185,16 +192,19 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     public void loadJsonSimilarList(){
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<List<HomeStay>> call = iApi.getWishList(Constants.USER_ID, "en");
+
+        loadWishlist();
+        Call<List<HomeStay>> call = mService.getListHomestayByHostId(Constants.USER_ID, "en");
         call.enqueue(new Callback<List<HomeStay>>() {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if(response.isSuccessful() && response.body()!=null ) {
-                    homestays = response.body();
-                    horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homestays);
+                    homeStays = response.body();
+                    Log.d("Wishlist2", "Wishlist: "+String.valueOf(wishlists.size()));
+                    horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homeStays, wishlists);
                     rvSimilarListing.setLayoutManager(new LinearLayoutManager(ViewHomeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                     rvSimilarListing.setAdapter(horAdapter);
+//                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
                     horAdapter.notifyDataSetChanged();
                     initListener();
                 }
@@ -207,6 +217,26 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         });
 
     }
+
+    //load Wishlist(){
+    public void loadWishlist(){
+        Call<List<Wishlist>> call = mService.getWishList(Constants.USER_ID,"en");
+        call.enqueue(new Callback<List<Wishlist>>() {
+            @Override
+            public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
+                wishlists = response.body();
+                Toast.makeText(ViewHomeDetailActivity.this, String.valueOf(wishlists.size()), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<List<Wishlist>> call, Throwable t) {
+//                wishlists = new ArrayList<>();
+                Toast.makeText(ViewHomeDetailActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -268,7 +298,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(ViewHomeDetailActivity.this, ViewHomeDetailActivity.class);
-                HomeStay homeStay = homestays.get(position);
+                HomeStay homeStay = homeStays.get(position);
                 intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
                 startActivity(intent);
 

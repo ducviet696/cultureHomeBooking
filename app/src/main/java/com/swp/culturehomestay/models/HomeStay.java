@@ -1,11 +1,12 @@
 package com.swp.culturehomestay.models;
 
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HomeStay {
+public class HomeStay implements Serializable {
 
     @SerializedName("homestayId")
     @Expose
@@ -84,16 +85,27 @@ public class HomeStay {
     private List<PriceSpecial> priceSpecials = null;
     @SerializedName("homestay_Cultures")
     @Expose
-    private List<Object> homestayCultures = null;
+    private List<CultureService> homestayCultures = null;
     @SerializedName("feedBack")
     @Expose
-    private List<Object> feedBack = null;
+    private List<FeedBack> feedBack = null;
     @SerializedName("address")
     @Expose
     private Address address;
     @SerializedName("bedType")
     @Expose
     private String bedType;
+    @SerializedName("houseCode")
+    @Expose
+    private String houseCode;
+
+    public String getHouseCode() {
+        return houseCode;
+    }
+
+    public void setHouseCode(String houseCode) {
+        this.houseCode = houseCode;
+    }
 
     public String getHomestayId() {
         return homestayId;
@@ -294,19 +306,19 @@ public class HomeStay {
         this.priceSpecials = priceSpecials;
     }
 
-    public List<Object> getHomestayCultures() {
+    public List<CultureService> getHomestayCultures() {
         return homestayCultures;
     }
 
-    public void setHomestayCultures(List<Object> homestayCultures) {
+    public void setHomestayCultures(List<CultureService> homestayCultures) {
         this.homestayCultures = homestayCultures;
     }
 
-    public List<Object> getFeedBack() {
+    public List<FeedBack> getFeedBack() {
         return feedBack;
     }
 
-    public void setFeedBack(List<Object> feedBack) {
+    public void setFeedBack(List<FeedBack> feedBack) {
         this.feedBack = feedBack;
     }
 

@@ -4,14 +4,20 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.Wishlist;
+import com.swp.culturehomestay.services.WishlistService;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -19,15 +25,21 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalListHomeAdapter.MyViewHolder> {
     Context context;
     List<HomeStay> listHomestay;
+    List<Wishlist> listWishlist;
     private OnItemClickListener onItemClickListener;
+    WishlistService wishlistService = new WishlistService();
 
-    public HorizontalListHomeAdapter(Context context, List<HomeStay> listHomestay) {
+    public HorizontalListHomeAdapter(Context context, List<HomeStay> listHomestay, List<Wishlist> listWishlist) {
         this.context = context;
         this.listHomestay = listHomestay;
+        this.listWishlist = listWishlist;
     }
 
     @NonNull
@@ -46,6 +58,27 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
         holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtPrice.setText(Utils.formatPrice(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
+//        Log.d("Wishlist", "Wishlist: "+String.valueOf(listWishlist.size()));
+        if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId(),listWishlist)){
+            holder.btnDelete.setImageResource(R.drawable.ic_wishlist_active);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
+                    holder.btnDelete.setImageResource(R.drawable.ic_wishlist);
+                }
+            });
+        } else {
+            holder.btnDelete.setImageResource(R.drawable.ic_wishlist);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
+                    holder.btnDelete.setImageResource(R.drawable.ic_wishlist_active);
+                }
+            });
+        }
+
     }
 
     @Override
@@ -64,6 +97,8 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
         TextView txtPrice;
         @BindView(R.id.home_layout)
         CardView home_layout;
+        @BindView(R.id.btnDelete)
+        ImageView btnDelete;
         OnItemClickListener onItemClickListener;
         public MyViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
