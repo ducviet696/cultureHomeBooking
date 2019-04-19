@@ -97,6 +97,10 @@ public class Utils {
         }
     }
 
+    public static  Date convertLongToDate(long l) {
+        Date d = new Date(l);
+        return d;
+    }
     public static String formatDate(Date date) {
         DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         return DATE_FORMAT.format(date);

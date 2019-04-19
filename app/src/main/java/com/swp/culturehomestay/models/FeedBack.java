@@ -5,7 +5,12 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class FeedBack {
-
+    @SerializedName("createdDate")
+    @Expose
+    private long createdDate;
+    @SerializedName("editedDate")
+    @Expose
+    private long editedDate;
     @SerializedName("comment")
     @Expose
     private String comment;
@@ -38,5 +43,21 @@ public class FeedBack {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(long createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public long getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(long editedDate) {
+        this.editedDate = editedDate;
     }
 }

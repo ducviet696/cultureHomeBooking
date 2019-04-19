@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/background_light"
     android:fitsSystemWindows="true">
 
@@ -33,7 +34,6 @@
                 app:layout_collapseMode="parallax" />
 
             <android.support.v7.widget.Toolbar
-
                 android:id="@+id/main_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -83,13 +83,36 @@
                 android:id="@+id/tvNameHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvTypeHome"
                 android:layout_marginTop="@dimen/default_padding"
-                android:layout_marginBottom="@dimen/default_padding"
                 android:text="La Villa Angelina"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/large_text"
                 android:textStyle="bold" />
+            <!--Type Booking-->
+            <LinearLayout
+                android:id="@+id/layout_bookingMethod"
+                android:clickable="false"
+                android:background="@drawable/round_white"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iconBooking"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_confirm"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="5dp"/>
+
+                <TextView
+                    android:id="@+id/typeBooking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="Confirm"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
             <!--Rating-->
             <RatingBar
@@ -116,8 +139,6 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_below="@id/tvPricePerNight"
-                android:layout_toRightOf="@+id/iconMap"
                 android:drawableLeft="@drawable/ic_marker1"
                 android:text="Thạch Thất, Hòa lạc"
                 android:textColor="@color/colorBlack" />
@@ -497,6 +518,28 @@
                     android:layout_marginBottom="@dimen/default_padding"
                     android:background="@color/colorGray" />
 
+                <!--Review-->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/layout_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Reviews"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/large_text"
+                    android:textStyle="bold" />
+                <include layout="@layout/item_review" />
+                <TextView
+                    android:textColor="@color/colorPrimaryButtonActive"
+                    android:gravity="right"
+                    android:id="@+id/btnShowAllReview"
+                    android:text="See all 10 reviews >>"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                </LinearLayout>
                 <!--Similar Listing-->
                 <TextView
                     android:layout_width="match_parent"
@@ -562,4 +605,6 @@
             android:textColor="@color/colorWhite" />
     </android.support.v7.widget.CardView>
     <!--End CardView BookNow-->
+
+
 </android.support.design.widget.CoordinatorLayout>

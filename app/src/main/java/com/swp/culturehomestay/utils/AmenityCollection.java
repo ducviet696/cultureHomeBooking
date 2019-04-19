@@ -41,4 +41,12 @@ public class AmenityCollection {
         allAmen.put("Fishing",R.drawable.ic_fishing);
         return allAmen;
     }
+    public static HashMap<String, String> homeType(){
+        HashMap<String, String> homeTypeMap = new HashMap<>();
+        homeTypeMap.put(Constants.HOMETYPE_AP,"Appartment");
+        homeTypeMap.put(Constants.HOMETYPE_ENT,"Entire");
+        homeTypeMap.put(Constants.HOMETYPE_VLA,"Villa");
+        homeTypeMap.put(Constants.HOMETYPE_SAP,"STUDIO APARTMENT");
+        return  homeTypeMap;
+    }
 }

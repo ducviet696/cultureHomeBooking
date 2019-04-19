@@ -14,8 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import com.swp.culturehomestay.adapter.HorizontalListHomeAdapter;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.fragments.main.HomeFragment;
 import com.swp.culturehomestay.models.Amenity;
+import com.swp.culturehomestay.models.FeedBack;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.HomestayImage;
 import com.swp.culturehomestay.models.HomestayMulti;
@@ -32,6 +35,7 @@ import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.services.WishlistService;
+import com.swp.culturehomestay.utils.AmenityCollection;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -92,16 +96,38 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     RecyclerView rvSimilarListing;
     @BindView(R.id.btnAddWishlist)
     FloatingActionButton btnAddWishlist;
+    @BindView(R.id.tvTotalCulture)
+    TextView txtTotalCul;
+    @BindView(R.id.ratingBar2)
+    RatingBar ratingBar;
     public static List<HomestayImage> listHomeImg = new ArrayList<>();
     public ArrayList<String> listUrlImg = new ArrayList<>();
     public ArrayList<String> listAmen = new ArrayList<>();
     public List<Amenity> listAmenity = new ArrayList<>();
     public List<HomeStay> homeStays = new ArrayList<>();
+    public List<FeedBack> feedBackList = new ArrayList<>();
     String homestayID;
+    int totalRate;
     String cancelType, standartGuest, maximunGuest, priceNightly, priceWeekend, priceLongTerm;
     private HorizontalListHomeAdapter horAdapter;
     IApi mService;
     WishlistService wishlistService;
+    @BindView(R.id.layout_review)
+    LinearLayout layoutReview;
+    @BindView(R.id.tvUserEmailFb)
+    TextView tvUserEmailFb;
+    @BindView(R.id.tvStar)
+    TextView tvStar;
+    @BindView(R.id.tvDateFeedback)
+    TextView tvDateFeedback;
+    @BindView(R.id.tvDesReview)
+    TextView tvDesReview;
+    @BindView(R.id.btnShowAllReview)
+    TextView btnShowAllReview;
+    @BindView(R.id.iconBooking)
+    ImageView iconBooking;
+    @BindView(R.id.typeBooking)
+    TextView tvTypeBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,8 +180,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     else
                         btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_black_24dp));
                     txtName.setText(homestayName);
-                    txtType.setText(homeStay.getType());
-                    txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
+                    txtType.setText(AmenityCollection.homeType().get(homeStay.getType()).toUpperCase());
+                    txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " BED ROOM");
                     txtCode.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
                     txtHost.setText(homeStay.getHostEmail());
@@ -165,10 +191,13 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     Utils.checkStringNull(txtBathNum, String.valueOf(homeStay.getBathRoom()));
                     txtAboutHome.setText(homestayMulti.getDescription());
                     txtprice.setText(Utils.formatPrice(homeStay.getPriceNightly()) + "/night");
-                    txtTotalAmen.setText("+ "+String.valueOf(listAmenity.size()));
-                    tvTotalPhoto.setText(String.valueOf("+ "+listHomeImg.size()));
+                    txtTotalAmen.setText("+ "+ listAmenity.size());
+                    txtTotalCul.setText("+ "+ homeStay.getHomestayCultures().size());
+//                    txtTotalCul.setText("+ "+ homeStay.getHomestayCultures().get(0).getCultureService().getEnglisgName());
+                    tvTotalPhoto.setText("+ "+ listHomeImg.size());
                     cancelType = homeStay.getCancelPolicy();
                     txtCancelType.setText(cancelType.toUpperCase());
+
 
                     if(!Utils.isNullOrEmpty(homestayMulti.getDesUnifuture())) {
                         layoutFeatur.setVisibility(View.VISIBLE);
@@ -188,6 +217,38 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     priceNightly = Utils.formatPrice(homeStay.getPriceNightly());
                     priceWeekend = Utils.formatPrice(homeStay.getPriceWeekend());
                     priceLongTerm = Utils.formatPrice(homeStay.getPriceLongTerm());
+
+                    feedBackList = homeStay.getFeedBack();
+                    if(feedBackList.isEmpty()){
+                        layoutReview.setVisibility(View.GONE);
+                        ratingBar.setVisibility(View.GONE);
+                    } else
+                    {
+                        FeedBack feedBack = feedBackList.get(0);
+                        for(FeedBack feedBack1 : feedBackList){
+                            totalRate += feedBack1.getStart();
+                        }
+                        ratingBar.setRating(Float.valueOf(totalRate/feedBackList.size()));
+                        tvDateFeedback.setText(Utils.formatDate(Utils.convertLongToDate(feedBack.getCreatedDate())));
+                        tvUserEmailFb.setText(feedBack.getUserEmail());
+                        tvStar.setText(String.valueOf(feedBack.getStart()));
+                        tvDesReview.setText(feedBack.getComment());
+                        if(feedBackList.size()<=1){
+                            btnShowAllReview.setVisibility(View.GONE);
+                        } else {
+                            btnShowAllReview.setText("Show "+feedBackList.size()+" reviews  >>");
+                        }
+                    }
+                    if(homeStay.getBookingMethod().equals(Constants.BOOKING_RES)){
+                        btnBooking.setText("Send Inquiry");
+                        iconBooking.setImageResource(R.drawable.ic_confirm);
+                        tvTypeBooking.setText("CONFIRMATION");
+                    } else {
+                        btnBooking.setText("Book Now");
+                        iconBooking.setImageResource(R.drawable.ic_booknow);
+                        tvTypeBooking.setText("INSTANT");
+                    }
+
 
                 } else {
                     Toast.makeText(ViewHomeDetailActivity.this, "No result", Toast.LENGTH_SHORT).show();
@@ -255,7 +316,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     //Event when click button
-    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity,R.id.btnAddWishlist})
+    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity,R.id.btnAddWishlist,R.id.btnCulture
+    ,R.id.btnShowAllReview})
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btnCancelPolicy:
@@ -305,6 +367,16 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 //                }
 
                 wishlistService.addOrDelWishlist(Constants.USER_ID, homestayID,ViewHomeDetailActivity.this,btnAddWishlist);
+                break;
+            case  R.id.btnCulture:
+                Intent intentCul = new Intent(ViewHomeDetailActivity.this,ShowHomeCultureActivity.class);
+                intentCul.putExtra(Constants.HOMESTAY_ID,homestayID);
+                startActivity(intentCul);
+                break;
+            case  R.id.btnShowAllReview:
+                Intent intentRv = new Intent(ViewHomeDetailActivity.this,ShowReviewActivity.class);
+                intentRv.putExtra(Constants.HOMESTAY_ID,homestayID);
+                startActivity(intentRv);
                 break;
 
         }

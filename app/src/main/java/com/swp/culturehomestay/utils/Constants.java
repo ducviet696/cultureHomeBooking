@@ -19,6 +19,10 @@ public class Constants {
     public static final String CANCEL_MOD = "mod";
     public static final String BOOKING_RES = "res";
     public static final String BOOKING_INS = "ins";
+    public static final String HOMETYPE_SAP = "sap";
+    public static final String HOMETYPE_VLA = "vla";
+    public static final String HOMETYPE_ENT = "hou";
+    public static final String HOMETYPE_AP = "ap";
     public static final int REQUEST_CODE = 9696;
     public static final int REQUEST_CODE_HOME_FRAGMENT = 1102;
     public static final String BUNDLE = "BUNDLE";

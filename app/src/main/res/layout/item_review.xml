@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layoutReview"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginRight="@dimen/large_margin"
+            android:id="@+id/ivProfile"
+            android:src="@drawable/ic_profile_feedback"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        <TextView
+            android:textColor="@color/colorBlack"
+            android:textSize="17sp"
+            android:id="@+id/tvUserEmailFb"
+            android:text="Chu Đức Việt"
+            android:textStyle="bold"
+            android:layout_toRightOf="@+id/ivProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="10/20/30"
+            android:layout_toRightOf="@id/ivProfile"
+            android:id="@+id/tvDateFeedback"
+            android:layout_below="@+id/tvUserEmailFb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tvStar"
+            android:layout_marginRight="@dimen/large_margin"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="@dimen/large_margin"
+            android:drawableRight="@drawable/ic_star_black_24dp"
+            android:text="5.0"
+            android:gravity="right|center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tvDesReview"
+        android:paddingLeft="@dimen/default_padding"
+        android:text="@string/location_or_homestay_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
+
+</LinearLayout>
