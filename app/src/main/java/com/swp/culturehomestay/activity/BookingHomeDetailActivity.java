@@ -159,7 +159,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     maxGuest = homeStay.getMaximunGuest();
                     priceNightly = homeStay.getPriceNightly();
                     priceWeekend = homeStay.getPriceWeekend();
-                    priceLongTerm = homeStay.getPriceLongTerm();
+                    priceLongTerm = homeStay.getPriceLongTerm()==null?0:homeStay.getPriceLongTerm();
                     guest = minGuest;
                     txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
                     totalPrice = getTotalPrice();

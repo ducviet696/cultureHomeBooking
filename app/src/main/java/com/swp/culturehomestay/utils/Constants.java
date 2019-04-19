@@ -1,5 +1,7 @@
 package com.swp.culturehomestay.utils;
 
+import com.swp.culturehomestay.models.Wishlist;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,5 +24,6 @@ public class Constants {
     public static final String BUNDLE = "BUNDLE";
     public static final int RESULT_CODE_CHANGE_GUEST = 22 ;
     public static List<Date> dateList = new ArrayList<>();
+    public static  List<Wishlist> wishlists  = new ArrayList<>();
     public static final String MyPREFERENCES = "MyPrefs";
 }

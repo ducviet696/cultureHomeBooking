@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SearchViaMapActivity"></activity>
+        <activity android:name=".activity.ShowHomeCultureActivity"></activity>
+        <activity android:name=".activity.SearchViaMapActivity" />
         <activity android:name=".activity.ShowPriceDetailActivity" />
         <activity android:name=".activity.ChangeNumberOfGuestActivity" />
         <activity android:name=".activity.MainActivity" />

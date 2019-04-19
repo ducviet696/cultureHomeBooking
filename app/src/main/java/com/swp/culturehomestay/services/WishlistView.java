@@ -14,5 +14,4 @@ public interface WishlistView {
     void showErrorMessage(int imageView, String title, String message);
     void showMessageEmpty(int imageView, String title, String message);
     void showMessageNotLogin(int imageView, String title, String message);
-    void refreshWishlist();
 }

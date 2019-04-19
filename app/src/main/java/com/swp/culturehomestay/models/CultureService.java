@@ -18,9 +18,6 @@ public class CultureService {
     @SerializedName("type")
     @Expose
     private String type;
-    @SerializedName("active")
-    @Expose
-    private Boolean active;
 
     public String getCultureServiceId() {
         return cultureServiceId;
@@ -54,12 +51,5 @@ public class CultureService {
         this.type = type;
     }
 
-    public Boolean getActive() {
-        return active;
-    }
-
-    public void setActive(Boolean active) {
-        this.active = active;
-    }
 
 }

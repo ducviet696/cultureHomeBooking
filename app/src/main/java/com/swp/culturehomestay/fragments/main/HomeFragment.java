@@ -3,10 +3,12 @@ package com.swp.culturehomestay.fragments.main;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.activity.BookingHomeDetailActivity;
@@ -49,7 +52,7 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.tvSearch)
     TextView tvSearch;
@@ -69,7 +72,10 @@ public class HomeFragment extends Fragment {
     IApi mService;
     public List<Wishlist> wishlists = new ArrayList<>();
     public List<HomeStay> homeStays = new ArrayList<>();
+    public List<HomeStay> homeStays2 = new ArrayList<>();
     private HorizontalListHomeAdapter horAdapter;
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,6 +84,8 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         mService = Utils.getAPI();
+        loadWishlist(getContext());
+        swipeRefreshLayout.setOnRefreshListener(this);
         displayMostCultureHomeStayList();
         displayHomestayForRickList();
         return view;
@@ -132,6 +140,12 @@ public class HomeFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
     public void displayMostCultureHomeStayList() {
 
         Call<List<HomeStay>> call = mService.getListHomestayByHostId(Constants.USER_ID, "en");
@@ -139,9 +153,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    if(!homeStays.isEmpty()) {
+                        homeStays.clear();
+                    }
                     homeStays = response.body();
-                    Log.d("Wishlist2", "Wishlist: " + String.valueOf(wishlists.size()));
-                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays, wishlists);
+                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
                     rvrvMostCulture.setLayoutManager(new GridLayoutManager(getContext(), 2));
                     rvrvMostCulture.setAdapter(horAdapter);
 //                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
@@ -165,13 +181,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    homeStays = response.body();
-                    Log.d("Wishlist2", "Wishlist: " + String.valueOf(wishlists.size()));
-                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays, wishlists);
+                    if(!homeStays2.isEmpty()) {
+                        homeStays2.clear();
+                    }
+                    homeStays2 = response.body();
+                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays2);
                     rvForRick.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+                    horAdapter.notifyDataSetChanged();
                     rvForRick.setAdapter(horAdapter);
 //                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
-                    horAdapter.notifyDataSetChanged();
                     initListener();
                 }
             }
@@ -194,6 +212,30 @@ public class HomeFragment extends Fragment {
                 HomeStay homeStay = homeStays.get(position);
                 intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
                 startActivity(intent);
+            }
+        });
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
+        displayMostCultureHomeStayList();
+        displayHomestayForRickList();
+    }
+
+    //load Wishlist(){
+    public void loadWishlist(Context context){
+        Call<List<Wishlist>> call = Utils.getAPI().getWishList(Constants.USER_ID,"en");
+        call.enqueue(new Callback<List<Wishlist>>() {
+            @Override
+            public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
+                Constants.wishlists = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<List<Wishlist>> call, Throwable t) {
+                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }

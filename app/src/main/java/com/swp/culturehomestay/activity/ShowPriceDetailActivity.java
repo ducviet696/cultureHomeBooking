@@ -56,7 +56,7 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
         if(numDayNormal > 0) {
             totalPricePerNight = numDayNormal * priceNightly;
             tvTotalPricePerNight.setText(Utils.formatPrice(totalPricePerNight));
-            tvCalPriceDay.setText(Utils.formatPrice(priceNightly)+" X "+ String.valueOf(numDayNormal));
+            tvCalPriceDay.setText(Utils.formatPrice(priceNightly)+" x "+ String.valueOf(numDayNormal) +" night(s)");
         } else {
             totalPricePerNight = 0;
             layoutNormalDay.setVisibility(View.GONE);
@@ -64,7 +64,7 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
         if(numDayWeekly > 0) {
             totalPricePerWeekly = numDayWeekly * priceWeekend;
             tvTotalPricePerWeekly.setText(Utils.formatPrice(totalPricePerWeekly));
-            tvCalWeekly.setText(Utils.formatPrice(priceWeekend)+" X "+ String.valueOf(numDayWeekly));
+            tvCalWeekly.setText(Utils.formatPrice(priceWeekend)+" x "+ String.valueOf(numDayWeekly) +" night(s)");
         } else {
             totalPricePerWeekly = 0;
             layoutWeekly.setVisibility(View.GONE);

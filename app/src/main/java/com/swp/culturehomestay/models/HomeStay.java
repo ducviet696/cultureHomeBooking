@@ -85,7 +85,7 @@ public class HomeStay implements Serializable {
     private List<PriceSpecial> priceSpecials = null;
     @SerializedName("homestay_Cultures")
     @Expose
-    private List<CultureService> homestayCultures = null;
+    private List<HomestayCulture> homestayCultures = null;
     @SerializedName("feedBack")
     @Expose
     private List<FeedBack> feedBack = null;
@@ -306,11 +306,11 @@ public class HomeStay implements Serializable {
         this.priceSpecials = priceSpecials;
     }
 
-    public List<CultureService> getHomestayCultures() {
+    public List<HomestayCulture> getHomestayCultures() {
         return homestayCultures;
     }
 
-    public void setHomestayCultures(List<CultureService> homestayCultures) {
+    public void setHomestayCultures(List<HomestayCulture> homestayCultures) {
         this.homestayCultures = homestayCultures;
     }
 

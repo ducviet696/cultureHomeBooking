@@ -119,6 +119,9 @@ public class Utils {
 
     public static String formatPrice(Integer price) {
         NumberFormat PRICE_FORMAT = new DecimalFormat("$###,###.##");
+        if(price==null){
+            return PRICE_FORMAT.format(10);
+        }
         return PRICE_FORMAT.format(price);
     }
     public static boolean isNullOrEmpty(String s) {

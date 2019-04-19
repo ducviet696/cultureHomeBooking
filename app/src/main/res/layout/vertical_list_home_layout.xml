@@ -26,11 +26,12 @@
                 android:clickable="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
-                android:id="@+id/btnDelete"
+                android:id="@+id/btnDeleteWl"
                 android:layout_gravity="right"
-                android:src="@drawable/ic_wishlist_active"
+                android:src="@drawable/ic_favorite_black_24dp"
                 android:layout_width="24dp"
                 android:layout_height="24dp" />
+
 
         </android.support.v7.widget.CardView>
 
