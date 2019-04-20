@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText username;
     private EditText password;
     private CallbackManager callbackManager;
+    private int checkFragment;
     AuthenticatioModel authenticatioModel;
     SharedPreferences sharedpreferences;
 
@@ -49,6 +50,12 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
         loginBtn.setOnClickListener(doLogin);
+        Intent intent = getIntent();
+        checkFragment = intent.getIntExtra("checkFragment", 3);
+        String emailCreate = intent.getStringExtra("emailCreate");
+        if(emailCreate!=null&& !emailCreate.isEmpty()){
+            username.setText(emailCreate);
+        }
 //        FacebookSdk.sdkInitialize(getApplicationContext());
 //        AppEventsLogger.activateApp(this);
 //        callbackManager = CallbackManager.Factory.create();
@@ -98,9 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                         authenticatioModel =response.body();
                         saveData(authenticatioModel);
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra("checkFragment",3);
+                        intent.putExtra("checkFragment",checkFragment);
                         startActivity(intent);
-                        loadData();
                     }else {
                         String errorCode;
                         switch (response.code()) {

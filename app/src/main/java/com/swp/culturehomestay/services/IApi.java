@@ -5,6 +5,8 @@ import com.swp.culturehomestay.models.AuthenticatioModel;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.LoginCredentials;
 import com.swp.culturehomestay.models.ReservationModel;
+import com.swp.culturehomestay.models.SignUpCredentials;
+import com.swp.culturehomestay.models.SignUpResModel;
 
 import java.util.List;
 
@@ -34,6 +36,8 @@ public interface IApi {
     @POST("auth")
     Call<AuthenticatioModel> doLogin(@Body LoginCredentials loginCredentials);
 
+    @POST("user/tenant/")
+    Call<SignUpResModel> createAccount(@Body SignUpCredentials signUpCredentials);
 
 
 

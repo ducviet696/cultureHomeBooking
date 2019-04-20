@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -32,7 +33,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     TextInputEditText description;
     OkHttpClient client;
     String result;
-    ImageView btnCusBack;
+    Button btnCusBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +52,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         doGetRequest("http://dummy.restapiexample.com/api/v1/employees");
         userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
         fillDataCustomer(userDetailModel);
-        btnCusBack = (ImageView) findViewById(R.id.cusBack);
+        btnCusBack = (Button) findViewById(R.id.cusBack);
         btnCusBack.setOnClickListener(onBackClick);
     }
 

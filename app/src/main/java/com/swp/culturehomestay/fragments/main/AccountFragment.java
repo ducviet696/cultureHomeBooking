@@ -28,6 +28,7 @@ import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.activity.CustomerProfileActivity;
 import com.swp.culturehomestay.activity.LoginActivity;
 import com.swp.culturehomestay.activity.SettingActivity;
+import com.swp.culturehomestay.activity.SignUpActivity;
 import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.utils.Constants;
 
@@ -53,6 +54,7 @@ public class AccountFragment extends Fragment {
     View view;
     Button loginBtn;
     Button logoutBtn;
+    Button signUpBtn;
     ImageView proImage;
     UserDetailModel userDetailModel;
     TextView userName;
@@ -88,6 +90,8 @@ public class AccountFragment extends Fragment {
         btnCusProfile.setOnClickListener(onCustomerProfileClick);
         btnSetting = (RelativeLayout) view.findViewById(R.id.btn_setting);
         btnSetting.setOnClickListener(onSettingClick);
+        signUpBtn= (Button)viewNoLoginAccount.findViewById(R.id.btn_signup_create);
+        signUpBtn.setOnClickListener(onSignUpClick);
 //        logoutBtn = (Button) view.findViewById(R.id.btn_logout);
 //        logoutBtn.setOnClickListener(onLogoutClick);
         return view;
@@ -107,6 +111,15 @@ public class AccountFragment extends Fragment {
             startActivity(intent);
         }
     };
+
+    View.OnClickListener onSignUpClick = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent intent = new Intent(getActivity(), SignUpActivity.class);
+            intent.putExtra("prePos",3);
+            startActivity(intent);
+        }
+    };
+
     View.OnClickListener onSettingClick = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), SettingActivity.class);
