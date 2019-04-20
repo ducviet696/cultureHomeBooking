@@ -97,6 +97,10 @@ public class Utils {
         }
     }
 
+    public static  Date convertLongToDate(long l) {
+        Date d = new Date(l);
+        return d;
+    }
     public static String formatDate(Date date) {
         DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
         return DATE_FORMAT.format(date);
@@ -112,8 +116,16 @@ public class Utils {
         return DATE_FORMAT.format(date);
     }
 
+    public static String formatDayOfWeekFull(Date date) {
+        DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM\nEEEE");
+        return DATE_FORMAT.format(date);
+    }
+
     public static String formatPrice(Integer price) {
         NumberFormat PRICE_FORMAT = new DecimalFormat("$###,###.##");
+        if(price==null){
+            return PRICE_FORMAT.format(10);
+        }
         return PRICE_FORMAT.format(price);
     }
     public static boolean isNullOrEmpty(String s) {

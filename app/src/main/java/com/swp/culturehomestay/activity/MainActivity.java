@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -82,7 +84,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageSelected(int pos) {
+                public void onPageSelected(int pos) {
+                Fragment fragment = ((FragmentPagerAdapter)pager.getAdapter()).getItem(pos);
+                if (pos==0 && fragment!= null) {
+                    fragment.onResume();
+                }
                 switch (pos) {
                     case 0:
                         navigation.getMenu().getItem(0).setChecked(true);
@@ -97,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         navigation.getMenu().getItem(3).setChecked(true);
                         break;
                 }
+
             }
 
             @Override
@@ -104,6 +111,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
     }
+
+
 
 }

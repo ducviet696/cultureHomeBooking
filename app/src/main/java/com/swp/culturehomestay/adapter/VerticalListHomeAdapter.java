@@ -23,7 +23,11 @@ import android.widget.Toast;
 import com.swp.culturehomestay.R;
 
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
+import com.swp.culturehomestay.fragments.main.HomeFragment;
+import com.swp.culturehomestay.fragments.main.WishlistFragment;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.Wishlist;
+import com.swp.culturehomestay.services.WishlistService;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -35,13 +39,17 @@ import butterknife.ButterKnife;
 
 public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListHomeAdapter.MyViewHolder> {
 
-    private List<HomeStay> homeStays;
+    private List<Wishlist> wishlists;
     private Context context;
     private OnItemClickListener onItemClickListener;
+    WishlistFragment wishlistFragment;
+    WishlistService wishlistService;
 
-    public VerticalListHomeAdapter(List<HomeStay> homeStays, Context context) {
-        this.homeStays = homeStays;
+    public VerticalListHomeAdapter(List<Wishlist> wishlists, Context context, WishlistFragment wishlistFragment, WishlistService wishlistService) {
+        this.wishlists = wishlists;
         this.context = context;
+        this.wishlistFragment = wishlistFragment;
+        this.wishlistService = wishlistService;
     }
 
     @NonNull
@@ -55,18 +63,21 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holders, int position) {
         final MyViewHolder holder = holders;
-        HomeStay homeStay = homeStays.get(position);
+        HomeStay homeStay = wishlists.get(position).getHomestay();
         String imgeUrl = Constants.BASE_URLIMG +homeStay.getImageProfileUrl();
         Utils.loadImge(context,holder.ivHome,imgeUrl);
+//        holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName().isEmpty()?homeStay.getHomestayMultis().get(1).getHomestayName():homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtType.setText(homeStay.getType());
         holder.txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
         holder.txtPrice.setText(Utils.formatPrice(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+        holder.btnDeleteWl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "delete home "+ position, Toast.LENGTH_SHORT).show();
+                notifyItemRemoved(position);
+                wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
+                wishlistFragment.onLoadingSwipeRefresh();
             }
         });
 
@@ -74,7 +85,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
 
     @Override
     public int getItemCount() {
-        return homeStays.size();
+        return wishlists.size();
     }
 
     public interface OnItemClickListener {
@@ -88,8 +99,8 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
 
         @BindView(R.id.ivHome)
         ImageView ivHome;
-        @BindView(R.id.btnDelete)
-        ImageView btnDelete;
+        @BindView(R.id.btnDeleteWl)
+        ImageView btnDeleteWl;
         @BindView(R.id.tvTypeHome)
         TextView txtType;
         @BindView(R.id.tvNameHome)
@@ -109,10 +120,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
-
         }
-
-
 
         @Override
         public void onClick(View v) {

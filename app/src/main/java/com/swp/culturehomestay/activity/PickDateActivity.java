@@ -36,7 +36,7 @@ public class PickDateActivity extends AppCompatActivity {
     String dateCheckin, dateCheckout;
     @BindView(R.id.tvBack)
     TextView txtBack;
-//    List<Date> dateList = new ArrayList<>();
+    List<Date> dateList = new ArrayList<>();
     String homestaysID;
     String previousActtivity;
     @BindView(R.id.btnSave)
@@ -79,6 +79,7 @@ public class PickDateActivity extends AppCompatActivity {
                 btnSave.setEnabled(true);
                 btnSave.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButtonActive));
                 Constants.dateList = datePicker.getSelectedDates();
+                dateList = datePicker.getSelectedDates();
 
             }
 
@@ -98,6 +99,11 @@ public class PickDateActivity extends AppCompatActivity {
         Log.d("btnSaveClicked", "btnSaveClicked: "+previousActtivity);
         if (previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)) {
             Intent intent = new Intent();
+            setResult(RESULT_OK,intent);
+            finish();
+        } else if (previousActtivity.equals(Constants.HOME_FRAGMENT)) {
+            Intent intent = new Intent();
+            intent.putExtra("dateList",(Serializable) dateList);
             setResult(RESULT_OK,intent);
             finish();
         }

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.SignUpActivity" android:isScrollContainer="false" android:windowSoftInputMode="adjustPan" ></activity>
+        <activity android:name=".activity.ShowReviewActivity"></activity>
+        <activity android:name=".activity.ShowHomeCultureActivity" />
+        <activity android:name=".activity.SearchViaMapActivity" />
         <activity android:name=".activity.ShowPriceDetailActivity" />
         <activity android:name=".activity.ChangeNumberOfGuestActivity" />
         <activity android:name=".activity.MainActivity" />

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout
+        android:paddingVertical="5dp"
+        android:background="@color/colorPrimaryButtonActive"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:paddingHorizontal="@dimen/default_padding"
+            android:id="@+id/tvNameCul"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:text="Culture Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:paddingHorizontal="@dimen/default_padding"
+            android:id="@+id/tvPriceCul"
+            android:textStyle="bold"
+            android:textColor="@color/colorWhite"
+            android:gravity="right"
+            android:text="$10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <com.borjabravo.readmoretextview.ReadMoreTextView
+        android:paddingHorizontal="@dimen/default_padding"
+        android:id="@+id/tvDesCul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/about_homestay"
+        app:colorClickableText="@color/colorPrimaryButtonActive"
+        app:trimCollapsedText="Show less"
+        app:trimExpandedText="Show more"
+        app:trimLength="200"
+        app:trimMode="trimModeLength" />
+
+</LinearLayout>

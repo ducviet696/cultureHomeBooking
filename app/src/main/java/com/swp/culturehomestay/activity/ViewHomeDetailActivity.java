@@ -2,8 +2,10 @@ package com.swp.culturehomestay.activity;
 
 import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -12,8 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,15 +25,21 @@ import com.google.android.gms.common.api.Api;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.HorizontalListHomeAdapter;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
+import com.swp.culturehomestay.fragments.main.HomeFragment;
 import com.swp.culturehomestay.models.Amenity;
+import com.swp.culturehomestay.models.FeedBack;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.HomestayImage;
 import com.swp.culturehomestay.models.HomestayMulti;
+import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
+import com.swp.culturehomestay.services.WishlistService;
+import com.swp.culturehomestay.utils.AmenityCollection;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,14 +94,40 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     TextView txtCancelType;
     @BindView(R.id.rvSimilarListing)
     RecyclerView rvSimilarListing;
+    @BindView(R.id.btnAddWishlist)
+    FloatingActionButton btnAddWishlist;
+    @BindView(R.id.tvTotalCulture)
+    TextView txtTotalCul;
+    @BindView(R.id.ratingBar2)
+    RatingBar ratingBar;
     public static List<HomestayImage> listHomeImg = new ArrayList<>();
     public ArrayList<String> listUrlImg = new ArrayList<>();
     public ArrayList<String> listAmen = new ArrayList<>();
     public List<Amenity> listAmenity = new ArrayList<>();
-    public List<HomeStay> homestays = new ArrayList<>();
+    public List<HomeStay> homeStays = new ArrayList<>();
+    public List<FeedBack> feedBackList = new ArrayList<>();
     String homestayID;
+    int totalRate;
     String cancelType, standartGuest, maximunGuest, priceNightly, priceWeekend, priceLongTerm;
     private HorizontalListHomeAdapter horAdapter;
+    IApi mService;
+    WishlistService wishlistService;
+    @BindView(R.id.layout_review)
+    LinearLayout layoutReview;
+    @BindView(R.id.tvUserEmailFb)
+    TextView tvUserEmailFb;
+    @BindView(R.id.tvStar)
+    TextView tvStar;
+    @BindView(R.id.tvDateFeedback)
+    TextView tvDateFeedback;
+    @BindView(R.id.tvDesReview)
+    TextView tvDesReview;
+    @BindView(R.id.btnShowAllReview)
+    TextView btnShowAllReview;
+    @BindView(R.id.iconBooking)
+    ImageView iconBooking;
+    @BindView(R.id.typeBooking)
+    TextView tvTypeBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +135,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_home_detail);
         // Bind widget
         ButterKnife.bind(this);
+        mService = Utils.getAPI();
+        wishlistService = new WishlistService();
         //get homestayid from wishlistFragment
         Intent intent = getIntent();
         homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
@@ -121,9 +159,9 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
     }
 
-    private void loadJson(String homestaysID) {
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<HomeStay> call = iApi.getHomeById(homestaysID,"en");
+
+    private void loadJson(String wishlistsID) {
+        Call<HomeStay> call = mService.getHomeById(wishlistsID,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
             public void onResponse(Call<HomeStay> call, Response<HomeStay> response) {
@@ -136,10 +174,15 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     String homestayName = homestayMulti.getHomestayName();
                     CollapsingToolbarLayout mCollapsingToolbarLayout = findViewById(R.id.main_collapsing);
                     mCollapsingToolbarLayout.setTitle(homestayName);
+
+                    if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId()))
+                        btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_fav_act_35dp));
+                    else
+                        btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_black_24dp));
                     txtName.setText(homestayName);
-                    txtType.setText(homeStay.getType());
-                    txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
-                    txtCode.setText(homestaysID);
+                    txtType.setText(AmenityCollection.homeType().get(homeStay.getType()).toUpperCase());
+                    txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " BED ROOM");
+                    txtCode.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
                     txtHost.setText(homeStay.getHostEmail());
                     txtMaximunGuest.setText(homeStay.getMaximunGuest().toString());
@@ -148,10 +191,13 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     Utils.checkStringNull(txtBathNum, String.valueOf(homeStay.getBathRoom()));
                     txtAboutHome.setText(homestayMulti.getDescription());
                     txtprice.setText(Utils.formatPrice(homeStay.getPriceNightly()) + "/night");
-                    txtTotalAmen.setText("+ "+String.valueOf(listAmenity.size()));
-                    tvTotalPhoto.setText(String.valueOf("+ "+listHomeImg.size()));
+                    txtTotalAmen.setText("+ "+ listAmenity.size());
+                    txtTotalCul.setText("+ "+ homeStay.getHomestayCultures().size());
+//                    txtTotalCul.setText("+ "+ homeStay.getHomestayCultures().get(0).getCultureService().getEnglisgName());
+                    tvTotalPhoto.setText("+ "+ listHomeImg.size());
                     cancelType = homeStay.getCancelPolicy();
                     txtCancelType.setText(cancelType.toUpperCase());
+
 
                     if(!Utils.isNullOrEmpty(homestayMulti.getDesUnifuture())) {
                         layoutFeatur.setVisibility(View.VISIBLE);
@@ -172,6 +218,38 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     priceWeekend = Utils.formatPrice(homeStay.getPriceWeekend());
                     priceLongTerm = Utils.formatPrice(homeStay.getPriceLongTerm());
 
+                    feedBackList = homeStay.getFeedBack();
+                    if(feedBackList.isEmpty()){
+                        layoutReview.setVisibility(View.GONE);
+                        ratingBar.setVisibility(View.GONE);
+                    } else
+                    {
+                        FeedBack feedBack = feedBackList.get(0);
+                        for(FeedBack feedBack1 : feedBackList){
+                            totalRate += feedBack1.getStart();
+                        }
+                        ratingBar.setRating(Float.valueOf(totalRate/feedBackList.size()));
+                        tvDateFeedback.setText(Utils.formatDate(Utils.convertLongToDate(feedBack.getCreatedDate())));
+                        tvUserEmailFb.setText(feedBack.getUserEmail());
+                        tvStar.setText(String.valueOf(feedBack.getStart()));
+                        tvDesReview.setText(feedBack.getComment());
+                        if(feedBackList.size()<=1){
+                            btnShowAllReview.setVisibility(View.GONE);
+                        } else {
+                            btnShowAllReview.setText("Show "+feedBackList.size()+" reviews  >>");
+                        }
+                    }
+                    if(homeStay.getBookingMethod().equals(Constants.BOOKING_RES)){
+                        btnBooking.setText("Send Inquiry");
+                        iconBooking.setImageResource(R.drawable.ic_confirm);
+                        tvTypeBooking.setText("CONFIRMATION");
+                    } else {
+                        btnBooking.setText("Book Now");
+                        iconBooking.setImageResource(R.drawable.ic_booknow);
+                        tvTypeBooking.setText("INSTANT");
+                    }
+
+
                 } else {
                     Toast.makeText(ViewHomeDetailActivity.this, "No result", Toast.LENGTH_SHORT).show();
                 }
@@ -185,16 +263,17 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     public void loadJsonSimilarList(){
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<List<HomeStay>> call = iApi.getWishList(Constants.USER_ID, "en");
+
+        Call<List<HomeStay>> call = mService.getListHomestayByHostId(Constants.USER_ID, "en");
         call.enqueue(new Callback<List<HomeStay>>() {
             @Override
             public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
                 if(response.isSuccessful() && response.body()!=null ) {
-                    homestays = response.body();
-                    horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homestays);
+                    homeStays = response.body();
+                    horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homeStays);
                     rvSimilarListing.setLayoutManager(new LinearLayoutManager(ViewHomeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                     rvSimilarListing.setAdapter(horAdapter);
+//                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
                     horAdapter.notifyDataSetChanged();
                     initListener();
                 }
@@ -208,6 +287,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -215,6 +296,14 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 finish();
                 return true;
 
+            case R.id.fav:
+                if(wishlistService.checkIfHomestayInCurrentUserWishList(homestayID)){
+                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
+                    Constants.wishlists.add(new Wishlist(Constants.USER_ID, homestayID));
+                } else {
+                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
+                    Constants.wishlists.add(new Wishlist(Constants.USER_ID, homestayID));
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -222,12 +311,13 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     //add menu share + add wishlist
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_homedetail, menu);
+//        getMenuInflater().inflate(R.menu.menu_homedetail, menu);
         return true;
     }
 
     //Event when click button
-    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity})
+    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity,R.id.btnAddWishlist,R.id.btnCulture
+    ,R.id.btnShowAllReview})
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btnCancelPolicy:
@@ -257,6 +347,38 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 intent2.putExtra(Constants.HOMESTAY_ID,homestayID);
                 startActivity(intent2);
                 break;
+            case R.id.fav:
+                if(wishlistService.checkIfHomestayInCurrentUserWishList(homestayID)){
+                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
+                    break;
+                } else {
+                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
+                    break;
+                }
+            case R.id.btnAddWishlist:
+//                if(wishlistService.checkIfHomestayInCurrentUserWishList(homestayID)){
+//                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
+//                    btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_black_24dp));
+//                    break;
+//                } else {
+//                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
+//                    btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_fav_act_35dp));
+//                    break;
+//                }
+
+                wishlistService.addOrDelWishlist(Constants.USER_ID, homestayID,ViewHomeDetailActivity.this,btnAddWishlist);
+                break;
+            case  R.id.btnCulture:
+                Intent intentCul = new Intent(ViewHomeDetailActivity.this,ShowHomeCultureActivity.class);
+                intentCul.putExtra(Constants.HOMESTAY_ID,homestayID);
+                startActivity(intentCul);
+                break;
+            case  R.id.btnShowAllReview:
+                Intent intentRv = new Intent(ViewHomeDetailActivity.this,ShowReviewActivity.class);
+                intentRv.putExtra(Constants.HOMESTAY_ID,homestayID);
+                startActivity(intentRv);
+                break;
+
         }
     }
 
@@ -268,10 +390,9 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(ViewHomeDetailActivity.this, ViewHomeDetailActivity.class);
-                HomeStay homeStay = homestays.get(position);
+                HomeStay homeStay = homeStays.get(position);
                 intent.putExtra(Constants.HOMESTAY_ID, homeStay.getHomestayId());
                 startActivity(intent);
-
             }
         });
 
