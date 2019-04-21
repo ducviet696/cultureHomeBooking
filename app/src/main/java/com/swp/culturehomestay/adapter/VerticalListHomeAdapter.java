@@ -28,6 +28,7 @@ import com.swp.culturehomestay.fragments.main.WishlistFragment;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.WishlistService;
+import com.swp.culturehomestay.utils.AmenityCollection;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -66,10 +67,17 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         HomeStay homeStay = wishlists.get(position).getHomestay();
         String imgeUrl = Constants.BASE_URLIMG +homeStay.getImageProfileUrl();
         Utils.loadImge(context,holder.ivHome,imgeUrl);
+        if(homeStay.getBookingMethod().equals(Constants.BOOKING_RES)){
+            holder.iconBooking.setImageResource(R.drawable.ic_confirm);
+            holder.tvTypeBooking.setText("CONFIRMATION");
+        } else {
+            holder. iconBooking.setImageResource(R.drawable.ic_booknow);
+            holder. tvTypeBooking.setText("INSTANT");
+        }
 //        holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName().isEmpty()?homeStay.getHomestayMultis().get(1).getHomestayName():homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
-        holder.txtType.setText(homeStay.getType());
-        holder.txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " Bed Room");
+        holder.txtType.setText(AmenityCollection.homeType().get(homeStay.getType()).toUpperCase());
+        holder.txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " BED ROOM");
         holder.txtPrice.setText(Utils.formatPrice(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
         holder.btnDeleteWl.setOnClickListener(new View.OnClickListener() {
@@ -113,6 +121,10 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
         TextView txtPrice;
         @BindView(R.id.home_layout)
         CardView home_layout;
+        @BindView(R.id.iconBooking)
+        ImageView iconBooking;
+        @BindView(R.id.typeBooking)
+        TextView tvTypeBooking;
         OnItemClickListener onItemClickListener;
 
         public MyViewHolder(View itemView, OnItemClickListener onItemClickListener) {

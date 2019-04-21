@@ -12,6 +12,7 @@ public class Constants {
     public static final String BASE_URL = "http://222.252.30.110:8765/";
     public static final String HOMESTAY_ID = "HOMESTAY_ID";
     public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
+    public static final String CULTURE_ID_LIST = "cultureIdList";
     public static final String BOOKINGHOMEDETAILACTIVITY = "BookingHomeDetailActivity";
     public static final String HOME_FRAGMENT = "HomeFragment";
     public static final String CANCEL_TYPE = "CANCEL_TYPE";
@@ -28,6 +29,8 @@ public class Constants {
     public static final String BUNDLE = "BUNDLE";
     public static final int RESULT_CODE_CHANGE_GUEST = 22 ;
     public static List<Date> dateList = new ArrayList<>();
-    public static  List<Wishlist> wishlists  = new ArrayList<>();
+    public static List<Wishlist> wishlists  = new ArrayList<>();
+    public static ArrayList<Integer> cultureIdList = new ArrayList<>();
     public static final String MyPREFERENCES = "MyPrefs";
+    public static final String LANG = "en";
 }

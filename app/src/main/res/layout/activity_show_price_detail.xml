@@ -23,18 +23,19 @@
         android:textColor="@color/colorBlack"
         android:textSize="@dimen/large_text"
         android:textStyle="bold" />
+    <!--Normal day-->
     <RelativeLayout
         android:id="@+id/layoutNormalDay"
         android:layout_marginTop="@dimen/large_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="@string/normal_day"
+            android:text="Basic Fee"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
-            android:text="Everyday"
+            android:text="@string/all_of_day"
             android:id="@+id/tvCalPriceDay"
             android:layout_below="@id/tvTotalPricePerNight"
             android:layout_width="wrap_content"
@@ -49,13 +50,14 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
+    <!--Weekly-->
     <RelativeLayout
         android:id="@+id/layoutWeekly"
         android:layout_marginTop="@dimen/large_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="@string/day_of_week"
+            android:text="Holiday fee"
             android:textColor="@color/colorBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -74,12 +76,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+
+    <!--Culture fee-->
+    <RelativeLayout
+        android:id="@+id/layoutCultureFee"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="Culture service Fee"
+            android:textColor="@color/colorBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tvCalCultureFee"
+            android:text="Culture service price may be applied"
+            android:layout_below="@id/tvTotalPriceCultureFee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:gravity="center_horizontal"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorBlack"
+            android:text="$0"
+            android:id="@+id/tvTotalPriceCultureFee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <!--Holiday fee-->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="@dimen/default_padding"
         android:layout_marginBottom="@dimen/default_padding"
         android:background="@color/colorGray" />
+    <!--Total-->
     <RelativeLayout
         android:layout_marginTop="@dimen/large_margin"
         android:layout_width="match_parent"

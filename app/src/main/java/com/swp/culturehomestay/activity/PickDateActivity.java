@@ -10,9 +10,12 @@ import android.widget.TextView;
 import com.squareup.timessquare.CalendarPickerView;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.utils.Constants;
+import com.swp.culturehomestay.utils.Utils;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +58,18 @@ public class PickDateActivity extends AppCompatActivity {
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
 
+        datePicker.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        datePicker.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+            @Override
+            public boolean isDateSelectable(Date date) {
+                try {
+                    return isSelectable(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
         datePicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE)
         .withHighlightedDates(Constants.dateList);
@@ -113,5 +128,16 @@ public class PickDateActivity extends AppCompatActivity {
     @OnClick(R.id.tvBack)
     public void backClick() {
         finish();
+    }
+    private boolean isSelectable(Date date) throws ParseException {
+        ArrayList<Date> prevDates = new ArrayList<>();
+        prevDates.add(new SimpleDateFormat("dd/MM/yyyy").parse("24/04/2019"));
+        prevDates.add(new SimpleDateFormat("dd/MM/yyyy").parse("25/04/2019"));
+        Date date1 = date;
+        if ( prevDates.contains(date1))
+        {
+            return false;
+        }
+        return true;
     }
 }

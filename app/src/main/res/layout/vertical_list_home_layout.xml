@@ -32,6 +32,33 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp" />
 
+            <!--Type Booking-->
+            <LinearLayout
+                android:layout_margin="@dimen/large_margin"
+                android:layout_gravity="bottom|end|left"
+                android:id="@+id/layout_bookingMethod"
+                android:clickable="false"
+                android:background="@drawable/round_white"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iconBooking"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/ic_confirm"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginRight="5dp"/>
+
+                <TextView
+                    android:id="@+id/typeBooking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="Confirm"
+                    android:textColor="#fff"
+                    android:textStyle="bold" />
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
@@ -90,8 +117,10 @@
                 android:id="@+id/tvLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
         </RelativeLayout>
 
     </LinearLayout>
+
 
 </android.support.v7.widget.CardView>

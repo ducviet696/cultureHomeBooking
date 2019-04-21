@@ -6,10 +6,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
         android:paddingVertical="5dp"
-        android:background="@color/colorPrimaryButtonActive"
+        android:background="@color/colorPrimary"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/cbCulture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <TextView
             android:paddingHorizontal="@dimen/default_padding"
             android:id="@+id/tvNameCul"
@@ -29,6 +33,7 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
     <com.borjabravo.readmoretextview.ReadMoreTextView
+        android:paddingBottom="@dimen/default_padding"
         android:paddingHorizontal="@dimen/default_padding"
         android:id="@+id/tvDesCul"
         android:layout_width="match_parent"
