@@ -8,6 +8,8 @@ import com.swp.culturehomestay.models.LoginCredentials;
 import com.swp.culturehomestay.models.PriceGet;
 import com.swp.culturehomestay.models.PricePost;
 import com.swp.culturehomestay.models.ReservationModel;
+import com.swp.culturehomestay.models.SignUpCredentials;
+import com.swp.culturehomestay.models.SignUpResModel;
 import com.swp.culturehomestay.models.Wishlist;
 
 import java.util.List;
@@ -40,6 +42,9 @@ public interface IApi {
 
     @POST("auth")
     Call<AuthenticatioModel> doLogin(@Body LoginCredentials loginCredentials);
+
+    @POST("user/tenant/")
+    Call<SignUpResModel> createAccount(@Body SignUpCredentials signUpCredentials);
 
 //    @POST("user/wishlist")
     @HTTP(method = "POST", path = "user/wishlist", hasBody = true)
