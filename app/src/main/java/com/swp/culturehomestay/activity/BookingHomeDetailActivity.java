@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.PriceGet;
+import com.swp.culturehomestay.models.PricePost;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
@@ -57,6 +59,10 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     List<Date> dayListBooking = new ArrayList<>();
     String homeStayId;
     int guest = 1;
+    IApi mService;
+    Date dStart;
+    Date dEnd;
+
 
 //    List<Date> dateList;
 
@@ -65,7 +71,6 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==Constants.REQUEST_CODE) {
             if(resultCode==RESULT_OK){
-                txtDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
                 weeklyListBooking.clear();
                 dayListBooking.clear();
                 countDayWeekly();
@@ -77,22 +82,20 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_home_detail);
         ButterKnife.bind(this);
+        mService = Utils.getAPI();
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Bundle");
         homeStayId = bundle.getString(Constants.HOMESTAY_ID);
-        txtDateBooking.setText(Utils.formatDateShort(Constants.dateList.get(0)) + " - "+Utils.formatDateShort(Constants.dateList.get(Constants.dateList.size() - 1)));
+
         countDayWeekly();
         loadJson(homeStayId);
+        Log.d("cultureIdListDetail", "onClick: " + Constants.cultureIdList);
 
     }
     @OnClick(R.id.tvBack)
@@ -124,6 +127,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                 bundlePrice.putInt("numDayNormal", dayListBooking.size());
                 bundlePrice.putInt("numDayWeekly", weeklyListBooking.size());
                 bundlePrice.putInt("totalPrice", totalPrice);
+                bundlePrice.putString(Constants.HOMESTAY_ID, homeStayId);
                 intent.putExtra(Constants.BUNDLE, bundlePrice);
                 startActivityForResult(intent, Constants.REQUEST_CODE);
                 break;
@@ -144,8 +148,8 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
 
     //get homestay
     public void loadJson(String homestaysID) {
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<HomeStay> call = iApi.getHomeById(homestaysID,"en");
+
+        Call<HomeStay> call = mService.getHomeById(homestaysID,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
             public void onResponse(Call<HomeStay> call, Response<HomeStay> response) {
@@ -162,8 +166,11 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     priceLongTerm = homeStay.getPriceLongTerm()==null?0:homeStay.getPriceLongTerm();
                     guest = minGuest;
                     txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
-                    totalPrice = getTotalPrice();
-                    txtTotalPrice.setText(Utils.formatPrice(totalPrice));
+
+                    dStart = Constants.dateList.get(0);
+                    dEnd = Constants.dateList.get(Constants.dateList.size() - 1);
+                    txtDateBooking.setText(Utils.formatDateShort(dStart) + " - "+Utils.formatDateShort(dEnd));
+                    getTotalPrice();
 
                 }
             }
@@ -188,10 +195,20 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         }
     }
 
-    public int getTotalPrice(){
-        totalPricePerNight = dayListBooking.size() * priceNightly;
-        totalPricePerWeekly = weeklyListBooking.size() * priceWeekend;
-        return totalPricePerNight + totalPricePerWeekly;
+    public void getTotalPrice(){
+        PricePost pricePost = new PricePost(Constants.cultureIdList,homeStayId,dStart.getTime(),dEnd.getTime());
+        Call<PriceGet> call = mService.getPrice(pricePost,Constants.LANG);
+        call.enqueue(new Callback<PriceGet>() {
+            @Override
+            public void onResponse(Call<PriceGet> call, Response<PriceGet> response) {
+                txtTotalPrice.setText(Utils.formatPrice(response.body().getContent().getTotal()));
+            }
+
+            @Override
+            public void onFailure(Call<PriceGet> call, Throwable t) {
+
+            }
+        });
     }
 
 }

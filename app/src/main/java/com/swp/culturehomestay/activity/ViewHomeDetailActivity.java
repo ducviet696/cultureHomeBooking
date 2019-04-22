@@ -1,6 +1,7 @@
 package com.swp.culturehomestay.activity;
 
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -128,6 +129,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     ImageView iconBooking;
     @BindView(R.id.typeBooking)
     TextView tvTypeBooking;
+//    ArrayList<String> cultureIdList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +137,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_home_detail);
         // Bind widget
         ButterKnife.bind(this);
+        Constants.cultureIdList = new ArrayList<>();
         mService = Utils.getAPI();
         wishlistService = new WishlistService();
         //get homestayid from wishlistFragment
@@ -159,6 +162,14 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode==Constants.REQUEST_CODE)
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK){
+            Constants.cultureIdList = data.getIntegerArrayListExtra(Constants.CULTURE_ID_LIST);
+        }
+    }
 
     private void loadJson(String wishlistsID) {
         Call<HomeStay> call = mService.getHomeById(wishlistsID,"en");
@@ -257,7 +268,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<HomeStay> call, Throwable t) {
-                Log.d("AAA", "onFailure: "+t.getMessage());
             }
         });
     }
@@ -295,15 +305,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-
-            case R.id.fav:
-                if(wishlistService.checkIfHomestayInCurrentUserWishList(homestayID)){
-                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
-                    Constants.wishlists.add(new Wishlist(Constants.USER_ID, homestayID));
-                } else {
-                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
-                    Constants.wishlists.add(new Wishlist(Constants.USER_ID, homestayID));
-                }
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -347,31 +348,14 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 intent2.putExtra(Constants.HOMESTAY_ID,homestayID);
                 startActivity(intent2);
                 break;
-            case R.id.fav:
-                if(wishlistService.checkIfHomestayInCurrentUserWishList(homestayID)){
-                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
-                    break;
-                } else {
-                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
-                    break;
-                }
             case R.id.btnAddWishlist:
-//                if(wishlistService.checkIfHomestayInCurrentUserWishList(homestayID)){
-//                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
-//                    btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_black_24dp));
-//                    break;
-//                } else {
-//                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homestayID),ViewHomeDetailActivity.this);
-//                    btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_fav_act_35dp));
-//                    break;
-//                }
 
                 wishlistService.addOrDelWishlist(Constants.USER_ID, homestayID,ViewHomeDetailActivity.this,btnAddWishlist);
                 break;
             case  R.id.btnCulture:
                 Intent intentCul = new Intent(ViewHomeDetailActivity.this,ShowHomeCultureActivity.class);
                 intentCul.putExtra(Constants.HOMESTAY_ID,homestayID);
-                startActivity(intentCul);
+                startActivityForResult(intentCul,Constants.REQUEST_CODE);
                 break;
             case  R.id.btnShowAllReview:
                 Intent intentRv = new Intent(ViewHomeDetailActivity.this,ShowReviewActivity.class);

@@ -38,7 +38,6 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
     String dateCheckin, dateCheckout;
     @BindView(R.id.tvBack)
     TextView txtBack;
-//    List<Date> dateList;
     String homestaysID;
 
     @Override
@@ -55,6 +54,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
 
         datePicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE);
+
         datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {

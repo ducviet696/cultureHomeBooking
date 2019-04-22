@@ -3,9 +3,11 @@ package com.swp.culturehomestay.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.borjabravo.readmoretextview.ReadMoreTextView;
@@ -13,6 +15,7 @@ import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.HomestayCulture;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -22,6 +25,7 @@ public class CultureAdapter extends RecyclerView.Adapter<CultureAdapter.MyViewHo
     List<HomestayCulture> homestayCultureList;
     Context context;
     int res;
+    CheckboxCheckedListener checkboxCheckedListener;
 
     public CultureAdapter(List<HomestayCulture> homestayCultureList, Context context, int res) {
         this.homestayCultureList = homestayCultureList;
@@ -33,7 +37,7 @@ public class CultureAdapter extends RecyclerView.Adapter<CultureAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_culture,viewGroup,false);
-        return new MyViewHolder(view);
+        return new MyViewHolder(view,checkboxCheckedListener);
     }
 
     @Override
@@ -43,6 +47,17 @@ public class CultureAdapter extends RecyclerView.Adapter<CultureAdapter.MyViewHo
         myViewHolder.tvDesCul.setText(homestayCulture.getDiscription());
         myViewHolder.tvNameCul.setText(homestayCulture.getCultureService().getEnglisgName());
         myViewHolder.tvPriceCul.setText(Utils.formatPrice(homestayCulture.getPrice()));
+        myViewHolder.cbCulture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(checkboxCheckedListener!=null){
+                    checkboxCheckedListener.onCheckboxClick(i);
+                } else {
+                    Log.d("cultureIdList", "onClick: null" );
+                }
+
+            }
+        });
 
     }
 
@@ -52,17 +67,33 @@ public class CultureAdapter extends RecyclerView.Adapter<CultureAdapter.MyViewHo
 
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         @BindView(R.id.tvNameCul)
         TextView tvNameCul;
         @BindView(R.id.tvPriceCul)
         TextView tvPriceCul;
         @BindView(R.id.tvDesCul)
         TextView tvDesCul;
+        @BindView(R.id.cbCulture)
+        CheckBox cbCulture;
+        CheckboxCheckedListener checkboxCheckedListener;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view, CheckboxCheckedListener checkboxCheckedListener) {
            super(view);
             ButterKnife.bind(this,view);
+            this.checkboxCheckedListener = checkboxCheckedListener;
         }
+
+        @Override
+        public void onClick(View v) {
+            checkboxCheckedListener.onCheckboxClick(getAdapterPosition());
+        }
+    }
+    public interface CheckboxCheckedListener{
+        void onCheckboxClick(int position);
+    }
+
+    public void setCheckboxCheckedListener(CheckboxCheckedListener checkboxCheckedListener) {
+        this.checkboxCheckedListener = checkboxCheckedListener;
     }
 }
