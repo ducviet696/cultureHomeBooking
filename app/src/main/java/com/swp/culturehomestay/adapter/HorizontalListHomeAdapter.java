@@ -59,40 +59,29 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
         holder.txtName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
         holder.txtPrice.setText(Utils.formatPrice(homeStay.getPriceNightly()));
         holder.txtLocation.setText(homeStay.getAddress().getCityId());
-//        Log.d("Wishlist", "Wishlist: "+String.valueOf(listWishlist.size()));
-//        loadWishlist(context);
 
-        //EDM
-        if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId())){
-            holder.btnDelete.setImageResource(R.drawable.ic_favorite_black_24dp);
+        if(!Utils.checkLogin(context)){
+            holder.btnDelete.setVisibility(View.GONE);
         } else {
-            holder.btnDelete.setImageResource(R.drawable.ic_favorite_border_black_24dp);}
-        Log.d("WL", "Wiistlist: "+Constants.wishlists.size());
-//        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId())){
-//                    wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
-//                    holder.btnDelete.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-//                    Log.d("WL", "Wiistlistdel: "+Constants.wishlists.size());
-//                } else {
-//                    wishlistService.addHomeToWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
-//                    holder.btnDelete.setImageResource(R.drawable.ic_favorite_black_24dp);
-//                    Log.d("WL", "Wiistlistadd: "+Constants.wishlists.size());
-//                }
-//
-//            }
-//        });
+            holder.btnDelete.setVisibility(View.VISIBLE);
+//            //EDM
+//            if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId())){
+//                holder.btnDelete.setImageResource(R.drawable.ic_favorite_black_24dp);
+//            } else {
+//                holder.btnDelete.setImageResource(R.drawable.ic_favorite_border_black_24dp);}
+//            Log.d("WL", "Wiistlist: "+Constants.wishlists.size());
+//            //End  EDM
 
-        // End EDM
+            wishlistService.checkIfHomestayInCurrentUserWishList(Utils.getUserId(context),homeStay.getHomestayId(),context,holder.btnDelete,R.drawable.ic_favorite_black_24dp,R.drawable.ic_favorite_border_black_24dp);
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    wishlistService.addOrDelWishlist(Utils.getUserId(context),homeStay.getHomestayId(),context,holder.btnDelete,R.drawable.ic_favorite_black_24dp,R.drawable.ic_favorite_border_black_24dp);
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wishlistService.addOrDelWishlist(Constants.USER_ID,homeStay.getHomestayId(),context,holder.btnDelete,R.drawable.ic_favorite_black_24dp,R.drawable.ic_favorite_border_black_24dp);
+                }
+            });
+        }
 
-            }
-        });
 
     }
 

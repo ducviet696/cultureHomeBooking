@@ -93,19 +93,14 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
         View view = inflater.inflate(R.layout.fragment_wishlist, container, false);
         ButterKnife.bind(this,view);
         mService = Utils.getAPI();
-        wishlistService = new WishlistService(this);
+        wishlistService = new WishlistService(this,getContext());
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
-        if(isLogin){
-            onLoadingSwipeRefresh();
-        } else {
-            showMessageNotLogin(R.drawable.sad,"Please login to see your wishlish","");
-        }
-
+        onLoadingSwipeRefresh();
         return view;
 
     }
@@ -177,6 +172,7 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
 
     public void showMessageNotLogin(int imageView, String title, String message) {
 
+        showErrorLayout();
         errorImage.setImageResource(imageView);
         errorTitle.setText(title);
         errorMessage.setText(message);
