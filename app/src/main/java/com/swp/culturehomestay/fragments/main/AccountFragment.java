@@ -38,6 +38,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -55,7 +57,7 @@ public class AccountFragment extends Fragment {
     Button loginBtn;
     Button logoutBtn;
     Button signUpBtn;
-    ImageView proImage;
+    CircleImageView proImage;
     UserDetailModel userDetailModel;
     TextView userName;
     RelativeLayout btnCusProfile;
@@ -72,7 +74,7 @@ public class AccountFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_account, container, false);
         viewNoLoginAccount = (LinearLayout)view.findViewById(R.id.noLogin_Account);
         viewLoginAccount = (LinearLayout) view.findViewById(R.id.login_Account);
-        proImage = (ImageView) view.findViewById(R.id.profileImage);
+        proImage = (CircleImageView) view.findViewById(R.id.profileImage);
         new LoadImage().execute("https://cdn3.iconfinder.com/data/icons/avatars-15/64/-26-512.png");
         if(checkLogin()){
             viewNoLoginAccount.setVisibility(View.GONE);
