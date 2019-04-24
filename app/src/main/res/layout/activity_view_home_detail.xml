@@ -281,7 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="2:0 PM"
+                        android:text="10:00 AM"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/normal_text" />
 
@@ -290,7 +290,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="10:0 AM"
+                        android:text="10:00 AM"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/colorBlack"
                         android:textSize="@dimen/normal_text" />

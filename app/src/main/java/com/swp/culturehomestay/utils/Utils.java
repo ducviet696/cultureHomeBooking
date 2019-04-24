@@ -1,10 +1,12 @@
 package com.swp.culturehomestay.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -150,5 +152,21 @@ public class Utils {
     //get API
     public static IApi getAPI() {
         return ApiClient.getApiClient().create(IApi.class);
+    }
+
+    //Get UserId
+    public static String getUserId(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MyPREFERENCES,Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("userId",null);
+        Log.d("UserId", "UserId: " + userId);
+        return userId ;
+    }
+    //CheckLogin
+    public  static boolean checkLogin(Context context){
+        if(isNullOrEmpty(getUserId(context))){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

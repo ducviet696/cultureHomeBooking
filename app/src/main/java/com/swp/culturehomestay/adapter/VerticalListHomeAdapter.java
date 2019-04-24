@@ -84,7 +84,7 @@ public class VerticalListHomeAdapter  extends RecyclerView.Adapter<VerticalListH
             @Override
             public void onClick(View v) {
                 notifyItemRemoved(position);
-                wishlistService.deleteHomeFromWishlist(new Wishlist(Constants.USER_ID, homeStay.getHomestayId()),context);
+                wishlistService.deleteHomeFromWishlist(new Wishlist(Utils.getUserId(context), homeStay.getHomestayId()),context);
                 wishlistFragment.onLoadingSwipeRefresh();
             }
         });

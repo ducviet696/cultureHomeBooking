@@ -20,19 +20,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WishlistService{
+public class WishlistService {
 
     WishlistView view;
     List<Wishlist> wishlists = new ArrayList<>();
+    Context context;
 
     public WishlistService() {
     }
 
-    public WishlistService(WishlistView view) {
+    public WishlistService(WishlistView view, Context context) {
+        this.context = context;
         this.view = view;
     }
 
-    public void addHomeToWishlist(Wishlist wishlist, Context context ){
+    public void addHomeToWishlist(Wishlist wishlist, Context context) {
         Call<Wishlist> call = Utils.getAPI().addToWishlist(wishlist);
         call.enqueue(new Callback<Wishlist>() {
             @Override
@@ -48,7 +50,7 @@ public class WishlistService{
         });
     }
 
-    public void deleteHomeFromWishlist(Wishlist wishlist, Context context){
+    public void deleteHomeFromWishlist(Wishlist wishlist, Context context) {
 
         Call<Wishlist> call = Utils.getAPI().deleteWishlist(wishlist);
         call.enqueue(new Callback<Wishlist>() {
@@ -64,20 +66,22 @@ public class WishlistService{
             }
         });
     }
+
+    //Using for Horizontal Adapter
     public void addOrDelWishlist(String tenantId, String homestayId, Context context, ImageView imageView, int add, int del) {
-        Call<CheckWL> call = Utils.getAPI().checkWishlist(tenantId,homestayId);
+        Call<CheckWL> call = Utils.getAPI().checkWishlist(tenantId, homestayId);
         call.enqueue(new Callback<CheckWL>() {
             @Override
             public void onResponse(Call<CheckWL> call, Response<CheckWL> response) {
-                if(response.isSuccessful() && response.body()!= null){
-                    if(response.body().getContent()==0){
-                        addHomeToWishlist(new Wishlist(tenantId,homestayId), context);
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getContent() == 0) {
+                        addHomeToWishlist(new Wishlist(tenantId, homestayId), context);
                         imageView.setImageResource(add);
-                        Log.d("addOrDelWishlist", "onResponse: "+response.body().getContent());
+                        Log.d("addOrDelWishlist", "onResponse: " + response.body().getContent());
                     } else {
-                        deleteHomeFromWishlist(new Wishlist(tenantId,homestayId), context);
+                        deleteHomeFromWishlist(new Wishlist(tenantId, homestayId), context);
                         imageView.setImageResource(del);
-                        Log.d("addOrDelWishlist", "onResponse: "+response.body().getContent());
+                        Log.d("addOrDelWishlist", "onResponse: " + response.body().getContent());
                     }
                 }
             }
@@ -89,20 +93,64 @@ public class WishlistService{
         });
     }
 
+    //Using for For Floating Action button on  ViewHomeDetailActivity
     public void addOrDelWishlist(String tenantId, String homestayId, Context context, FloatingActionButton fab) {
-        Call<CheckWL> call = Utils.getAPI().checkWishlist(tenantId,homestayId);
+        Call<CheckWL> call = Utils.getAPI().checkWishlist(tenantId, homestayId);
         call.enqueue(new Callback<CheckWL>() {
             @Override
             public void onResponse(Call<CheckWL> call, Response<CheckWL> response) {
-                if(response.isSuccessful() && response.body()!= null){
-                    if(response.body().getContent()==0){
-                        addHomeToWishlist(new Wishlist(tenantId,homestayId), context);
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getContent() == 0) {
+                        addHomeToWishlist(new Wishlist(tenantId, homestayId), context);
                         fab.setImageResource(R.drawable.ic_fav_act_35dp);
-                        Log.d("addOrDelWishlist", "onResponse: "+response.body().getContent());
+                        Log.d("addOrDelWishlist", "onResponse: " + response.body().getContent());
                     } else {
-                        deleteHomeFromWishlist(new Wishlist(tenantId,homestayId), context);
+                        deleteHomeFromWishlist(new Wishlist(tenantId, homestayId), context);
                         fab.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                        Log.d("addOrDelWishlist", "onResponse: "+response.body().getContent());
+                        Log.d("addOrDelWishlist", "onResponse: " + response.body().getContent());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckWL> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //Using to show icon wishlish
+    public void checkIfHomestayInCurrentUserWishList(String tenantId, String homestayId, Context context, ImageView imageView, int add, int del) {
+        Call<CheckWL> call = Utils.getAPI().checkWishlist(tenantId, homestayId);
+        call.enqueue(new Callback<CheckWL>() {
+            @Override
+            public void onResponse(Call<CheckWL> call, Response<CheckWL> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getContent() == 0) {
+                        imageView.setImageResource(del);
+                    } else {
+                        imageView.setImageResource(add);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CheckWL> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void checkIfHomestayInCurrentUserWishList(String tenantId, String homestayId, Context context, FloatingActionButton fab, int add, int del) {
+        Call<CheckWL> call = Utils.getAPI().checkWishlist(tenantId, homestayId);
+        call.enqueue(new Callback<CheckWL>() {
+            @Override
+            public void onResponse(Call<CheckWL> call, Response<CheckWL> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getContent() == 0) {
+                        fab.setImageResource(del);
+                    } else {
+                        fab.setImageResource(add);
                     }
                 }
             }
@@ -116,72 +164,66 @@ public class WishlistService{
 
 
     public boolean checkIfHomestayInCurrentUserWishList(String homestayId) {
-//            Call<List<Wishlist>> call = Utils.getAPI().getWishList(Constants.USER_ID,"en");
-//            call.enqueue(new Callback<List<Wishlist>>() {
-//                @Override
-//                public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
-//
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<List<Wishlist>> call, Throwable t) {
-//
-//                }
-//            });
 
         for (Wishlist wishlist : Constants.wishlists) {
             if (wishlist.getHomestayId().equals(homestayId)) {
                 return true;
-            }}
-            return false;
+            }
+        }
+        return false;
 
     }
 
     public void displayWishList() {
 //        errorLayout.setVisibility(View.GONE);
         view.showLoading();
-        Call<List<Wishlist>> call = Utils.getAPI().getWishList(Constants.USER_ID, "en");
-        call.enqueue(new Callback<List<Wishlist>>() {
-            @Override
-            public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
-                view.hideLoading();
-                if (response.isSuccessful() && response.body() != null) {
-                    if(!wishlists.isEmpty()){
-                        wishlists.clear();
+        if (Utils.checkLogin(context)) {
+            Call<List<Wishlist>> call = Utils.getAPI().getWishList(Utils.getUserId(context), "en");
+            call.enqueue(new Callback<List<Wishlist>>() {
+                @Override
+                public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
+                    view.hideLoading();
+                    if (response.isSuccessful() && response.body() != null) {
+                        if (!wishlists.isEmpty()) {
+                            wishlists.clear();
+                        }
+                        wishlists = response.body();
+                        Constants.wishlists = wishlists;
+                        view.onLoadWishlistSucces(wishlists);
+
+                    } else {
+                        view.showErrorLayout();
+                        String errorCode;
+                        switch (response.code()) {
+                            case 404:
+                                errorCode = "404 not found";
+                                break;
+                            case 500:
+                                errorCode = "500 server broken";
+                                break;
+                            default:
+                                errorCode = "unknown error";
+                                break;
+                        }
+
+                        view.showErrorMessage(
+                                R.drawable.no_result,
+                                "No Result",
+                                "Please Try Again!\n" +
+                                        errorCode);
+
                     }
-                    wishlists = response.body();
-                    Constants.wishlists = wishlists;
-                    view.onLoadWishlistSucces(wishlists);
-
-                } else {
-                    view.showErrorLayout();
-                    String errorCode;
-                    switch (response.code()) {
-                        case 404:
-                            errorCode = "404 not found";
-                            break;
-                        case 500:
-                            errorCode = "500 server broken";
-                            break;
-                        default:
-                            errorCode = "unknown error";
-                            break;
-                    }
-
-                    view.showErrorMessage(
-                            R.drawable.no_result,
-                            "No Result",
-                            "Please Try Again!\n" +
-                                    errorCode);
-
                 }
-            }
 
-            @Override
-            public void onFailure(Call<List<Wishlist>> call, Throwable t) {
-               view.onLoadWishlistError(t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<List<Wishlist>> call, Throwable t) {
+                    view.onLoadWishlistError(t.getMessage());
+                }
+            });
+        } else {
+            view.hideLoading();
+            view.showMessageNotLogin(R.drawable.sad, "Please login to see your wishlish", "");
+        }
+
     }
 }

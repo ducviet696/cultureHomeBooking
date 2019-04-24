@@ -186,10 +186,15 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     CollapsingToolbarLayout mCollapsingToolbarLayout = findViewById(R.id.main_collapsing);
                     mCollapsingToolbarLayout.setTitle(homestayName);
 
-                    if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId()))
-                        btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_fav_act_35dp));
-                    else
-                        btnAddWishlist.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_black_24dp));
+                    if(!Utils.checkLogin(ViewHomeDetailActivity.this)){
+                        btnAddWishlist.hide();
+                        btnAddWishlist.setVisibility(View.GONE);
+                    } else {
+                        btnAddWishlist.show();
+                        wishlistService.checkIfHomestayInCurrentUserWishList(Utils.getUserId(ViewHomeDetailActivity.this),homeStay.getHomestayId(),
+                                ViewHomeDetailActivity.this,btnAddWishlist,R.drawable.ic_fav_act_35dp,R.drawable.ic_favorite_border_black_24dp);
+                    }
+
                     txtName.setText(homestayName);
                     txtType.setText(AmenityCollection.homeType().get(homeStay.getType()).toUpperCase());
                     txtBedroomNum.setText(" \u25CF "+String.valueOf(homeStay.getNumberRoom()) + " BED ROOM");
@@ -350,7 +355,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 break;
             case R.id.btnAddWishlist:
 
-                wishlistService.addOrDelWishlist(Constants.USER_ID, homestayID,ViewHomeDetailActivity.this,btnAddWishlist);
+                wishlistService.addOrDelWishlist(Utils.getUserId(ViewHomeDetailActivity.this), homestayID,ViewHomeDetailActivity.this,btnAddWishlist);
                 break;
             case  R.id.btnCulture:
                 Intent intentCul = new Intent(ViewHomeDetailActivity.this,ShowHomeCultureActivity.class);
