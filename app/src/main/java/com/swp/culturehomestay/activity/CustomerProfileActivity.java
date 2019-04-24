@@ -25,8 +25,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
 
     Spinner genderSpinner;
     UserDetailModel userDetailModel;
-    TextInputEditText firstName;
-    TextInputEditText lastName;
+    TextInputEditText fullName;
     TextInputEditText email;
     TextInputEditText phoneNumber;
     TextInputEditText address;
@@ -39,8 +38,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_profile);
         genderSpinner = (Spinner) findViewById(R.id.spinner_gender);
-        firstName = (TextInputEditText) findViewById(R.id.firstName);
-        lastName = (TextInputEditText) findViewById(R.id.lastName);
+        fullName = (TextInputEditText) findViewById(R.id.fullName);
         email = (TextInputEditText) findViewById(R.id.email);
         phoneNumber = (TextInputEditText) findViewById(R.id.phoneNumber);
         address = (TextInputEditText) findViewById(R.id.address);
@@ -48,8 +46,6 @@ public class CustomerProfileActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender_array, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(arrayAdapter);
-        client = new OkHttpClient();
-        doGetRequest("http://dummy.restapiexample.com/api/v1/employees");
         userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
         fillDataCustomer(userDetailModel);
         btnCusBack = (Button) findViewById(R.id.cusBack);
@@ -69,27 +65,11 @@ public class CustomerProfileActivity extends AppCompatActivity {
         }else{
             genderSpinner.setSelection(1);
         }
-        firstName.setText(userDetailModel.getFirstName());
-        lastName.setText(userDetailModel.getLastName());
+        fullName.setText(userDetailModel.getFirstName());
         email.setText(userDetailModel.getEmail());
         phoneNumber.setText(userDetailModel.getPhoneNumber());
         address.setText(userDetailModel.getAddress());
         description.setText(userDetailModel.getInfoDescription());
 
-    }
-
-    private void doGetRequest (String url){
-        final Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                result = "false";
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                result = response.body().toString();
-            }
-        });
     }
 }

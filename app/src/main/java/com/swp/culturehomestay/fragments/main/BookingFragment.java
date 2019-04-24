@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.BookingAdapter;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.OrderBookingModel;
 import com.swp.culturehomestay.models.ReservationModel;
+import com.swp.culturehomestay.models.ResultBookingHistoryModel;
 import com.swp.culturehomestay.models.SearchBody;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.HomeStayService;
@@ -38,7 +40,7 @@ public class BookingFragment extends Fragment {
     private List<ReservationModel> reservationList = new ArrayList<>();
     private RecyclerView rv;
     private BookingAdapter adapter;
-
+    private TextView totalCountHistory;
     public BookingFragment() {
         // Required empty public constructor
     }
@@ -54,26 +56,28 @@ public class BookingFragment extends Fragment {
         reservationList = new ArrayList<>();
         rv = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         rv.setLayoutManager( new LinearLayoutManager(getActivity()));
+        totalCountHistory = view.findViewById(R.id.lbl_totalBooking);
         loadData();
         return view;
     }
 
     private void loadData(){
         IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<List<ReservationModel>> call = iApi.getReservationsHistory("8da46239-3d7c-4c40-a59c-5e7dbe22ee68");
-        call.enqueue(new Callback<List<ReservationModel>>(){
+        Call<ResultBookingHistoryModel> call = iApi.getReservationsHistory("a0a82435-d293-4703-8a24-494e42609f22");
+        call.enqueue(new Callback<ResultBookingHistoryModel>() {
 
             @Override
-            public void onResponse(Call<List<ReservationModel>> call, Response<List<ReservationModel>> response) {
+            public void onResponse(Call<ResultBookingHistoryModel> call, Response<ResultBookingHistoryModel> response) {
                 try{
                     if (response.isSuccessful() && response.body() != null) {
 
                         if ((!reservationList.isEmpty())) {
                             reservationList.clear();
                         }
-                        reservationList = response.body();
+                        reservationList = response.body().getContent();
                         adapter = new BookingAdapter(reservationList);
                         rv.setAdapter(adapter);
+                        totalCountHistory.setText("Total booking: "+reservationList.size());
                     } else {
                         String errorCode;
                         switch (response.code()) {
@@ -87,17 +91,17 @@ public class BookingFragment extends Fragment {
                                 errorCode = "unknown error";
                                 break;
                         }
-                        Log.d("DATA", errorCode);
+                        Log.d("Booking", errorCode);
                     }
                 }catch (Exception e){
-                    Log.d("DATA", e.getMessage());
+                    Log.d("Booking", e.getMessage());
                 }
 
             }
 
             @Override
-            public void onFailure(Call<List<ReservationModel>> call, Throwable t) {
-                Log.d("DATA", t.getMessage());
+            public void onFailure(Call<ResultBookingHistoryModel> call, Throwable t) {
+                Log.d("Booking", t.getMessage());
             }
         });
     }

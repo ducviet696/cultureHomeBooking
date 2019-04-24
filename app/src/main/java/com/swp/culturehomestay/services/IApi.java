@@ -8,6 +8,7 @@ import com.swp.culturehomestay.models.LoginCredentials;
 import com.swp.culturehomestay.models.PriceGet;
 import com.swp.culturehomestay.models.PricePost;
 import com.swp.culturehomestay.models.ReservationModel;
+import com.swp.culturehomestay.models.ResultBookingHistoryModel;
 import com.swp.culturehomestay.models.SignUpCredentials;
 import com.swp.culturehomestay.models.SignUpResModel;
 import com.swp.culturehomestay.models.Wishlist;
@@ -36,8 +37,8 @@ public interface IApi {
            @Path("id") String id,
            @Query("lang") String language
    );
-    @GET("transaction/reservations/user/{id}")
-    Call<List<ReservationModel>> getReservationsHistory(
+    @GET("transaction/reservations/tenant/{id}")
+    Call<ResultBookingHistoryModel> getReservationsHistory(
             @Path("id") String id
     );
 

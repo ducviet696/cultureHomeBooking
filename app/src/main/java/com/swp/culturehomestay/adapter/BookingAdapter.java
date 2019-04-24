@@ -39,8 +39,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         TextView roomname = viewHolder.roomname;
         TextView dateCheckIn = viewHolder.dateCheckIn;
         TextView dateCheckOut = viewHolder.dateCheckOut;
-        homestayName.setText(order.getHomestayId());
-        totalPayment.setText(order.getPaymentWant().getCurrency());
+        homestayName.setText(order.getHouseCode());
+        totalPayment.setText(order.getTotalFee()+"$");
         if(order.getNumRoom()!= null){
             roomname.setText(order.getNumRoom().toString());
         }else{

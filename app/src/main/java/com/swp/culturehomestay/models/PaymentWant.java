@@ -21,12 +21,9 @@ public class PaymentWant {
     @SerializedName("currency")
     @Expose
     private String currency;
-    @SerializedName("urlForpay")
-    @Expose
-    private String urlForpay;
     @SerializedName("total")
     @Expose
-    private Integer total;
+    private double total;
     @SerializedName("interact")
     @Expose
     private String interact;
@@ -39,6 +36,9 @@ public class PaymentWant {
     @SerializedName("editedDate")
     @Expose
     private long editedDate;
+    @SerializedName("purpose")
+    @Expose
+    private String purpose;
 
     public String getTransactionId() {
         return transactionId;
@@ -80,19 +80,11 @@ public class PaymentWant {
         this.currency = currency;
     }
 
-    public String getUrlForpay() {
-        return urlForpay;
-    }
-
-    public void setUrlForpay(String urlForpay) {
-        this.urlForpay = urlForpay;
-    }
-
-    public Integer getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -126,6 +118,14 @@ public class PaymentWant {
 
     public void setEditedDate(long editedDate) {
         this.editedDate = editedDate;
+    }
+
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
     }
 
 }
