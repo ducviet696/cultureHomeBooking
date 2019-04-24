@@ -13,6 +13,10 @@ public class PricePost {
     @SerializedName("homestayId")
     @Expose
     private String homestayId;
+    @SerializedName("numRoom")
+    @Expose
+    private Integer numRoom;
+
     @SerializedName("dStart")
     @Expose
     private long dStart;
@@ -25,14 +29,16 @@ public class PricePost {
         return "PricePost{" +
                 "cultureServiceBeans=" + cultureServiceBeans +
                 ", homestayId='" + homestayId + '\'' +
+                ", numRoom=" + numRoom +
                 ", dStart=" + dStart +
                 ", dEnd=" + dEnd +
                 '}';
     }
 
-    public PricePost(ArrayList<Integer> cultureServiceBeans, String homestayId, long dStart, long dEnd) {
+    public PricePost(ArrayList<Integer> cultureServiceBeans, String homestayId, Integer numRoom, long dStart, long dEnd) {
         this.cultureServiceBeans = cultureServiceBeans;
         this.homestayId = homestayId;
+        this.numRoom = numRoom;
         this.dStart = dStart;
         this.dEnd = dEnd;
     }

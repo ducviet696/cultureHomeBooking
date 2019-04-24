@@ -39,7 +39,8 @@ public class PickDateActivity extends AppCompatActivity {
     String dateCheckin, dateCheckout;
     @BindView(R.id.tvBack)
     TextView txtBack;
-    List<Date> dateList = new ArrayList<>();
+    List<Date> listDateBooking = new ArrayList<>();
+    List<Date> listDateBookingPrevious = new ArrayList<>();
     String homestaysID;
     String previousActtivity;
     @BindView(R.id.btnSave)
@@ -53,26 +54,26 @@ public class PickDateActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         previousActtivity = bundle.getString(Constants.ACTIVITY_NAME);
-//        Constants.dateList = (List<Date>) bundle.getSerializable("listDate");
+        listDateBookingPrevious = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
 
         datePicker.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        datePicker.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
-            @Override
-            public boolean isDateSelectable(Date date) {
-                try {
-                    return isSelectable(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }
-        });
+//        datePicker.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+//            @Override
+//            public boolean isDateSelectable(Date date) {
+//                try {
+//                    return isSelectable(date);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                return false;
+//            }
+//        });
         datePicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE)
-        .withHighlightedDates(Constants.dateList);
+        .withHighlightedDates(listDateBookingPrevious);
 //                .withSelectedDates(Constants.dateList);
         datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
@@ -93,8 +94,7 @@ public class PickDateActivity extends AppCompatActivity {
 
                 btnSave.setEnabled(true);
                 btnSave.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButtonActive));
-                Constants.dateList = datePicker.getSelectedDates();
-                dateList = datePicker.getSelectedDates();
+                listDateBooking = datePicker.getSelectedDates();
 
             }
 
@@ -114,11 +114,12 @@ public class PickDateActivity extends AppCompatActivity {
         Log.d("btnSaveClicked", "btnSaveClicked: "+previousActtivity);
         if (previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)) {
             Intent intent = new Intent();
+            intent.putExtra(Constants.LIST_DATE_BOOKING,(Serializable) listDateBooking);
             setResult(RESULT_OK,intent);
             finish();
         } else if (previousActtivity.equals(Constants.HOME_FRAGMENT)) {
             Intent intent = new Intent();
-            intent.putExtra("dateList",(Serializable) dateList);
+            intent.putExtra(Constants.LIST_DATE_BOOKING,(Serializable) listDateBooking);
             setResult(RESULT_OK,intent);
             finish();
         }

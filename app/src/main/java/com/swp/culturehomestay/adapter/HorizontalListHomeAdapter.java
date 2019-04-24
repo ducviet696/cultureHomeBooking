@@ -46,7 +46,6 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.horizontal_list_home_layout,viewGroup,false);
-        loadWishlist(context);
         return new MyViewHolder(view,onItemClickListener);
     }
 
@@ -83,23 +82,6 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
         }
 
 
-    }
-
-    //load Wishlist(){
-    public void loadWishlist(Context context){
-        Call<List<Wishlist>> call = Utils.getAPI().getWishList(Constants.USER_ID,"en");
-        call.enqueue(new Callback<List<Wishlist>>() {
-            @Override
-            public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
-                Constants.wishlists = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<List<Wishlist>> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
     }
 
 

@@ -25,6 +25,7 @@ import butterknife.OnClick;
 
 public class BookingHomePickDateActivity extends AppCompatActivity {
 
+
     @BindView(R.id.calendar)
     CalendarPickerView datePicker;
     @BindView(R.id.btnNext)
@@ -39,6 +40,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
     @BindView(R.id.tvBack)
     TextView txtBack;
     String homestaysID;
+    List<Date> listDateBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,8 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
 
                 btnNext.setEnabled(true);
                 btnNext.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButtonActive));
-                Constants.dateList = datePicker.getSelectedDates();
+//                Constants.dateList = datePicker.getSelectedDates();
+                listDateBooking = datePicker.getSelectedDates();
 
             }
 
@@ -94,13 +97,10 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
     public void nextStep() {
         Intent intent = new Intent(BookingHomePickDateActivity.this, BookingHomeDetailActivity.class);
         Bundle bundle = new Bundle();
-//        bundle.putSerializable("listDate", (Serializable) dateList);
+        bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
         bundle.putString(Constants.HOMESTAY_ID,homestaysID);
         intent.putExtra("Bundle", bundle);
         startActivity(intent);
-//        startActivityForResult(intent, 2);
-//        setResult(96,intent);
-////        finish();
     }
     @OnClick(R.id.tvBack)
     public void backClick()

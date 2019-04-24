@@ -11,6 +11,7 @@ import com.swp.culturehomestay.models.ReservationModel;
 import com.swp.culturehomestay.models.SignUpCredentials;
 import com.swp.culturehomestay.models.SignUpResModel;
 import com.swp.culturehomestay.models.Wishlist;
+import com.swp.culturehomestay.models.WishlistBean;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ import retrofit2.http.Query;
 
 public interface IApi {
    @GET ("user/{userid}/wishlists")
-    Call<List<Wishlist>> getWishList(
+        Call<WishlistBean> getWishList(
            @Path("userid") String id,
            @Query("lang") String language
    );

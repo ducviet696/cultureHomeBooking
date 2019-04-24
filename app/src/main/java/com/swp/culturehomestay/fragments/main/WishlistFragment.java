@@ -224,8 +224,9 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
         showErrorMessage(
                 R.drawable.oops,
                 "Oops..",
-                "Network failure, Please Try Again\n" +
+                "Error\n" +
                         mess);
+        Log.d("WiL", "onLoadWishlistError: "+mess);
     }
 
     @Override

@@ -28,9 +28,12 @@ public class Constants {
     public static final int REQUEST_CODE_HOME_FRAGMENT = 1102;
     public static final String BUNDLE = "BUNDLE";
     public static final int RESULT_CODE_CHANGE_GUEST = 22 ;
+    public static final String LIST_DATE_BOOKING = "LIST_DATE_BOOKING";
     public static List<Date> dateList = new ArrayList<>();
     public static List<Wishlist> wishlists  = new ArrayList<>();
     public static ArrayList<Integer> cultureIdList = new ArrayList<>();
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String LANG = "en";
+    public static final String CODE_OK = "00";
+    public static final String CODE_FAIL = "06";
 }

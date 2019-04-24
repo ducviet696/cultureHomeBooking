@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.CheckWL;
 import com.swp.culturehomestay.models.Wishlist;
+import com.swp.culturehomestay.models.WishlistBean;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -178,16 +179,16 @@ public class WishlistService {
 //        errorLayout.setVisibility(View.GONE);
         view.showLoading();
         if (Utils.checkLogin(context)) {
-            Call<List<Wishlist>> call = Utils.getAPI().getWishList(Utils.getUserId(context), "en");
-            call.enqueue(new Callback<List<Wishlist>>() {
+            Call<WishlistBean> call = Utils.getAPI().getWishList(Utils.getUserId(context), "en");
+            call.enqueue(new Callback<WishlistBean>() {
                 @Override
-                public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
+                public void onResponse(Call<WishlistBean> call, Response<WishlistBean> response) {
                     view.hideLoading();
                     if (response.isSuccessful() && response.body() != null) {
                         if (!wishlists.isEmpty()) {
                             wishlists.clear();
                         }
-                        wishlists = response.body();
+                        wishlists = response.body().getWishlistList();
                         Constants.wishlists = wishlists;
                         view.onLoadWishlistSucces(wishlists);
 
@@ -216,8 +217,8 @@ public class WishlistService {
                 }
 
                 @Override
-                public void onFailure(Call<List<Wishlist>> call, Throwable t) {
-                    view.onLoadWishlistError(t.getMessage());
+                public void onFailure(Call<WishlistBean> call, Throwable t) {
+                    view.onLoadWishlistError(t.getLocalizedMessage());
                 }
             });
         } else {

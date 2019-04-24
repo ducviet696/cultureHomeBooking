@@ -84,7 +84,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         mService = Utils.getAPI();
-        loadWishlist(getContext());
+//        loadWishlist(getContext());
         swipeRefreshLayout.setOnRefreshListener(this);
         displayMostCultureHomeStayList();
         displayHomestayForRickList();
@@ -224,19 +224,19 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     //load Wishlist(){
-    public void loadWishlist(Context context){
-        Call<List<Wishlist>> call = Utils.getAPI().getWishList(Constants.USER_ID,"en");
-        call.enqueue(new Callback<List<Wishlist>>() {
-            @Override
-            public void onResponse(Call<List<Wishlist>> call, Response<List<Wishlist>> response) {
-                Constants.wishlists = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<List<Wishlist>> call, Throwable t) {
-                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-    }
+//    public void loadWishlist(Context context){
+//        Call<WishlistBean> call = Utils.getAPI().getWishList(Constants.USER_ID,"en");
+//        call.enqueue(new Callback<List<Wishlist>>() {
+//            @Override
+//            public void onResponse(Call<WishlistBean> call, Response<List<Wishlist>> response) {
+//                Constants.wishlists = response.body();
+//            }
+//
+//            @Override
+//            public void onFailure(Call<WishlistBean> call, Throwable t) {
+//                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
+//    }
 }

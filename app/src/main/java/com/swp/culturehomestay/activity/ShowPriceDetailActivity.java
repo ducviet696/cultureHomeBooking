@@ -30,9 +30,6 @@ import retrofit2.Response;
 
 public class ShowPriceDetailActivity extends AppCompatActivity {
 
-//    List<Date> dateListBooking;
-//    List<Date> weeklyListBooking = new ArrayList<>();
-//    List<Date> dayListBooking = new ArrayList<>();
     @BindView(R.id.layoutNormalDay)
     RelativeLayout layoutNormalDay;
     @BindView(R.id.layoutWeekly)
@@ -49,7 +46,6 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
     TextView tvTotalPrice;
     @BindView(R.id.tvTotalPriceCultureFee)
     TextView tvTotalPriceCultureFee;
-    int priceNightly, priceWeekend, priceLongTerm, totalPrice, totalPricePerNight, totalPricePerWeekly, numDayNormal,numDayWeekly;
     String homestayId;
 
     @Override
@@ -58,46 +54,15 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show_price_detail);
         ButterKnife.bind(this);
         getData();
-
-//        bindDataToView();
-
-
-
-    }
-    public void bindDataToView(){
-        if(numDayNormal > 0) {
-            totalPricePerNight = numDayNormal * priceNightly;
-            tvTotalPricePerNight.setText(Utils.formatPrice(totalPricePerNight));
-            tvCalPriceDay.setText(Utils.formatPrice(priceNightly)+" x "+ String.valueOf(numDayNormal) +" night(s)");
-        } else {
-            totalPricePerNight = 0;
-            layoutNormalDay.setVisibility(View.GONE);
-        }
-        if(numDayWeekly > 0) {
-            totalPricePerWeekly = numDayWeekly * priceWeekend;
-            tvTotalPricePerWeekly.setText(Utils.formatPrice(totalPricePerWeekly));
-            tvCalWeekly.setText(Utils.formatPrice(priceWeekend)+" x "+ String.valueOf(numDayWeekly) +" night(s)");
-        } else {
-            totalPricePerWeekly = 0;
-            layoutWeekly.setVisibility(View.GONE);
-        }
-
-        totalPrice = totalPricePerNight + totalPricePerWeekly;
-        tvTotalPrice.setText(Utils.formatPrice(totalPrice));
     }
 
     public void getData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
-        priceNightly = bundle.getInt("priceNightly");
-        priceWeekend = bundle.getInt("priceWeekend");
-        priceLongTerm = bundle.getInt("priceLongTerm");
-        numDayNormal = bundle.getInt("numDayNormal");
-        numDayWeekly = bundle.getInt("numDayWeekly");
-        totalPrice = bundle.getInt("totalPrice");
         homestayId = bundle.getString(Constants.HOMESTAY_ID);
-        PricePost pricePost = new PricePost(Constants.cultureIdList,homestayId,Constants.dateList.get(0)
-                .getTime(),Constants.dateList.get(Constants.dateList.size()-1).getTime());
+        List<Date> listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+        PricePost pricePost = new PricePost(Constants.cultureIdList,homestayId,2,listDateBooking.get(0)
+                .getTime(),listDateBooking.get(listDateBooking.size()-1).getTime());
         Call<PriceGet> call = Utils.getAPI().getPrice(pricePost,Constants.LANG);
         call.enqueue(new Callback<PriceGet>() {
             @Override
@@ -106,13 +71,8 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
                     Content content = response.body().getContent();
                     tvTotalPrice.setText(Utils.formatPrice(content.getTotal()));
                     tvTotalPricePerNight.setText(Utils.formatPrice(content.getBasicFee()));
-//                    tvCalPriceDay.setText(Utils.formatPrice(priceNightly)+"normal day(s) x "+ String.valueOf(numDayNormal) +" night(s), " +
-//                            Utils.formatPrice(priceWeekend)+" weekly x "+ String.valueOf(numDayWeekly) +" night(s)");
-//                    tvCalPriceDay.setText(R.string.ni);
                     tvTotalPriceCultureFee.setText(Utils.formatPrice(content.getCultureFee()));
                     tvTotalPricePerWeekly.setText(Utils.formatPrice(content.getHollidayFee()));
-//                    Log.d("price", "dStart: " + Constants.dateList.get(0)
-//                            .getTime()+"\ndEnd"+ Constants.dateList.get(Constants.dateList.size()-1).getTime());
                     Log.d("Price", "onResponse: "+ pricePost + content);
                 }
 

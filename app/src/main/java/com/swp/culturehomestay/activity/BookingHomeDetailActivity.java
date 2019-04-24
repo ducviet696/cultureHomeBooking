@@ -57,6 +57,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     int priceNightly, priceWeekend, priceLongTerm, totalPrice, totalPricePerNight, totalPricePerWeekly;
     List<Date> weeklyListBooking = new ArrayList<>();
     List<Date> dayListBooking = new ArrayList<>();
+    List<Date> listDateBooking = new ArrayList<>();
     String homeStayId;
     int guest = 1;
     IApi mService;
@@ -71,10 +72,8 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==Constants.REQUEST_CODE) {
             if(resultCode==RESULT_OK){
-                weeklyListBooking.clear();
-                dayListBooking.clear();
-                countDayWeekly();
-                loadJson(homeStayId);
+                listDateBooking = (List<Date>) data.getSerializableExtra(Constants.LIST_DATE_BOOKING);
+                loadHomestayFromID(homeStayId);
             } else if(resultCode ==Constants.RESULT_CODE_CHANGE_GUEST) {
                 guest = data.getIntExtra("totalGuest",minGuest);
                 txtTotalGuest.setText(String.valueOf(guest));
@@ -91,10 +90,9 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         mService = Utils.getAPI();
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Bundle");
+        listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
         homeStayId = bundle.getString(Constants.HOMESTAY_ID);
-
-        countDayWeekly();
-        loadJson(homeStayId);
+        loadHomestayFromID(homeStayId);
         Log.d("cultureIdListDetail", "onClick: " + Constants.cultureIdList);
 
     }
@@ -109,34 +107,13 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     public void onClickView(View view) {
         switch (view.getId()) {
             case R.id.btnTotalGuest:
-                Intent intentGuest = new Intent(BookingHomeDetailActivity.this, ChangeNumberOfGuestActivity.class);
-                Bundle bundleGuest = new Bundle();
-                bundleGuest.putInt("Min",minGuest);
-                bundleGuest.putInt("Max",maxGuest);
-                bundleGuest.putInt("Guest",guest);
-                bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
-                intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
-                startActivityForResult(intentGuest,Constants.REQUEST_CODE);
+                changeGuestNumber();
                 break;
             case R.id.btnTotalPrice:
-                Intent intent = new Intent(BookingHomeDetailActivity.this, ShowPriceDetailActivity.class);
-                Bundle bundlePrice = new Bundle();
-                bundlePrice.putInt("priceNightly", priceNightly);
-                bundlePrice.putInt("priceWeekend", priceWeekend);
-                bundlePrice.putInt("priceLongTerm", priceLongTerm);
-                bundlePrice.putInt("numDayNormal", dayListBooking.size());
-                bundlePrice.putInt("numDayWeekly", weeklyListBooking.size());
-                bundlePrice.putInt("totalPrice", totalPrice);
-                bundlePrice.putString(Constants.HOMESTAY_ID, homeStayId);
-                intent.putExtra(Constants.BUNDLE, bundlePrice);
-                startActivityForResult(intent, Constants.REQUEST_CODE);
+                showPriceDetailActivity();
                 break;
             case R.id.btnDateBooking:
-                Intent intentDate = new Intent(BookingHomeDetailActivity.this, PickDateActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
-                intentDate.putExtra(Constants.BUNDLE, bundle);
-                startActivityForResult(intentDate, Constants.REQUEST_CODE);
+                showPickDateActivity();
                 break;
             case R.id.btnNext:
                 Intent intentNext = new Intent(BookingHomeDetailActivity.this, BookingHomeConfirmActivity.class);
@@ -145,9 +122,37 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void showPickDateActivity() {
+        Intent intentDate = new Intent(BookingHomeDetailActivity.this, PickDateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
+        bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        intentDate.putExtra(Constants.BUNDLE, bundle);
+        startActivityForResult(intentDate, Constants.REQUEST_CODE);
+    }
 
-    //get homestay
-    public void loadJson(String homestaysID) {
+    private void showPriceDetailActivity() {
+        Intent intent = new Intent(BookingHomeDetailActivity.this, ShowPriceDetailActivity.class);
+        Bundle bundlePrice = new Bundle();
+        bundlePrice.putString(Constants.HOMESTAY_ID, homeStayId);
+        bundlePrice.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        intent.putExtra(Constants.BUNDLE, bundlePrice);
+        startActivityForResult(intent, Constants.REQUEST_CODE);
+    }
+
+    private void changeGuestNumber() {
+        Intent intentGuest = new Intent(BookingHomeDetailActivity.this, ChangeNumberOfGuestActivity.class);
+        Bundle bundleGuest = new Bundle();
+        bundleGuest.putInt("Min",minGuest);
+        bundleGuest.putInt("Max",maxGuest);
+        bundleGuest.putInt("Guest",guest);
+        bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
+        intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
+        startActivityForResult(intentGuest,Constants.REQUEST_CODE);
+    }
+
+
+    public void loadHomestayFromID(String homestaysID) {
 
         Call<HomeStay> call = mService.getHomeById(homestaysID,"en");
         call.enqueue(new Callback<HomeStay>() {
@@ -166,12 +171,10 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     priceLongTerm = homeStay.getPriceLongTerm()==null?0:homeStay.getPriceLongTerm();
                     guest = minGuest;
                     txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
-
-                    dStart = Constants.dateList.get(0);
-                    dEnd = Constants.dateList.get(Constants.dateList.size() - 1);
+                    dStart = listDateBooking.get(0);
+                    dEnd = listDateBooking.get(listDateBooking.size() - 1);
                     txtDateBooking.setText(Utils.formatDateShort(dStart) + " - "+Utils.formatDateShort(dEnd));
                     getTotalPrice();
-
                 }
             }
 
@@ -182,31 +185,26 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
             }
         });
     }
-
-    public void  countDayWeekly(){
-        String[] weekly = {"Fri","Sat","Sun"};
-        ArrayList<String> listWeekly = new ArrayList<String>(Arrays.asList(weekly));
-        for(Date date : Constants.dateList) {
-            if(listWeekly.contains(Utils.formatDayOfWeek(date))){
-                weeklyListBooking.add(date);
-            } else {
-                dayListBooking.add(date);
-            }
-        }
-    }
-
     public void getTotalPrice(){
-        PricePost pricePost = new PricePost(Constants.cultureIdList,homeStayId,dStart.getTime(),dEnd.getTime());
+        PricePost pricePost = new PricePost(Constants.cultureIdList,homeStayId,guest,dStart.getTime(),dEnd.getTime());
         Call<PriceGet> call = mService.getPrice(pricePost,Constants.LANG);
         call.enqueue(new Callback<PriceGet>() {
             @Override
             public void onResponse(Call<PriceGet> call, Response<PriceGet> response) {
-                txtTotalPrice.setText(Utils.formatPrice(response.body().getContent().getTotal()));
+              if(response.isSuccessful() && response.body()!= null){
+                  if(response.body().getCode().equals(Constants.CODE_OK)){
+                      txtTotalPrice.setText(Utils.formatPrice(response.body().getContent().getTotal()));
+                      Log.d("Price", "onSucces code: "+response.body().getCode()+"\n"+"PricePost: "+ pricePost.toString());
+                  } else {
+                      Log.d("Price", "onFailure code: "+response.body().getCode()+"\n"+"PricePost: "+ pricePost.toString());
+                  }
+
+              }
             }
 
             @Override
             public void onFailure(Call<PriceGet> call, Throwable t) {
-
+                Log.d("Price", "onFailure: "+ t.getMessage());
             }
         });
     }
