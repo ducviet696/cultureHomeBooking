@@ -14,79 +14,77 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ChangeNumberOfGuestActivity extends AppCompatActivity {
 
-    @BindView(R.id.tvGuestNum)
-    TextView txtGuestNum;
+
+public class ChangeNumberOfRoomActivity extends AppCompatActivity {
+    @BindView(R.id.tvroomNum)
+    TextView tvroomNum;
     @BindView(R.id.btnMinus)
     ImageView btnMinus;
     @BindView(R.id.btnAdd)
     ImageView btnAdd;
-    int minGuest, maxGuest;
-    int guest;
+    int minRoom,maxRoom;
+    int room;
     String previousActtivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_number_of_guest);
+        setContentView(R.layout.activity_change_number_of_room);
         ButterKnife.bind(this);
         getData();
     }
+
     public void getData() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
-        minGuest = bundle.getInt("Min");
-        maxGuest = bundle.getInt("Max");
-        guest = bundle.getInt("Guest");
-        txtGuestNum.setText(String.valueOf(guest));
+        minRoom = bundle.getInt("Min");
+        maxRoom = bundle.getInt("Max");
+        room = bundle.getInt("Room");
+        tvroomNum.setText(String.valueOf(room));
         previousActtivity = bundle.getString(Constants.ACTIVITY_NAME);
         setVisiableButton();
     }
-    public void setVisiableButton(){
-        if(guest == minGuest){
+
+    public void setVisiableButton() {
+        if (room == minRoom) {
             btnMinus.setEnabled(false);
-            btnAdd.setEnabled(true);
-        } else if(guest == maxGuest) {
-            btnAdd.setEnabled(false);;
-            btnMinus.setEnabled(true);
+        } else if (room == maxRoom) {
+            btnAdd.setEnabled(false);
+
         } else {
             btnMinus.setEnabled(true);
             btnAdd.setEnabled(true);
         }
     }
-    @OnClick({R.id.btnAdd,R.id.btnMinus,R.id.btnSave})
-    public void onClickView(View view)
-    {
-        switch (view.getId())  {
+
+    @OnClick({R.id.btnAdd, R.id.btnMinus, R.id.btnSave})
+    public void onClickView(View view) {
+        switch (view.getId()) {
             case R.id.btnAdd:
-                guest++;
+                room++;
+                tvroomNum.setText(String.valueOf(room));
                 setVisiableButton();
-                txtGuestNum.setText(String.valueOf(guest));
-            break;
+                break;
             case R.id.btnMinus:
-                guest--;
+                room--;
+                tvroomNum.setText(String.valueOf(room));
                 setVisiableButton();
-                txtGuestNum.setText(String.valueOf(guest));
                 break;
             case R.id.btnSave:
                 if (previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)) {
-                    onSaveClick();
-                    break; }
-                else if (previousActtivity.equals(Constants.HOME_FRAGMENT)) {
-                    onSaveClick();
+                    Intent intent = new Intent();
+                    intent.putExtra("totalGuest", room);
+                    setResult(Constants.RESULT_CODE_CHANGE_ROOM, intent);
+                    finish();
                     break;
-                } else if (previousActtivity.equals(Constants.ADVANCE_SEARCH_ACTIVITY)){
-                    onSaveClick();
+                } else if (previousActtivity.equals(Constants.ADVANCE_SEARCH_ACTIVITY)) {
+                    Intent intent = new Intent();
+                    intent.putExtra("totalRoom", room);
+                    setResult(Constants.RESULT_CODE_CHANGE_ROOM, intent);
+                    finish();
                     break;
                 }
         }
-    }
-
-    private void onSaveClick() {
-        Intent intent = new Intent();
-        intent.putExtra("totalGuest", guest);
-        setResult(Constants.RESULT_CODE_CHANGE_GUEST, intent);
-        finish();
     }
 
     @OnClick(R.id.tvClose)

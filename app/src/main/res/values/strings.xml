@@ -63,4 +63,7 @@ for best support.</string>
     <string name="location_or_homestay_name">Location or Homestay name</string>
     <string name="search">Search</string>
     <string name="most_culture_listing">Most Culture Listing</string>
+    <string name="warning">Choosing this accommodation, You will have to wait for the host to confirm the room before payment.
+    If you need to book now, please select the accommodation with the \"Instant\" icon.</string>
+    <string name="instant_booking">Booking without waiting for the host to respond</string>
 </resources>

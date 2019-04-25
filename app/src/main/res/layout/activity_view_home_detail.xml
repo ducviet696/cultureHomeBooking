@@ -152,16 +152,21 @@
 
             <!--HOST Info-->
             <LinearLayout
+                android:id="@+id/btnHostDetail"
+                android:clickable="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:drawableEnd="@drawable/ic_next"
+                    android:clickable="false"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="HOSTED BY" />
 
                 <TextView
+                    android:clickable="false"
                     android:id="@+id/tvHostName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -179,8 +184,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/default_padding"
-                android:weightSum="4">
+                android:weightSum="5">
 
+                <TextView
+                    android:id="@+id/tvRoomType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_house"
+                    android:text="8 people"
+                    android:textAlignment="center" />
                 <TextView
                     android:id="@+id/tvPeople"
                     android:layout_width="wrap_content"

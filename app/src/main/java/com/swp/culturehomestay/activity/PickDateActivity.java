@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.squareup.timessquare.CalendarPickerView;
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.models.DateBooked;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -24,6 +25,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PickDateActivity extends AppCompatActivity {
@@ -41,6 +45,7 @@ public class PickDateActivity extends AppCompatActivity {
     TextView txtBack;
     List<Date> listDateBooking = new ArrayList<>();
     List<Date> listDateBookingPrevious = new ArrayList<>();
+    List<Date> listDateDisable = new ArrayList<>();
     String homestaysID;
     String previousActtivity;
     @BindView(R.id.btnSave)
@@ -55,22 +60,30 @@ public class PickDateActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         previousActtivity = bundle.getString(Constants.ACTIVITY_NAME);
         listDateBookingPrevious = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+        if(previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)){
+            listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
+        }
+        if(previousActtivity.equals(Constants.ADVANCE_SEARCH_ACTIVITY)){
+            btnSave.setEnabled(true);
+            btnSave.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButtonActive));
+        }
+
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
 
         datePicker.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-//        datePicker.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
-//            @Override
-//            public boolean isDateSelectable(Date date) {
-//                try {
-//                    return isSelectable(date);
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                }
-//                return false;
-//            }
-//        });
+        datePicker.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+            @Override
+            public boolean isDateSelectable(Date date) {
+                try {
+                    return isSelectable(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+        });
         datePicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE)
         .withHighlightedDates(listDateBookingPrevious);
@@ -109,36 +122,38 @@ public class PickDateActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isSelectable(Date date) throws ParseException {
+        for (Date date1 : listDateDisable){
+            if(date1.equals(date)){
+                return  false;
+            }
+        }
+        return true;
+    }
+
     @OnClick(R.id.btnSave)
     public void btnSaveClicked() {
         Log.d("btnSaveClicked", "btnSaveClicked: "+previousActtivity);
         if (previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)) {
-            Intent intent = new Intent();
-            intent.putExtra(Constants.LIST_DATE_BOOKING,(Serializable) listDateBooking);
-            setResult(RESULT_OK,intent);
-            finish();
+            onSaveClick();
         } else if (previousActtivity.equals(Constants.HOME_FRAGMENT)) {
-            Intent intent = new Intent();
-            intent.putExtra(Constants.LIST_DATE_BOOKING,(Serializable) listDateBooking);
-            setResult(RESULT_OK,intent);
-            finish();
+            onSaveClick();
+        } else if (previousActtivity.equals(Constants.ADVANCE_SEARCH_ACTIVITY)) {
+            onSaveClick();
         }
 
+    }
+
+    private void onSaveClick() {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @OnClick(R.id.tvBack)
     public void backClick() {
         finish();
     }
-    private boolean isSelectable(Date date) throws ParseException {
-        ArrayList<Date> prevDates = new ArrayList<>();
-        prevDates.add(new SimpleDateFormat("dd/MM/yyyy").parse("24/04/2019"));
-        prevDates.add(new SimpleDateFormat("dd/MM/yyyy").parse("25/04/2019"));
-        Date date1 = date;
-        if ( prevDates.contains(date1))
-        {
-            return false;
-        }
-        return true;
-    }
+
 }

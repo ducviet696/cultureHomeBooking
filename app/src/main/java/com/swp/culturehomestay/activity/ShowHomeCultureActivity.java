@@ -90,10 +90,10 @@ public class ShowHomeCultureActivity extends AppCompatActivity {
                             @Override
                             public void onCheckboxClick(int position) {
                                 String cultureServiceId = homestayCultureList.get(position).getCultureServiceId();
-                                if (cultureIdList.contains(cultureServiceId)) {
-                                    cultureIdList.remove(cultureServiceId);
+                                if (cultureIdList.contains(Integer.valueOf(cultureServiceId))) {
+                                    cultureIdList.remove(Integer.valueOf(cultureServiceId));
                                 } else {
-                                    cultureIdList.add(Integer.valueOf(cultureServiceId));
+                                    cultureIdList.add(Integer.valueOf(Integer.valueOf(cultureServiceId)));
                                 }
                                 Log.d("cultureIdList", "onClick: " + cultureIdList);
                             }

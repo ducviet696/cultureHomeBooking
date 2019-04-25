@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.activity.AdvanceSearchActivity;
 import com.swp.culturehomestay.activity.BookingHomeDetailActivity;
 import com.swp.culturehomestay.activity.ChangeNumberOfGuestActivity;
 import com.swp.culturehomestay.activity.PickDateActivity;
@@ -35,6 +36,7 @@ import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,6 +78,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private HorizontalListHomeAdapter horAdapter;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    private List<Date> listDateBooking = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,9 +98,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==Constants.REQUEST_CODE_HOME_FRAGMENT){
             if(resultCode==RESULT_OK) {
-                List<Date> dateList = (List<Date>)data.getSerializableExtra("dateList");
-                tvCheckin.setText(Utils.formatDayOfWeekFull(dateList.get(0)));
-                tvCheckout.setText(Utils.formatDayOfWeekFull(dateList.get(dateList.size()-1)));
+                listDateBooking = (List<Date>)data.getSerializableExtra(Constants.LIST_DATE_BOOKING);
+                tvCheckin.setText(Utils.formatDayOfWeekFull(listDateBooking.get(0)));
+                tvCheckout.setText(Utils.formatDayOfWeekFull(listDateBooking.get(listDateBooking.size()-1)));
                 tvCheckin.setTextColor(getResources().getColor(R.color.colorBlack));
                 tvCheckout.setTextColor(getResources().getColor(R.color.colorBlack));
             } else if(resultCode==Constants.RESULT_CODE_CHANGE_GUEST) {
@@ -107,22 +110,14 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
-    @OnClick({R.id.tvCheckin,R.id.tvCheckout,R.id.tvTotalGuest,R.id.tvSearch})
+    @OnClick({R.id.tvCheckin,R.id.tvCheckout,R.id.tvTotalGuest,R.id.tvSearch, R.id.btnSearch})
     public void onClickView(View view){
         switch (view.getId()){
             case R.id.tvCheckin:
-                Intent intentDate = new Intent(getContext(), PickDateActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.ACTIVITY_NAME,Constants.HOME_FRAGMENT);
-                intentDate.putExtra(Constants.BUNDLE, bundle);
-                startActivityForResult(intentDate, Constants.REQUEST_CODE_HOME_FRAGMENT);
+                onCheckInOutClick();
                 break;
             case R.id.tvCheckout:
-                Intent intentDate2 = new Intent(getContext(), PickDateActivity.class);
-                Bundle bundle2 = new Bundle();
-                bundle2.putString(Constants.ACTIVITY_NAME,Constants.HOME_FRAGMENT);
-                intentDate2.putExtra(Constants.BUNDLE, bundle2);
-                startActivityForResult(intentDate2, Constants.REQUEST_CODE_HOME_FRAGMENT);
+                onCheckInOutClick();
                 break;
             case R.id.tvTotalGuest:
                 Intent intentGuest = new Intent(getContext(), ChangeNumberOfGuestActivity.class);
@@ -137,8 +132,22 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             case R.id.tvSearch:
                 Intent intentSearch = new Intent(getContext(), SearchViaMapActivity.class);
                 startActivity(intentSearch);
+                break;
+            case R.id.btnSearch:
+                Intent intentSearchAdv = new Intent(getContext(), AdvanceSearchActivity.class);
+                startActivity(intentSearchAdv);
+                break;
         }
 
+    }
+
+    private void onCheckInOutClick() {
+        Intent intentDate = new Intent(getContext(), PickDateActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.ACTIVITY_NAME, Constants.HOME_FRAGMENT);
+        bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        intentDate.putExtra(Constants.BUNDLE, bundle);
+        startActivityForResult(intentDate, Constants.REQUEST_CODE_HOME_FRAGMENT);
     }
 
     @Override
@@ -223,20 +232,4 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         displayHomestayForRickList();
     }
 
-    //load Wishlist(){
-//    public void loadWishlist(Context context){
-//        Call<WishlistBean> call = Utils.getAPI().getWishList(Constants.USER_ID,"en");
-//        call.enqueue(new Callback<List<Wishlist>>() {
-//            @Override
-//            public void onResponse(Call<WishlistBean> call, Response<List<Wishlist>> response) {
-//                Constants.wishlists = response.body();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<WishlistBean> call, Throwable t) {
-//                Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
-//    }
 }

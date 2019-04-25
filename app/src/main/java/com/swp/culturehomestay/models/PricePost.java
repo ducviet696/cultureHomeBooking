@@ -17,6 +17,10 @@ public class PricePost {
     @Expose
     private Integer numRoom;
 
+    @SerializedName("numberPeople")
+    @Expose
+    private Integer numberPeople;
+
     @SerializedName("dStart")
     @Expose
     private long dStart;
@@ -24,21 +28,51 @@ public class PricePost {
     @Expose
     private long dEnd;
 
+    public Integer getNumRoom() {
+        return numRoom;
+    }
+
+    public void setNumRoom(Integer numRoom) {
+        this.numRoom = numRoom;
+    }
+
+    public Integer getNumberPeople() {
+        return numberPeople;
+    }
+
+    public void setNumberPeople(Integer numberPeople) {
+        this.numberPeople = numberPeople;
+    }
+
+    public long getdStart() {
+        return dStart;
+    }
+
+    public void setdStart(long dStart) {
+        this.dStart = dStart;
+    }
+
+    public long getdEnd() {
+        return dEnd;
+    }
+
     @Override
     public String toString() {
         return "PricePost{" +
                 "cultureServiceBeans=" + cultureServiceBeans +
                 ", homestayId='" + homestayId + '\'' +
                 ", numRoom=" + numRoom +
+                ", numberPeople=" + numberPeople +
                 ", dStart=" + dStart +
                 ", dEnd=" + dEnd +
                 '}';
     }
 
-    public PricePost(ArrayList<Integer> cultureServiceBeans, String homestayId, Integer numRoom, long dStart, long dEnd) {
+    public PricePost(ArrayList<Integer> cultureServiceBeans, String homestayId, Integer numRoom, Integer numberPeople, long dStart, long dEnd) {
         this.cultureServiceBeans = cultureServiceBeans;
         this.homestayId = homestayId;
         this.numRoom = numRoom;
+        this.numberPeople = numberPeople;
         this.dStart = dStart;
         this.dEnd = dEnd;
     }

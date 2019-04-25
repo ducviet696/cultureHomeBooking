@@ -1,9 +1,11 @@
 package com.swp.culturehomestay.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -28,10 +30,13 @@ import com.swp.culturehomestay.adapter.HorizontalListHomeAdapter;
 import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.fragments.main.HomeFragment;
 import com.swp.culturehomestay.models.Amenity;
+import com.swp.culturehomestay.models.DateBooked;
 import com.swp.culturehomestay.models.FeedBack;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.HomestayImage;
 import com.swp.culturehomestay.models.HomestayMulti;
+import com.swp.culturehomestay.models.SearchHomeGet;
+import com.swp.culturehomestay.models.SearchHomePost;
 import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
@@ -41,7 +46,11 @@ import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -129,8 +138,14 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     ImageView iconBooking;
     @BindView(R.id.typeBooking)
     TextView tvTypeBooking;
-//    ArrayList<String> cultureIdList = new ArrayList<>();
-
+    @BindView(R.id.tvRoomType)
+    TextView tvRoomType;
+    @BindView(R.id.btnHostDetail)
+    LinearLayout btnHostDetail;
+    HomeStay homeStay;
+    List<Date> listDateDisable = new ArrayList<>();
+    String hostId, bookingMethod;
+    String cityId ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,11 +155,11 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         Constants.cultureIdList = new ArrayList<>();
         mService = Utils.getAPI();
         wishlistService = new WishlistService();
-        //get homestayid from wishlistFragment
         Intent intent = getIntent();
         homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
-        loadJson(homestayID);
-        loadJsonSimilarList();
+        getDateBooked(homestayID);
+        loadHomeStayById(homestayID);
+        loadJsonSimilarList(cityId);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -154,9 +169,11 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         btnBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ViewHomeDetailActivity.this, BookingHomePickDateActivity.class);
-                intent.putExtra(Constants.HOMESTAY_ID, homestayID);
-                startActivity(intent);
+                if(bookingMethod.equals(Constants.BOOKING_RES)){
+                    showDialogReqBook();
+                } else {
+                    startPickDateActivity();
+                }
             }
         });
 
@@ -171,13 +188,14 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void loadJson(String wishlistsID) {
+    private void loadHomeStayById(String wishlistsID) {
         Call<HomeStay> call = mService.getHomeById(wishlistsID,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
             public void onResponse(Call<HomeStay> call, Response<HomeStay> response) {
                 if(response.isSuccessful() && response.body()!= null) {
-                    HomeStay homeStay = response.body();
+                    homeStay = response.body();
+                    cityId =  homeStay.getAddress().getCityId();
                     listHomeImg = homeStay.getHomestayImages();
                     listAmenity = homeStay.getAmenities();
                     Utils.loadImge(ViewHomeDetailActivity.this,ivHomeProfile, Constants.BASE_URLIMG+homeStay.getImageProfileUrl());
@@ -185,7 +203,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     String homestayName = homestayMulti.getHomestayName();
                     CollapsingToolbarLayout mCollapsingToolbarLayout = findViewById(R.id.main_collapsing);
                     mCollapsingToolbarLayout.setTitle(homestayName);
-
+                    hostId = homeStay.getHostId();
                     if(!Utils.checkLogin(ViewHomeDetailActivity.this)){
                         btnAddWishlist.hide();
                         btnAddWishlist.setVisibility(View.GONE);
@@ -201,10 +219,12 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     txtCode.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
                     txtHost.setText(homeStay.getHostEmail());
-                    txtMaximunGuest.setText(homeStay.getMaximunGuest().toString());
-                    txtnumberRoom.setText(String.valueOf(homeStay.getNumberRoom()));
-                    txtBedNum.setText(String.valueOf(homeStay.getNumberRoom()*2));
+                    tvRoomType.setText(homeStay.getRoomType().toUpperCase());
+                    txtMaximunGuest.setText(homeStay.getMaximunGuest().toString()+ " Persons");
+                    txtnumberRoom.setText(String.valueOf(homeStay.getNumberRoom() + " Rooms"));
+                    txtBedNum.setText(String.valueOf(homeStay.getNumberRoom()*2) + " Beds");
                     Utils.checkStringNull(txtBathNum, String.valueOf(homeStay.getBathRoom()));
+                    txtBathNum.setText(homeStay.getBathRoom()!=null? String.valueOf(homeStay.getBathRoom())+" Bathrooms": "1 Bathrooms");
                     txtAboutHome.setText(homestayMulti.getDescription());
                     txtprice.setText(Utils.formatPrice(homeStay.getPriceNightly()) + "/night");
                     txtTotalAmen.setText("+ "+ listAmenity.size());
@@ -255,7 +275,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                             btnShowAllReview.setText("Show "+feedBackList.size()+" reviews  >>");
                         }
                     }
-                    if(homeStay.getBookingMethod().equals(Constants.BOOKING_RES)){
+                    bookingMethod = homeStay.getBookingMethod();
+                    if(bookingMethod.equals(Constants.BOOKING_RES)){
                         btnBooking.setText("Send Inquiry");
                         iconBooking.setImageResource(R.drawable.ic_confirm);
                         tvTypeBooking.setText("CONFIRMATION");
@@ -264,8 +285,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                         iconBooking.setImageResource(R.drawable.ic_booknow);
                         tvTypeBooking.setText("INSTANT");
                     }
-
-
                 } else {
                     Toast.makeText(ViewHomeDetailActivity.this, "No result", Toast.LENGTH_SHORT).show();
                 }
@@ -277,31 +296,71 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void loadJsonSimilarList(){
-
-        Call<List<HomeStay>> call = mService.getListHomestayByHostId(Constants.USER_ID, "en");
-        call.enqueue(new Callback<List<HomeStay>>() {
+    public void loadJsonSimilarList(String cityId){
+        Log.d("cityId", "cityId: " +cityId);
+        SearchHomePost searchHomePost = new SearchHomePost(0,10,1,cityId,"");
+        Call<SearchHomeGet> call = mService.getHomeBySearch(searchHomePost, Constants.LANG);
+        call.enqueue(new Callback<SearchHomeGet>() {
             @Override
-            public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
+            public void onResponse(Call<SearchHomeGet> call, Response<SearchHomeGet> response) {
                 if(response.isSuccessful() && response.body()!=null ) {
-                    homeStays = response.body();
+                    List<HomeStay> homeStays = response.body().getHomeStayList();
+                    Log.d("homeStays", "onResponse: "+ "ko null");
                     horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homeStays);
                     rvSimilarListing.setLayoutManager(new LinearLayoutManager(ViewHomeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                     rvSimilarListing.setAdapter(horAdapter);
-//                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
                     horAdapter.notifyDataSetChanged();
-                    initListener();
+                    onClickHomestay();
                 }
+                Log.d("homeStays", "onResponse: " + response.errorBody() + response.code() + response.headers());
             }
 
             @Override
-            public void onFailure(Call<List<HomeStay>> call, Throwable t) {
-
+            public void onFailure(Call<SearchHomeGet> call, Throwable t) {
+                Log.d("homeStays", "onFailure: "+t.getMessage());
             }
         });
 
     }
 
+    //load list Date
+    public void getDateBooked(String homestaysID) {
+        Call<DateBooked> call = Utils.getAPI().getDateBooked(homestaysID, 1);
+        call.enqueue(new Callback<DateBooked>() {
+            @Override
+            public void onResponse(Call<DateBooked> call, Response<DateBooked> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    if (response.body().getCode().equals(Constants.CODE_OK)) {
+                        List<Integer> listDateBooked = response.body().getListDateBooked();
+
+                        for (int dayOfYear : listDateBooked) {
+                            try {
+                                Calendar calendar = Calendar.getInstance();
+                                calendar.set(Calendar.DAY_OF_YEAR, dayOfYear);
+                                listDateDisable.add(new SimpleDateFormat("dd/MM/yyyy").parse(Utils.formatDate(calendar.getTime())));
+                                Log.d("date1", "calendar: " + Utils.formatDate(calendar.getTime()));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+//                        try {
+//                            listDateDisable.add(new SimpleDateFormat("dd/MM/yyyy").parse("2/05/2019"));
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+                    } else {
+                        Log.d("date1", "onResponse: " + response.body().getCode());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DateBooked> call, Throwable t) {
+                Log.d("date1", "onFailure: " + t.getMessage());
+            }
+        });
+    }
 
 
     @Override
@@ -322,7 +381,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     //Event when click button
-    @OnClick({R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity,R.id.btnAddWishlist,R.id.btnCulture
+    @OnClick({R.id.btnHostDetail, R.id.btnCancelPolicy, R.id.btnShowAlbumPhoto, R.id.btnRoomRate, R.id.btnAmenity,R.id.btnAddWishlist,R.id.btnCulture
     ,R.id.btnShowAllReview})
     public void onClickView(View view) {
         switch (view.getId()) {
@@ -354,7 +413,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.btnAddWishlist:
-
                 wishlistService.addOrDelWishlist(Utils.getUserId(ViewHomeDetailActivity.this), homestayID,ViewHomeDetailActivity.this,btnAddWishlist);
                 break;
             case  R.id.btnCulture:
@@ -367,13 +425,19 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 intentRv.putExtra(Constants.HOMESTAY_ID,homestayID);
                 startActivity(intentRv);
                 break;
+            case R.id.btnHostDetail:
+                Intent intentHost = new Intent(ViewHomeDetailActivity.this,ShowHomeByHost.class);
+                intentHost.putExtra(Constants.HOST_ID,hostId);
+                startActivity(intentHost);
+                break;
+
 
         }
     }
 
 
     //event when click homestay
-    private void initListener() {
+    private void onClickHomestay() {
 
         horAdapter.setOnItemClickListener(new HorizontalListHomeAdapter.OnItemClickListener() {
             @Override
@@ -385,6 +449,39 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void showDialogReqBook(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(ViewHomeDetailActivity.this);
+        builder1.setMessage(R.string.warning);
+        builder1.setTitle("Warning");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Next",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startPickDateActivity();
+                        dialog.dismiss();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    private void startPickDateActivity() {
+        Intent intent = new Intent(ViewHomeDetailActivity.this, BookingHomePickDateActivity.class);
+        intent.putExtra(Constants.HOMESTAY_ID, homestayID);
+        intent.putExtra(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
+        startActivity(intent);
     }
 
 

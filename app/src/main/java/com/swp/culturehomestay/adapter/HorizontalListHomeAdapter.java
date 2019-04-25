@@ -33,7 +33,6 @@ import retrofit2.Response;
 public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalListHomeAdapter.MyViewHolder> {
     Context context;
     List<HomeStay> listHomestay;
-    List<Wishlist> listWishlist = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
     WishlistService wishlistService = new WishlistService();
 
@@ -107,7 +106,6 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
         public MyViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             super(itemView);
             itemView.setOnClickListener(this);
-
             ButterKnife.bind(this, itemView);
             this.onItemClickListener = onItemClickListener;
         }

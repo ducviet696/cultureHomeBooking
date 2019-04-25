@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
+import com.xw.repo.BubbleSeekBar;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -53,13 +55,21 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     TextView txtTotalGuest;
     @BindView(R.id.tvTotalPrice)
     TextView txtTotalPrice;
+    @BindView(R.id.tvRoomNumber)
+    TextView tvRoomNumber;
+    @BindView(R.id.layout_Seekbar)
+    LinearLayout layout_Seekbar;
+    @BindView(R.id.sbRommNum)
+    BubbleSeekBar sbRommNum;
     int minGuest, maxGuest;
     int priceNightly, priceWeekend, priceLongTerm, totalPrice, totalPricePerNight, totalPricePerWeekly;
     List<Date> weeklyListBooking = new ArrayList<>();
     List<Date> dayListBooking = new ArrayList<>();
     List<Date> listDateBooking = new ArrayList<>();
+    List<Date> listDateDisable = new ArrayList<>();
     String homeStayId;
     int guest = 1;
+    int roomNum = 1;
     IApi mService;
     Date dStart;
     Date dEnd;
@@ -91,6 +101,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("Bundle");
         listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+        listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
         homeStayId = bundle.getString(Constants.HOMESTAY_ID);
         loadHomestayFromID(homeStayId);
         Log.d("cultureIdListDetail", "onClick: " + Constants.cultureIdList);
@@ -127,6 +138,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
         bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        bundle.putSerializable(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
         intentDate.putExtra(Constants.BUNDLE, bundle);
         startActivityForResult(intentDate, Constants.REQUEST_CODE);
     }
@@ -136,6 +148,8 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundlePrice = new Bundle();
         bundlePrice.putString(Constants.HOMESTAY_ID, homeStayId);
         bundlePrice.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        bundlePrice.putInt("guest",guest);
+        bundlePrice.putInt("roomNum",roomNum);
         intent.putExtra(Constants.BUNDLE, bundlePrice);
         startActivityForResult(intent, Constants.REQUEST_CODE);
     }
@@ -164,11 +178,35 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     txtHomeName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
                     txtCodelist.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
+                    if(homeStay.getRoomType().equals("ent")) {
+                        layout_Seekbar.setVisibility(View.GONE);
+                     } else {
+                        sbRommNum.getConfigBuilder()
+                                .max(Float.valueOf(homeStay.getNumberRoom()))
+                                .min(1)
+                                .sectionCount(homeStay.getNumberRoom());
+
+                        sbRommNum.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
+                            @Override
+                            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+                                tvRoomNumber.setText(String.format("Number Room: %d",progress));
+                                roomNum = progress;
+                            }
+
+                            @Override
+                            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
+
+                            }
+
+                            @Override
+                            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
+
+                            }
+                        });
+                    }
+
                     minGuest = homeStay.getStandartGuest();
                     maxGuest = homeStay.getMaximunGuest();
-                    priceNightly = homeStay.getPriceNightly();
-                    priceWeekend = homeStay.getPriceWeekend();
-                    priceLongTerm = homeStay.getPriceLongTerm()==null?0:homeStay.getPriceLongTerm();
                     guest = minGuest;
                     txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
                     dStart = listDateBooking.get(0);
@@ -186,7 +224,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         });
     }
     public void getTotalPrice(){
-        PricePost pricePost = new PricePost(Constants.cultureIdList,homeStayId,guest,dStart.getTime(),dEnd.getTime());
+        PricePost pricePost = new PricePost(Constants.cultureIdList,homeStayId,roomNum,guest,dStart.getTime(),dEnd.getTime());
         Call<PriceGet> call = mService.getPrice(pricePost,Constants.LANG);
         call.enqueue(new Callback<PriceGet>() {
             @Override
