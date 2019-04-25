@@ -34,6 +34,7 @@
     <LinearLayout
         android:weightSum="5"
         android:layout_marginVertical="@dimen/default_margin"
+        android:paddingVertical="@dimen/default_padding"
         android:orientation="horizontal"
         android:id="@+id/layout_button"
         android:layout_width="match_parent"

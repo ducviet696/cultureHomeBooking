@@ -66,7 +66,7 @@ public interface IApi {
                             @Query("lang") String language);
 
     //Get listhome by search
-    @HTTP(method = "GET", path = "homestay/homestay", hasBody = true)
+    @HTTP(method = "POST", path = "homestay/homestay", hasBody = true)
 //    @GET("homestay/homestay")
     Call<SearchHomeGet> getHomeBySearch(@Body SearchHomePost searchHomePost,
                                         @Query("lang") String language);

@@ -297,22 +297,20 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     public void loadJsonSimilarList(String cityId){
-        Log.d("cityId", "cityId: " +cityId);
-        SearchHomePost searchHomePost = new SearchHomePost(0,10,1,cityId,"");
+        SearchHomePost searchHomePost = new SearchHomePost(0,5,1,"Hà nội","");
         Call<SearchHomeGet> call = mService.getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {
             @Override
             public void onResponse(Call<SearchHomeGet> call, Response<SearchHomeGet> response) {
                 if(response.isSuccessful() && response.body()!=null ) {
                     List<HomeStay> homeStays = response.body().getHomeStayList();
-                    Log.d("homeStays", "onResponse: "+ "ko null");
+                    Log.d("homeStays", "onResponse: "+ homeStays.size());
                     horAdapter = new HorizontalListHomeAdapter(ViewHomeDetailActivity.this,homeStays);
                     rvSimilarListing.setLayoutManager(new LinearLayoutManager(ViewHomeDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                     rvSimilarListing.setAdapter(horAdapter);
                     horAdapter.notifyDataSetChanged();
-                    onClickHomestay();
+                    onClickHomestay(homeStays);
                 }
-                Log.d("homeStays", "onResponse: " + response.errorBody() + response.code() + response.headers());
             }
 
             @Override
@@ -437,7 +435,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
 
     //event when click homestay
-    private void onClickHomestay() {
+    private void onClickHomestay(List<HomeStay> homeStays) {
 
         horAdapter.setOnItemClickListener(new HorizontalListHomeAdapter.OnItemClickListener() {
             @Override

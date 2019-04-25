@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/default_padding"
+
     tools:context=".activity.FilterSearchActivity">
     <LinearLayout
+        android:paddingHorizontal="@dimen/default_padding"
         android:weightSum="5"
         android:orientation="horizontal"
         android:keepScreenOn="true"
@@ -42,6 +43,8 @@
     </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
+        android:background="@color/colorWhite"
+        android:paddingHorizontal="@dimen/default_padding"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_width="match_parent">
