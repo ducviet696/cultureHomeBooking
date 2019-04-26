@@ -47,6 +47,7 @@ public class Constants {
     public static ArrayList<Integer> cultureIdList = new ArrayList<>();
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String LANG = "en";
+    public static final String GUEST = "guest";
     public static final String CODE_OK = "00";
     public static final String CODE_FAIL = "06";
     public static final int MIN_PRICE = 10;

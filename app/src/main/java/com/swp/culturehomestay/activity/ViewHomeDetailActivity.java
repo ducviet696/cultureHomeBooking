@@ -143,9 +143,9 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     @BindView(R.id.btnHostDetail)
     LinearLayout btnHostDetail;
     HomeStay homeStay;
-    List<Date> listDateDisable = new ArrayList<>();
-    String hostId, bookingMethod;
+    String hostId, bookingMethod, roomType;
     String cityId ="";
+    int maxRoom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,9 +157,9 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         wishlistService = new WishlistService();
         Intent intent = getIntent();
         homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
-        getDateBooked(homestayID);
+        Log.d("homestayID", "onCreate: "+homestayID);
         loadHomeStayById(homestayID);
-        loadJsonSimilarList(cityId);
+//        loadHomeBySearch(cityId);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -196,6 +196,9 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body()!= null) {
                     homeStay = response.body();
                     cityId =  homeStay.getAddress().getCityId();
+                    loadJsonSimilarList(cityId);
+                    maxRoom = homeStay.getNumberRoom();
+                    roomType = homeStay.getRoomType();
                     listHomeImg = homeStay.getHomestayImages();
                     listAmenity = homeStay.getAmenities();
                     Utils.loadImge(ViewHomeDetailActivity.this,ivHomeProfile, Constants.BASE_URLIMG+homeStay.getImageProfileUrl());
@@ -297,7 +300,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     public void loadJsonSimilarList(String cityId){
-        SearchHomePost searchHomePost = new SearchHomePost(0,5,1,"Hà nội","");
+        SearchHomePost searchHomePost = new SearchHomePost(0,5,1,cityId,"");
         Call<SearchHomeGet> call = mService.getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {
             @Override
@@ -320,46 +323,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         });
 
     }
-
-    //load list Date
-    public void getDateBooked(String homestaysID) {
-        Call<DateBooked> call = Utils.getAPI().getDateBooked(homestaysID, 1);
-        call.enqueue(new Callback<DateBooked>() {
-            @Override
-            public void onResponse(Call<DateBooked> call, Response<DateBooked> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    if (response.body().getCode().equals(Constants.CODE_OK)) {
-                        List<Integer> listDateBooked = response.body().getListDateBooked();
-
-                        for (int dayOfYear : listDateBooked) {
-                            try {
-                                Calendar calendar = Calendar.getInstance();
-                                calendar.set(Calendar.DAY_OF_YEAR, dayOfYear);
-                                listDateDisable.add(new SimpleDateFormat("dd/MM/yyyy").parse(Utils.formatDate(calendar.getTime())));
-                                Log.d("date1", "calendar: " + Utils.formatDate(calendar.getTime()));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-//                        try {
-//                            listDateDisable.add(new SimpleDateFormat("dd/MM/yyyy").parse("2/05/2019"));
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
-                    } else {
-                        Log.d("date1", "onResponse: " + response.body().getCode());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DateBooked> call, Throwable t) {
-                Log.d("date1", "onFailure: " + t.getMessage());
-            }
-        });
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -406,7 +369,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                 break;
             case R.id.btnAmenity:
                 Intent intent2 = new Intent(ViewHomeDetailActivity.this, ShowAmenityActivity.class);
-//                intent2.putStringArrayListExtra("listAmen",listAmen);
                 intent2.putExtra(Constants.HOMESTAY_ID,homestayID);
                 startActivity(intent2);
                 break;
@@ -477,8 +439,12 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
 
     private void startPickDateActivity() {
         Intent intent = new Intent(ViewHomeDetailActivity.this, BookingHomePickDateActivity.class);
-        intent.putExtra(Constants.HOMESTAY_ID, homestayID);
-        intent.putExtra(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.HOMESTAY_ID, homestayID);
+        bundle.putInt("Max",maxRoom);
+        bundle.putString(Constants.ACTIVITY_NAME,Constants.ADVANCE_SEARCH_ACTIVITY);
+        bundle.putString("roomType",roomType);
+        intent.putExtra(Constants.BUNDLE, bundle);
         startActivity(intent);
     }
 

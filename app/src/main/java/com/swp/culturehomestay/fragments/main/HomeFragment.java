@@ -80,6 +80,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     SwipeRefreshLayout swipeRefreshLayout;
     private List<Date> listDateBooking = new ArrayList<>();
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -120,25 +121,37 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 onCheckInOutClick();
                 break;
             case R.id.tvTotalGuest:
-                Intent intentGuest = new Intent(getContext(), ChangeNumberOfGuestActivity.class);
-                Bundle bundleGuest = new Bundle();
-                bundleGuest.putInt("Min",1);
-                bundleGuest.putInt("Max",30);
-                bundleGuest.putInt("Guest",guest);
-                bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.HOME_FRAGMENT);
-                intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
-                startActivityForResult(intentGuest,Constants.REQUEST_CODE_HOME_FRAGMENT);
+                onChangeGuestClick();
                 break;
             case R.id.tvSearch:
                 Intent intentSearch = new Intent(getContext(), SearchViaMapActivity.class);
                 startActivity(intentSearch);
                 break;
             case R.id.btnSearch:
-                Intent intentSearchAdv = new Intent(getContext(), AdvanceSearchActivity.class);
-                startActivity(intentSearchAdv);
+                onSearchButtonClick();
                 break;
         }
 
+    }
+
+    private void onSearchButtonClick() {
+        Intent intentSearchAdv = new Intent(getContext(), AdvanceSearchActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.LIST_DATE_BOOKING,(Serializable) listDateBooking);
+        bundle.putInt(Constants.GUEST,guest);
+        intentSearchAdv.putExtra(Constants.BUNDLE,bundle);
+        startActivity(intentSearchAdv);
+    }
+
+    private void onChangeGuestClick() {
+        Intent intentGuest = new Intent(getContext(), ChangeNumberOfGuestActivity.class);
+        Bundle bundleGuest = new Bundle();
+        bundleGuest.putInt("Min",1);
+        bundleGuest.putInt("Max",20);
+        bundleGuest.putInt("Guest",guest);
+        bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.HOME_FRAGMENT);
+        intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
+        startActivityForResult(intentGuest,Constants.REQUEST_CODE_HOME_FRAGMENT);
     }
 
     private void onCheckInOutClick() {
