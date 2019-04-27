@@ -13,10 +13,10 @@ public class SearchHomePost {
 
     @SerializedName("dStart")
     @Expose
-    private Date dStart;
+    private String dStart;
     @SerializedName("dEnd")
     @Expose
-    private Date dEnd;
+    private String dEnd;
     @SerializedName("bookingMethod")
     @Expose
     private String bookingMethod;
@@ -60,7 +60,29 @@ public class SearchHomePost {
     @Expose
     private String districtId;
 
-    public SearchHomePost(@Nullable Date dStart, @Nullable Date dEnd, @Nullable String bookingMethod, @Nullable List<String> homestayTypes, @Nullable List<String> roomTypes, @Nullable Integer numBethRoom, @Nullable List<Integer> amenityBeans, @Nullable List<Integer> cultureServiceBeans, @Nullable Integer numberPeople, @Nullable Integer minPrice, @Nullable Integer maxPrice, @Nullable Integer indexPage, @Nullable Integer sizePage, @Nullable Integer numRoom, @Nullable String cityId, @Nullable String districtId) {
+    @Override
+    public String toString() {
+        return "SearchHomePost{" +
+                "dStart=" + dStart +
+                ", dEnd=" + dEnd +
+                ", bookingMethod='" + bookingMethod + '\'' +
+                ", homestayTypes=" + homestayTypes +
+                ", roomTypes=" + roomTypes +
+                ", numBethRoom=" + numBethRoom +
+                ", amenityBeans=" + amenityBeans +
+                ", cultureServiceBeans=" + cultureServiceBeans +
+                ", numberPeople=" + numberPeople +
+                ", minPrice=" + minPrice +
+                ", maxPrice=" + maxPrice +
+                ", indexPage=" + indexPage +
+                ", sizePage=" + sizePage +
+                ", numRoom=" + numRoom +
+                ", cityId='" + cityId + '\'' +
+                ", districtId='" + districtId + '\'' +
+                '}';
+    }
+
+    public SearchHomePost(@Nullable String dStart, @Nullable String dEnd, @Nullable String bookingMethod, @Nullable List<String> homestayTypes, @Nullable List<String> roomTypes, @Nullable Integer numBethRoom, @Nullable List<Integer> amenityBeans, @Nullable List<Integer> cultureServiceBeans, @Nullable Integer numberPeople, @Nullable Integer minPrice, @Nullable Integer maxPrice, @Nullable Integer indexPage, @Nullable Integer sizePage, @Nullable Integer numRoom, @Nullable String cityId, @Nullable String districtId) {
         this.dStart = dStart;
         this.dEnd = dEnd;
         this.bookingMethod = bookingMethod;

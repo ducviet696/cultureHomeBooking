@@ -21,7 +21,7 @@
                 android:src="@drawable/ic_previous"
                 android:layout_width="35dp"
                 android:layout_height="wrap_content" />
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/edSearch"
                 android:hint="@string/location_or_homestay_name"
                 android:drawablePadding="@dimen/default_padding"

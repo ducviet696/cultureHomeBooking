@@ -232,15 +232,16 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         startActivityForResult(intent, Constants.REQUEST_CODE_ADVANCE_SEARCH);
     }
     public void loadHomeBySearch(){
-        Date dStart =null;
-        Date dEnd =null;
+        String dStart =null;
+        String dEnd =null;
         if(listDateBooking!=null && !listDateBooking.isEmpty()){
-             dStart = listDateBooking.get(0);
-             dEnd = listDateBooking.get(listDateBooking.size()-1);
+             dStart = listDateBooking.get(0).getTime()+"";
+             dEnd = listDateBooking.get(listDateBooking.size()-1).getTime()+"";
         }
-
+        Log.d("listDateBooking", "loadHomeBySearch: dStart: "+ dStart+", đEnd: " +dEnd);
 //        SearchHomePost searchHomePost = new SearchHomePost(INDEX_PAGE, SIZE_PAGE,1,"","");
         SearchHomePost searchHomePost = new SearchHomePost(dStart, dEnd, bookingMethod, homeTypeList, roomTypeList, room, amenityIdList, cultureIdList, guest, minPrice, maxPrice, INDEX_PAGE, SIZE_PAGE,1,"","");
+        Log.d("listDateBooking", "SearchHomePost : "+ searchHomePost.toString());
         Call<SearchHomeGet> call = Utils.getAPI().getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {
             @Override

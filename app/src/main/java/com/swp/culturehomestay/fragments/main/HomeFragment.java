@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     RecyclerView rvForRick;
     int guest =1;
     IApi mService;
-    public List<Wishlist> wishlists = new ArrayList<>();
     public List<HomeStay> homeStays = new ArrayList<>();
     public List<HomeStay> homeStays2 = new ArrayList<>();
     private HorizontalListHomeAdapter horAdapter;
@@ -88,7 +87,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
         mService = Utils.getAPI();
-//        loadWishlist(getContext());
         swipeRefreshLayout.setOnRefreshListener(this);
         displayMostCultureHomeStayList();
         displayHomestayForRickList();
@@ -182,7 +180,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
                     rvrvMostCulture.setLayoutManager(new GridLayoutManager(getContext(), 2));
                     rvrvMostCulture.setAdapter(horAdapter);
-//                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
                     horAdapter.notifyDataSetChanged();
                     initListener();
                 }
