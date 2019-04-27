@@ -17,6 +17,7 @@ import com.swp.culturehomestay.models.SearchHomePost;
 import com.swp.culturehomestay.models.SignUpCredentials;
 import com.swp.culturehomestay.models.SignUpResModel;
 import com.swp.culturehomestay.models.UserDetailModel;
+import com.swp.culturehomestay.models.UserWant;
 import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.models.WishlistBean;
 
@@ -68,7 +69,6 @@ public interface IApi {
 
     //Get listhome by search
     @HTTP(method = "POST", path = "homestay/homestay", hasBody = true)
-//    @GET("homestay/homestay")
     Call<SearchHomeGet> getHomeBySearch(@Body SearchHomePost searchHomePost,
                                         @Query("lang") String language);
 
@@ -86,10 +86,11 @@ public interface IApi {
             @Query("lang") String language
     );
 
+    //Get booked list date on current home
     @GET ("homestay/notdate")
     Call<DateBooked> getDateBooked(
             @Query("homestayId") String homestayId,
-            @Query("roomNum") Integer roomNum
+            @Query("numRoom") Integer roomNum
     );
 
     //Get All Culture Service
@@ -101,8 +102,12 @@ public interface IApi {
     Call<List<Amenity>> getAllAmenity();
 
     //Get user detail by id
-    @GET("transaction/user/{id}")
-    Call<UserDetailModel> getUserById(@Path("id") String id);
+    @GET("user/{id}")
+    Call<UserDetailModel> getUserDetailById(@Path("id") String id);
+
+    //Get user by id
+ @GET("user/{userid}")
+ Call<UserWant> getUserById(@Path("userid") String userId);
 
 
 }

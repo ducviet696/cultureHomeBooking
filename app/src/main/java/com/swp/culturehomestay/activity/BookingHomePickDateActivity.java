@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.timessquare.CalendarPickerView;
@@ -33,6 +36,19 @@ import retrofit2.Response;
 public class BookingHomePickDateActivity extends AppCompatActivity {
 
     private static final String TAG = BookingHomePickDateActivity.class.getSimpleName();
+    //Room
+    @BindView(R.id.tvroomNum)
+    TextView tvroomNum;
+    @BindView(R.id.btnMinus)
+    ImageView btnMinus;
+    @BindView(R.id.btnAdd)
+    ImageView btnAdd;
+    int minRoom = 1;
+    int maxRoom;
+    int room = 1;
+    @BindView(R.id.layout_pickRoom)
+    LinearLayout layout_pickRoom;
+
     @BindView(R.id.calendar)
     CalendarPickerView datePicker;
     @BindView(R.id.btnNext)
@@ -43,35 +59,39 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
     TextView txtCheckout;
     @BindView(R.id.tvDaySelected)
     TextView txtMess;
-    String dateCheckin, dateCheckout;
     @BindView(R.id.tvBack)
     TextView txtBack;
-    String homestaysID;
+    String homestaysID, roomType;
     List<Date> listDateBooking = new ArrayList<>();
     List<Date> listDateDisable = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking_home);
         ButterKnife.bind(this);
-        Intent intent = getIntent();
-        homestaysID = intent.getStringExtra(Constants.HOMESTAY_ID);
-        listDateDisable = (List<Date>) intent.getSerializableExtra(Constants.LIST_DATE_DISABLE);
-//        getDateBooked(homestaysID);
+        getData();
+        getDateBooked(homestaysID, room);
+        showDatePicker();
+    }
+
+
+    private void showDatePicker() {
         Date today = new Date();
         Calendar nextYear = Calendar.getInstance();
         nextYear.add(Calendar.YEAR, 1);
         datePicker.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
             @Override
             public boolean isDateSelectable(Date date) {
-                return isSelectable(date);
+                return !listDateDisable.contains(date);
             }
+
         });
         datePicker.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         datePicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE);
-
+        Log.d("getDateBooked", "showDatePicker: "+listDateDisable);
         datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {
@@ -97,13 +117,18 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
 
             @Override
             public void onDateUnselected(Date date) {
-                txtCheckin.setTextColor(getResources().getColor(R.color.colorBlack));
-                txtCheckout.setTextColor(getResources().getColor(R.color.colorPrimaryButtonActive));
-                txtCheckout.setText(getResources().getText(R.string.check_out_date));
-                txtCheckin.setText(getResources().getText(R.string.check_in_date));
-
+                resetDatePicker();
             }
         });
+    }
+
+    private void resetDatePicker() {
+        btnNext.setEnabled(false);
+        btnNext.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButtonInactive));
+        txtCheckin.setTextColor(getResources().getColor(R.color.colorBlack));
+        txtCheckout.setTextColor(getResources().getColor(R.color.colorPrimaryButtonActive));
+        txtCheckout.setText(getResources().getText(R.string.check_out_date));
+        txtCheckin.setText(getResources().getText(R.string.check_in_date));
     }
 
     @OnClick(R.id.btnNext)
@@ -113,6 +138,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
         bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
         bundle.putSerializable(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
         bundle.putString(Constants.HOMESTAY_ID, homestaysID);
+        bundle.putInt("room", room);
         intent.putExtra("Bundle", bundle);
         startActivity(intent);
     }
@@ -122,15 +148,58 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
         finish();
     }
 
-    public void getDateBooked(String homestaysID) {
-        Call<DateBooked> call = Utils.getAPI().getDateBooked(homestaysID, 1);
+    public void getData() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
+        roomType = bundle.getString("roomType");
+        homestaysID = bundle.getString(Constants.HOMESTAY_ID);;
+        maxRoom = bundle.getInt("Max");
+        if(roomType.equals(Constants.ROOMTYPE_ENTIRE)){
+            layout_pickRoom.setVisibility(View.GONE);
+        }
+        tvroomNum.setText(String.valueOf(room));
+
+
+    }
+    public void setVisiableButton() {
+        if (room == minRoom) {
+            btnMinus.setEnabled(false);
+        } else if (room == maxRoom) {
+            btnAdd.setEnabled(false);
+        } else {
+            btnMinus.setEnabled(true);
+            btnAdd.setEnabled(true);
+        }
+    }
+
+    @OnClick({R.id.btnAdd, R.id.btnMinus})
+    public void onClickView(View view) {
+        switch (view.getId()) {
+            case R.id.btnAdd:
+                getDateBooked(homestaysID,++room);
+                tvroomNum.setText(String.valueOf(room));
+                setVisiableButton();
+                resetDatePicker();
+                break;
+            case R.id.btnMinus:
+                getDateBooked(homestaysID, --room);
+                tvroomNum.setText(String.valueOf(room));
+                setVisiableButton();
+                resetDatePicker();
+                break;
+        }
+    }
+    public void getDateBooked(String homestaysID, int room) {
+        Call<DateBooked> call = Utils.getAPI().getDateBooked(homestaysID, room);
         call.enqueue(new Callback<DateBooked>() {
             @Override
             public void onResponse(Call<DateBooked> call, Response<DateBooked> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     if (response.body().getCode().equals(Constants.CODE_OK)) {
+                        listDateDisable.clear();
                         List<Integer> listDateBooked = response.body().getListDateBooked();
-
+                        Log.d("listDateDisable", "getDateBooked: "+listDateBooked+ "homestaysID: "+homestaysID
+                        +", room: "+room);
                         for (int dayOfYear : listDateBooked) {
                             try {
                                 Calendar calendar = Calendar.getInstance();
@@ -140,13 +209,8 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
-
                         }
-//                        try {
-//                            listDateDisable.add(new SimpleDateFormat("dd/MM/yyyy").parse("2/05/2019"));
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
+                        showDatePicker();
                     } else {
                         Log.d("date1", "onResponse: " + response.body().getCode());
                     }
@@ -158,13 +222,6 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
                 Log.d("date1", "onFailure: " + t.getMessage());
             }
         });
-    }
-
-    private boolean isSelectable(Date date) {
-        if (listDateDisable.contains(date)) {
-            return false;
-        }
-        return true;
     }
 
 }

@@ -62,20 +62,11 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
             holder.btnDelete.setVisibility(View.GONE);
         } else {
             holder.btnDelete.setVisibility(View.VISIBLE);
-//            //EDM
-//            if(wishlistService.checkIfHomestayInCurrentUserWishList(homeStay.getHomestayId())){
-//                holder.btnDelete.setImageResource(R.drawable.ic_favorite_black_24dp);
-//            } else {
-//                holder.btnDelete.setImageResource(R.drawable.ic_favorite_border_black_24dp);}
-//            Log.d("WL", "Wiistlist: "+Constants.wishlists.size());
-//            //End  EDM
-
             wishlistService.checkIfHomestayInCurrentUserWishList(Utils.getUserId(context),homeStay.getHomestayId(),context,holder.btnDelete,R.drawable.ic_favorite_black_24dp,R.drawable.ic_favorite_border_black_24dp);
             holder.btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     wishlistService.addOrDelWishlist(Utils.getUserId(context),homeStay.getHomestayId(),context,holder.btnDelete,R.drawable.ic_favorite_black_24dp,R.drawable.ic_favorite_border_black_24dp);
-
                 }
             });
         }

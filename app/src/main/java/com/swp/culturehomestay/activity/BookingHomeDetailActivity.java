@@ -98,15 +98,21 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_booking_home_detail);
         ButterKnife.bind(this);
         mService = Utils.getAPI();
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("Bundle");
-        listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
-        listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
-        homeStayId = bundle.getString(Constants.HOMESTAY_ID);
+        getData();
         loadHomestayFromID(homeStayId);
         Log.d("cultureIdListDetail", "onClick: " + Constants.cultureIdList);
 
     }
+
+    private void getData() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("Bundle");
+        listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+        listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
+        roomNum = bundle.getInt("room");
+        homeStayId = bundle.getString(Constants.HOMESTAY_ID);
+    }
+
     @OnClick(R.id.tvBack)
     public void backClick()
     {
@@ -128,6 +134,12 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                 break;
             case R.id.btnNext:
                 Intent intentNext = new Intent(BookingHomeDetailActivity.this, BookingHomeConfirmActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Constants.LIST_DATE_BOOKING,(Serializable)listDateBooking);
+                bundle.putInt("guest",guest);
+                bundle.putString(Constants.HOMESTAY_ID,homeStayId);
+                bundle.putInt("totalPrice",totalPrice);
+                intentNext.putExtra(Constants.BUNDLE,bundle);
                 startActivity(intentNext);
                 break;
         }
@@ -167,7 +179,6 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
 
 
     public void loadHomestayFromID(String homestaysID) {
-
         Call<HomeStay> call = mService.getHomeById(homestaysID,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
@@ -178,33 +189,6 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     txtHomeName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
                     txtCodelist.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
-                    if(homeStay.getRoomType().equals("ent")) {
-                        layout_Seekbar.setVisibility(View.GONE);
-                     } else {
-                        sbRommNum.getConfigBuilder()
-                                .max(Float.valueOf(homeStay.getNumberRoom()))
-                                .min(1)
-                                .sectionCount(homeStay.getNumberRoom());
-
-                        sbRommNum.setOnProgressChangedListener(new BubbleSeekBar.OnProgressChangedListener() {
-                            @Override
-                            public void onProgressChanged(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
-                                tvRoomNumber.setText(String.format("Number Room: %d",progress));
-                                roomNum = progress;
-                            }
-
-                            @Override
-                            public void getProgressOnActionUp(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat) {
-
-                            }
-
-                            @Override
-                            public void getProgressOnFinally(BubbleSeekBar bubbleSeekBar, int progress, float progressFloat, boolean fromUser) {
-
-                            }
-                        });
-                    }
-
                     minGuest = homeStay.getStandartGuest();
                     maxGuest = homeStay.getMaximunGuest();
                     guest = minGuest;
@@ -231,7 +215,8 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
             public void onResponse(Call<PriceGet> call, Response<PriceGet> response) {
               if(response.isSuccessful() && response.body()!= null){
                   if(response.body().getCode().equals(Constants.CODE_OK)){
-                      txtTotalPrice.setText(Utils.formatPrice(response.body().getContent().getTotal()));
+                      totalPrice = response.body().getContent().getTotal();
+                      txtTotalPrice.setText(Utils.formatPrice(totalPrice));
                       Log.d("Price", "onSucces code: "+response.body().getCode()+"\n"+"PricePost: "+ pricePost.toString());
                   } else {
                       Log.d("Price", "onFailure code: "+response.body().getCode()+"\n"+"PricePost: "+ pricePost.toString());

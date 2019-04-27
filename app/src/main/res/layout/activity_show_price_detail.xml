@@ -44,7 +44,7 @@
             android:gravity="center_horizontal"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
-            android:text="$13"
+            android:text="$0"
             android:id="@+id/tvTotalPricePerNight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -71,7 +71,7 @@
             android:gravity="center_horizontal"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
-            android:text="$13"
+            android:text="$0"
             android:id="@+id/tvTotalPricePerWeekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -124,7 +124,7 @@
             android:gravity="center_horizontal"
             android:layout_alignParentRight="true"
             android:textColor="@color/colorBlack"
-            android:text="6"
+            android:text="$220196"
             android:id="@+id/tvTotalPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -302,6 +302,7 @@ public class FilterSearchActivity extends AppCompatActivity {
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putIntegerArrayList(Constants.LIST_CULTURE_SELECTED, cultureIdList);
+        bundle.putIntegerArrayList(Constants.LIST_AMENITY_SELECTED, amenityIdList);
         bundle.putInt("minPrice", minPrice);
         bundle.putInt("maxPrice", maxPrice);
         bundle.putStringArrayList(Constants.LIST_HOME_TYPE, homeTypeList);
