@@ -16,6 +16,7 @@ import com.swp.culturehomestay.models.SearchHomeGet;
 import com.swp.culturehomestay.models.SearchHomePost;
 import com.swp.culturehomestay.models.SignUpCredentials;
 import com.swp.culturehomestay.models.SignUpResModel;
+import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.models.WishlistBean;
 
@@ -99,7 +100,9 @@ public interface IApi {
     @GET ("homestay/amenities")
     Call<List<Amenity>> getAllAmenity();
 
-
+    //Get user detail by id
+    @GET("transaction/user/{id}")
+    Call<UserDetailModel> getUserById(@Path("id") String id);
 
 
 }

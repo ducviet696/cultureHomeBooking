@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -38,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private CallbackManager callbackManager;
     private int checkFragment;
+    private LinearLayout signupBtn;
     AuthenticatioModel authenticatioModel;
     SharedPreferences sharedpreferences;
 
@@ -50,47 +52,24 @@ public class LoginActivity extends AppCompatActivity {
         username = (EditText) findViewById(R.id.input_email);
         password = (EditText) findViewById(R.id.input_password);
         loginBtn.setOnClickListener(doLogin);
+        signupBtn = (LinearLayout) findViewById(R.id.link_signup);
+        signupBtn.setOnClickListener(onSignUpClick);
         Intent intent = getIntent();
         checkFragment = intent.getIntExtra("checkFragment", 3);
         String emailCreate = intent.getStringExtra("emailCreate");
         if(emailCreate!=null&& !emailCreate.isEmpty()){
             username.setText(emailCreate);
         }
-//        FacebookSdk.sdkInitialize(getApplicationContext());
-//        AppEventsLogger.activateApp(this);
-//        callbackManager = CallbackManager.Factory.create();
-//        LoginButton loginButton = (LoginButton) findViewById(R.id.btn_facebook_login);
-//        loginButton.setReadPermissions("user_friends");
-//        loginButton.setReadPermissions("public_profile");
-//        loginButton.setReadPermissions("email");
-//        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-//            @Override
-//            public void onSuccess(LoginResult loginResult) {
-//                // App code
-//                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                intent.putExtra("checkFragment",3);
-//                startActivity(intent);
-//                Log.d(TAG, "fb Login success.");
-//            }
-//
-//            @Override
-//            public void onCancel() {
-//                // App code
-//                Log.d(TAG, "fb Login attempt canceled.");
-//            }
-//
-//            @Override
-//            public void onError(FacebookException e) {
-//                Log.e(TAG, "fb Login attempt failed." + e);
-//                Toast.makeText(LoginActivity.this,R.string.str_please_check_your_internet_connection,Toast.LENGTH_LONG).show();
-//            }
-//        });
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        callbackManager.onActivityResult(requestCode, resultCode, data);
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
+    View.OnClickListener onSignUpClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+            intent.putExtra("checkFragment",checkFragment);
+            startActivity(intent);
+        }
+    };
+
     View.OnClickListener doLogin = new View.OnClickListener() {
     @Override
     public void onClick(View v) {

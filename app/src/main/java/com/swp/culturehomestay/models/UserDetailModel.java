@@ -1,69 +1,107 @@
+
 package com.swp.culturehomestay.models;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 public class UserDetailModel {
-    @SerializedName("username")
-    private String username;
-    @SerializedName("firstName")
-    private String firstName;
-    @SerializedName("lastName")
-    private String lastName;
-    @SerializedName("email")
-    private String email;
-    @SerializedName("dob")
-    private Date dob;
-    @SerializedName("gender")
-    private boolean gender;
-    @SerializedName("inforDescription")
-    private String infoDescription;
-    @SerializedName("phoneNumber")
-    private String phoneNumber;
-    @SerializedName("profileImage")
-    private String profileImage;
+
+    @SerializedName("userId")
+    @Expose
+    private String userId;
+    @SerializedName("createdDate")
+    @Expose
+    private Integer createdDate;
+    @SerializedName("editedDate")
+    @Expose
+    private Integer editedDate;
+    @SerializedName("tenant")
+    @Expose
+    private Tenant tenant;
+    @SerializedName("imangeUrl")
+    @Expose
+    private String imangeUrl;
     @SerializedName("address")
+    @Expose
     private String address;
+    @SerializedName("dob")
+    @Expose
+    private Integer dob;
+    @SerializedName("fullName")
+    @Expose
+    private String fullName;
+    @SerializedName("email")
+    @Expose
+    private String email;
+    @SerializedName("phone")
+    @Expose
+    private String phone;
 
     public UserDetailModel() {
     }
 
-    public UserDetailModel(String username, String firstName, String lastName, String email, Date dob, boolean gender, String infoDescription, String phoneNumber, String profileImage, String address) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.dob = dob;
-        this.gender = gender;
-        this.infoDescription = infoDescription;
-        this.phoneNumber = phoneNumber;
-        this.profileImage = profileImage;
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public Integer getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Integer createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Integer getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(Integer editedDate) {
+        this.editedDate = editedDate;
+    }
+
+    public Tenant getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
+    }
+
+    public String getImangeUrl() {
+        return imangeUrl;
+    }
+
+    public void setImangeUrl(String imangeUrl) {
+        this.imangeUrl = imangeUrl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public String getUsername() {
-        return username;
+    public Integer getDob() {
+        return dob;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDob(Integer dob) {
+        this.dob = dob;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -74,51 +112,12 @@ public class UserDetailModel {
         this.email = email;
     }
 
-    public Date getDob() {
-        return dob;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setDob(Date dob) {
-        this.dob = dob;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public boolean isGender() {
-        return gender;
-    }
-
-    public void setGender(boolean gender) {
-        this.gender = gender;
-    }
-
-    public String getInfoDescription() {
-        return infoDescription;
-    }
-
-    public void setInfoDescription(String infoDescription) {
-        this.infoDescription = infoDescription;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 }

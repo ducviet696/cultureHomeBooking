@@ -46,7 +46,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender_array, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(arrayAdapter);
-        userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
+//        userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
         fillDataCustomer(userDetailModel);
         btnCusBack = (Button) findViewById(R.id.cusBack);
         btnCusBack.setOnClickListener(onBackClick);
@@ -60,16 +60,16 @@ public class CustomerProfileActivity extends AppCompatActivity {
     };
 
     public void fillDataCustomer(UserDetailModel userDetailModel){
-        if(userDetailModel.isGender()){
-            genderSpinner.setSelection(0);
-        }else{
-            genderSpinner.setSelection(1);
-        }
-        fullName.setText(userDetailModel.getFirstName());
-        email.setText(userDetailModel.getEmail());
-        phoneNumber.setText(userDetailModel.getPhoneNumber());
-        address.setText(userDetailModel.getAddress());
-        description.setText(userDetailModel.getInfoDescription());
+//        if(userDetailModel.isGender()){
+//            genderSpinner.setSelection(0);
+//        }else{
+//            genderSpinner.setSelection(1);
+//        }
+//        fullName.setText(userDetailModel.getFirstName());
+//        email.setText(userDetailModel.getEmail());
+//        phoneNumber.setText(userDetailModel.getPhoneNumber());
+//        address.setText(userDetailModel.getAddress());
+//        description.setText(userDetailModel.getInfoDescription());
 
     }
 }
