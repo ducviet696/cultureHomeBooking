@@ -15,16 +15,16 @@ public class Tenant {
     private String userId;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private long createdDate;
     @SerializedName("editedDate")
     @Expose
-    private Integer editedDate;
+    private long editedDate;
     @SerializedName("balanceTranfer")
     @Expose
-    private Integer balanceTranfer;
+    private double balanceTranfer;
     @SerializedName("balance")
     @Expose
-    private Integer balance;
+    private double balance;
     @SerializedName("wishLists")
     @Expose
     private List<Wishlist> wishLists = null;
@@ -45,35 +45,35 @@ public class Tenant {
         this.userId = userId;
     }
 
-    public Integer getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Integer getEditedDate() {
+    public long getEditedDate() {
         return editedDate;
     }
 
-    public void setEditedDate(Integer editedDate) {
+    public void setEditedDate(long editedDate) {
         this.editedDate = editedDate;
     }
 
-    public Integer getBalanceTranfer() {
+    public double getBalanceTranfer() {
         return balanceTranfer;
     }
 
-    public void setBalanceTranfer(Integer balanceTranfer) {
+    public void setBalanceTranfer(double balanceTranfer) {
         this.balanceTranfer = balanceTranfer;
     }
 
-    public Integer getBalance() {
+    public double getBalance() {
         return balance;
     }
 
-    public void setBalance(Integer balance) {
+    public void setBalance(double balance) {
         this.balance = balance;
     }
 

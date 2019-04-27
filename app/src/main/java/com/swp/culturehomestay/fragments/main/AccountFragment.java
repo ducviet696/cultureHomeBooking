@@ -170,7 +170,48 @@ public class AccountFragment extends Fragment {
     }
     private void loadData(){
         if(checkLogin()){
+            userDetailModel = new UserDetailModel();
+            String userId = Utils.getUserId(context);
+            Call<UserDetailModel> call =Utils.getAPI().getUserDetailById(userId);
+            call.enqueue(new Callback<UserDetailModel>() {
+                @Override
+                public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                    try {
+                        if (response.isSuccessful() && response.body() != null) {
+                            userDetailModel = response.body();
+                            if(!Utils.isNullOrEmpty(userDetailModel.getImangeUrl())){
+//                        new LoadImage().execute(userDetailModel.getImangeUrl());
+                                Utils.loadProfileImge(context,proImage,userDetailModel.getImangeUrl());
+                                Log.d(TAG,userDetailModel.getImangeUrl() );
+                            }
+                            if(!Utils.isNullOrEmpty(userDetailModel.getFullName())){
+                                userName.setText(userDetailModel.getFullName());
+                            }
+                        }else{
+                            String errorCode;
+                            switch (response.code()) {
+                                case 404:
+                                    errorCode = "404 not found";
+                                    break;
+                                case 500:
+                                    errorCode = "500 server broken";
+                                    break;
+                                default:
+                                    errorCode = "unknown error";
+                                    break;
+                            }
+                            Log.d(TAG, errorCode);
+                        }
+                    }catch (Exception e){
+                        Log.d(TAG, "onResponse: "+e.getMessage());
+                    }
+                }
 
+                @Override
+                public void onFailure(Call<UserDetailModel> call, Throwable t) {
+                    Log.d(TAG, "onResponse: "+t.getMessage());
+                }
+            });
         }else{
             showMessageNotLogin(R.drawable.sad, "Please login to see your account", "");
             showErrorLayout();
@@ -197,46 +238,5 @@ public class AccountFragment extends Fragment {
     public void showErrorLayout() {
         account_frag.setVisibility(View.GONE);
         errorLayout.setVisibility(View.VISIBLE);
-    }
-
-    public UserDetailModel getUserDetailById(String Id){
-        userDetailModel = new UserDetailModel();
-        IApi iApi = ApiClient.getApiClient().create(IApi.class);
-        Call<UserDetailModel> call = iApi.getUserById(Id);
-        call.enqueue(new Callback<UserDetailModel>() {
-            @Override
-            public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    userDetailModel = response.body();
-                    if(!Utils.isNullOrEmpty(userDetailModel.getImangeUrl())){
-//                        new LoadImage().execute(userDetailModel.getImangeUrl());
-                        Utils.loadProfileImge(context,proImage,userDetailModel.getImangeUrl());
-                    }
-                    if(!Utils.isNullOrEmpty(userDetailModel.getFullName())){
-                        userName.setText(userDetailModel.getFullName());
-                    }
-                }else{
-                    String errorCode;
-                    switch (response.code()) {
-                        case 404:
-                            errorCode = "404 not found";
-                            break;
-                        case 500:
-                            errorCode = "500 server broken";
-                            break;
-                        default:
-                            errorCode = "unknown error";
-                            break;
-                    }
-                    Log.d(TAG, errorCode);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserDetailModel> call, Throwable t) {
-
-            }
-        });
-        return null;
     }
 }

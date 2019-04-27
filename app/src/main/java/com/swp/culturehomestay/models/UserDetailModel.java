@@ -11,10 +11,10 @@ public class UserDetailModel {
     private String userId;
     @SerializedName("createdDate")
     @Expose
-    private Integer createdDate;
+    private long createdDate;
     @SerializedName("editedDate")
     @Expose
-    private Integer editedDate;
+    private long editedDate;
     @SerializedName("tenant")
     @Expose
     private Tenant tenant;
@@ -26,7 +26,7 @@ public class UserDetailModel {
     private String address;
     @SerializedName("dob")
     @Expose
-    private Integer dob;
+    private long dob;
     @SerializedName("fullName")
     @Expose
     private String fullName;
@@ -48,19 +48,19 @@ public class UserDetailModel {
         this.userId = userId;
     }
 
-    public Integer getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Integer createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Integer getEditedDate() {
+    public long getEditedDate() {
         return editedDate;
     }
 
-    public void setEditedDate(Integer editedDate) {
+    public void setEditedDate(long editedDate) {
         this.editedDate = editedDate;
     }
 
@@ -88,11 +88,11 @@ public class UserDetailModel {
         this.address = address;
     }
 
-    public Integer getDob() {
+    public long getDob() {
         return dob;
     }
 
-    public void setDob(Integer dob) {
+    public void setDob(long dob) {
         this.dob = dob;
     }
 
