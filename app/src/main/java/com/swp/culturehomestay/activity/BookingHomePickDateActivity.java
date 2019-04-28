@@ -133,13 +133,17 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnNext)
     public void nextStep() {
+        onNextClick();
+    }
+
+    private void onNextClick() {
         Intent intent = new Intent(BookingHomePickDateActivity.this, BookingHomeDetailActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
         bundle.putSerializable(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
         bundle.putString(Constants.HOMESTAY_ID, homestaysID);
-        bundle.putInt("room", room);
-        intent.putExtra("Bundle", bundle);
+        bundle.putInt(Constants.ROOM, room);
+        intent.putExtra(Constants.BUNDLE, bundle);
         startActivity(intent);
     }
 

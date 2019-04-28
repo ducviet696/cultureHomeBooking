@@ -56,8 +56,8 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         homestayId = bundle.getString(Constants.HOMESTAY_ID);
-        int guest = bundle.getInt("guest");
-        int roomNum = bundle.getInt("roomNum");
+        int guest = bundle.getInt(Constants.GUEST);
+        int roomNum = bundle.getInt(Constants.ROOM);
         List<Date> listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
         PricePost pricePost = new PricePost(Constants.cultureIdList,homestayId,roomNum,guest,listDateBooking.get(0)
                 .getTime(),listDateBooking.get(listDateBooking.size()-1).getTime());

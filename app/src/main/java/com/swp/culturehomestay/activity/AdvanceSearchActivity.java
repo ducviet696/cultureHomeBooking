@@ -11,11 +11,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.adapter.AutoCompleteSearchAdapter;
 import com.swp.culturehomestay.adapter.VerticalListSearchAdapter;
+import com.swp.culturehomestay.models.AutocompleteBean;
+import com.swp.culturehomestay.models.ContentHomeName;
+import com.swp.culturehomestay.models.HomeNameGet;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.SearchHomeGet;
 import com.swp.culturehomestay.models.SearchHomePost;
@@ -25,6 +31,7 @@ import com.swp.culturehomestay.utils.Utils;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -38,9 +45,9 @@ import retrofit2.Response;
 public class AdvanceSearchActivity extends AppCompatActivity {
 
     public static final int INDEX_PAGE = 0;
-    public static final int SIZE_PAGE = 10;
+    public static final int SIZE_PAGE = 20;
     @BindView(R.id.edSearch)
-    EditText edSearch;
+    AutoCompleteTextView edSearch;
     @BindView(R.id.btnDate)
     Button btnDate;
     @BindView(R.id.btnGuest)
@@ -63,6 +70,8 @@ public class AdvanceSearchActivity extends AppCompatActivity {
     ArrayList<String> homeTypeList = new ArrayList<>();
     ArrayList<String> roomTypeList = new ArrayList<>();
     VerticalListSearchAdapter listSearchAdapter;
+    ArrayList<String> listSearch = new ArrayList<>();
+    List<AutocompleteBean> results = new ArrayList<AutocompleteBean>();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -157,13 +166,73 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         getDataFromPreActivity();
         loadHomeBySearch();
+
+        String[] cities = getResources().getStringArray(R.array.cities);
+        String[] districts = getResources().getStringArray(R.array.districts);
+        for(String city : cities){
+//            listSearch.add("Thành phố "+city+", Việt Nam");
+            AutocompleteBean adding = new AutocompleteBean();
+            adding.setValue("1."+city);
+            adding.setTitle(city+", Việt Nam");
+            adding.setGroup("City");
+            results.add(adding);
+        }
+        for(String district : districts){
+            AutocompleteBean adding = new AutocompleteBean();
+            adding.setValue("2."+district);
+            adding.setTitle(district+", Việt Nam");
+            adding.setGroup("District");
+            results.add(adding);
+//            listSearch.add("Quận "+district+", Việt Nam");
+        }
+//        Collections.addAll(listSearch, cities);
+//        Collections.addAll(listSearch, districts);
+//        ArrayAdapter<AutocompleteBean> adapter = new ArrayAdapter<AutocompleteBean>(this,R.layout.support_simple_spinner_dropdown_item,results);
+        getHomestayName();
+
     }
 
     private void getDataFromPreActivity() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
-        guest = bundle.getInt(Constants.GUEST);
-        listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+        String previousActivity = bundle.getString(Constants.ACTIVITY_NAME);
+        if(previousActivity.equals(Constants.HOME_FRAGMENT)){
+            guest = bundle.getInt(Constants.GUEST);
+            listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+        }
+
+    }
+    void getHomestayName(){
+        Call<HomeNameGet> call = Utils.getAPI().getAllHomestayName(Constants.LANG,"",100);
+        call.enqueue(new Callback<HomeNameGet>() {
+            @Override
+            public void onResponse(Call<HomeNameGet> call, Response<HomeNameGet> response) {
+                if(response.isSuccessful() && response.body()!= null){
+                    HomeNameGet homeNameGet = response.body();
+                    Log.d("HomeNameGet", "onResponse: "+homeNameGet.getCode());
+                    if(homeNameGet.getCode().equals(Constants.CODE_OK)){
+                        List<ContentHomeName> contentHomeNames = homeNameGet.getContent();
+                        for(ContentHomeName contentHomeName : contentHomeNames){
+                            AutocompleteBean adding = new AutocompleteBean();
+                            adding.setValue("3."+contentHomeName.getHomestayId());
+                            adding.setTitle(contentHomeName.getHomestayMultis().get(0).getHomestayName());
+                            adding.setGroup("Homestay");
+                            Log.d("HomeNameGet", "onResponse: "+contentHomeName.getHomestayMultis().get(0).getHomestayName());
+                            results.add(adding);
+                            Log.d("HomeNameGet", "onResponse: "+results);
+                        }
+                    }
+                    AutoCompleteSearchAdapter adapter = new AutoCompleteSearchAdapter(AdvanceSearchActivity.this,results);
+                    Log.d("Searcch", "onCreate: "+results.toString());
+                    edSearch.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HomeNameGet> call, Throwable t) {
+
+            }
+        });
     }
     @OnClick({R.id.tvBack, R.id.btnDate, R.id.btnGuest, R.id.btnBedroom, R.id.btnFilter})
     void onClickEvent(View view){

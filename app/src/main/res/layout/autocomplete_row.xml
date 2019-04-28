@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/default_padding">
+    <LinearLayout
+        android:paddingTop="@dimen/default_padding"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/ic_house"
+        android:layout_width="26px"
+        android:layout_height="26px" />
+    <TextView
+        android:id="@+id/tvName"
+        android:paddingLeft="@dimen/default_padding"
+        android:text="Just be yourself"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
+
+
+</LinearLayout>

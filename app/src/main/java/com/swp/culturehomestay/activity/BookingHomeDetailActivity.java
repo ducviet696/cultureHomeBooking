@@ -83,10 +83,14 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         if(requestCode==Constants.REQUEST_CODE) {
             if(resultCode==RESULT_OK){
                 listDateBooking = (List<Date>) data.getSerializableExtra(Constants.LIST_DATE_BOOKING);
-                loadHomestayFromID(homeStayId);
+                dStart = listDateBooking.get(0);
+                dEnd = listDateBooking.get(listDateBooking.size() - 1);
+                txtDateBooking.setText(Utils.formatDateShort(dStart) + " - "+Utils.formatDateShort(dEnd));
+                getTotalPrice();
             } else if(resultCode ==Constants.RESULT_CODE_CHANGE_GUEST) {
-                guest = data.getIntExtra("totalGuest",minGuest);
+                guest = data.getIntExtra(Constants.GUEST,minGuest);
                 txtTotalGuest.setText(String.valueOf(guest));
+                getTotalPrice();
             }
         }
     }
@@ -106,10 +110,10 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
 
     private void getData() {
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("Bundle");
+        Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
         listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
-        roomNum = bundle.getInt("room");
+        roomNum = bundle.getInt(Constants.ROOM);
         homeStayId = bundle.getString(Constants.HOMESTAY_ID);
     }
 
@@ -133,16 +137,21 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                 showPickDateActivity();
                 break;
             case R.id.btnNext:
-                Intent intentNext = new Intent(BookingHomeDetailActivity.this, BookingHomeConfirmActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(Constants.LIST_DATE_BOOKING,(Serializable)listDateBooking);
-                bundle.putInt("guest",guest);
-                bundle.putString(Constants.HOMESTAY_ID,homeStayId);
-                bundle.putInt("totalPrice",totalPrice);
-                intentNext.putExtra(Constants.BUNDLE,bundle);
-                startActivity(intentNext);
+                onNextClick();
                 break;
         }
+    }
+
+    private void onNextClick() {
+        Intent intentNext = new Intent(BookingHomeDetailActivity.this, BookingHomeConfirmActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(Constants.LIST_DATE_BOOKING,(Serializable)listDateBooking);
+        bundle.putInt(Constants.GUEST,guest);
+        bundle.putInt(Constants.ROOM,roomNum);
+        bundle.putString(Constants.HOMESTAY_ID,homeStayId);
+        bundle.putInt("totalPrice",totalPrice);
+        intentNext.putExtra(Constants.BUNDLE,bundle);
+        startActivity(intentNext);
     }
 
     private void showPickDateActivity() {
@@ -160,8 +169,8 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundlePrice = new Bundle();
         bundlePrice.putString(Constants.HOMESTAY_ID, homeStayId);
         bundlePrice.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
-        bundlePrice.putInt("guest",guest);
-        bundlePrice.putInt("roomNum",roomNum);
+        bundlePrice.putInt(Constants.GUEST,guest);
+        bundlePrice.putInt(Constants.ROOM,roomNum);
         intent.putExtra(Constants.BUNDLE, bundlePrice);
         startActivityForResult(intent, Constants.REQUEST_CODE);
     }
@@ -171,7 +180,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundleGuest = new Bundle();
         bundleGuest.putInt("Min",minGuest);
         bundleGuest.putInt("Max",maxGuest);
-        bundleGuest.putInt("Guest",guest);
+        bundleGuest.putInt(Constants.GUEST,guest);
         bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.BOOKINGHOMEDETAILACTIVITY);
         intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
         startActivityForResult(intentGuest,Constants.REQUEST_CODE);
@@ -192,7 +201,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     minGuest = homeStay.getStandartGuest();
                     maxGuest = homeStay.getMaximunGuest();
                     guest = minGuest;
-                    txtTotalGuest.setText(String.valueOf(homeStay.getStandartGuest()));
+                    txtTotalGuest.setText(String.valueOf(guest));
                     dStart = listDateBooking.get(0);
                     dEnd = listDateBooking.get(listDateBooking.size() - 1);
                     txtDateBooking.setText(Utils.formatDateShort(dStart) + " - "+Utils.formatDateShort(dEnd));

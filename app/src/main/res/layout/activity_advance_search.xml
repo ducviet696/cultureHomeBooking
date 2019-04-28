@@ -7,30 +7,26 @@
     android:paddingHorizontal="@dimen/default_padding"
     android:orientation="vertical"
     tools:context=".activity.AdvanceSearchActivity">
-    <android.support.v7.widget.CardView
-        app:cardElevation="10dp"
-        app:cardCornerRadius="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/tvBack"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_previous"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/edSearch"
-                android:hint="@string/location_or_homestay_name"
-                android:drawablePadding="@dimen/default_padding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+   <LinearLayout
+       android:orientation="horizontal"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
+       <ImageView
+           android:id="@+id/tvBack"
+           android:layout_gravity="center"
+           android:src="@drawable/ic_previous"
+           android:layout_width="35dp"
+           android:layout_height="wrap_content" />
+       <AutoCompleteTextView
+           android:completionThreshold="1"
+           android:id="@+id/edSearch"
+           android:hint="@string/location_or_homestay_name"
+           android:drawablePadding="@dimen/default_padding"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"/>
+
+   </LinearLayout>
     <LinearLayout
         android:weightSum="5"
         android:layout_marginVertical="@dimen/default_margin"

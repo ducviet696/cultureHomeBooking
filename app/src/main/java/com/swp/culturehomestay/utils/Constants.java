@@ -31,6 +31,7 @@ public class Constants {
     public static final int REQUEST_CODE = 9696;
     public static final int REQUEST_CODE_HOME_FRAGMENT = 1102;
     public static final int REQUEST_CODE_ADVANCE_SEARCH = 1101;
+    public static final int REQUEST_CODE_BOOKING = 1100;
     public static final String BUNDLE = "BUNDLE";
     public static final int RESULT_CODE_CHANGE_GUEST = 22 ;
     public static final int RESULT_CODE_CHANGE_ROOM = 11 ;
@@ -48,6 +49,7 @@ public class Constants {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String LANG = "en";
     public static final String GUEST = "guest";
+    public static final String ROOM = "room";
     public static final String CODE_OK = "00";
     public static final String CODE_FAIL = "06";
     public static final int MIN_PRICE = 10;
