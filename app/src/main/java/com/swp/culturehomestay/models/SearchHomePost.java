@@ -11,6 +11,9 @@ import java.util.List;
 public class SearchHomePost {
 
 
+    @SerializedName("fullText")
+    @Expose
+    private String fullText;
     @SerializedName("dStart")
     @Expose
     private String dStart;
@@ -79,10 +82,11 @@ public class SearchHomePost {
                 ", numRoom=" + numRoom +
                 ", cityId='" + cityId + '\'' +
                 ", districtId='" + districtId + '\'' +
+                ", fullText='" + fullText + '\'' +
                 '}';
     }
 
-    public SearchHomePost(@Nullable String dStart, @Nullable String dEnd, @Nullable String bookingMethod, @Nullable List<String> homestayTypes, @Nullable List<String> roomTypes, @Nullable Integer numBethRoom, @Nullable List<Integer> amenityBeans, @Nullable List<Integer> cultureServiceBeans, @Nullable Integer numberPeople, @Nullable Integer minPrice, @Nullable Integer maxPrice, @Nullable Integer indexPage, @Nullable Integer sizePage, @Nullable Integer numRoom, @Nullable String cityId, @Nullable String districtId) {
+    public SearchHomePost(@Nullable String dStart, @Nullable String dEnd, @Nullable String bookingMethod, @Nullable List<String> homestayTypes, @Nullable List<String> roomTypes, @Nullable Integer numBethRoom, @Nullable List<Integer> amenityBeans, @Nullable List<Integer> cultureServiceBeans, @Nullable Integer numberPeople, @Nullable Integer minPrice, @Nullable Integer maxPrice, @Nullable Integer indexPage, @Nullable Integer sizePage, @Nullable Integer numRoom, @Nullable String cityId, @Nullable String districtId, @Nullable String fullText) {
         this.dStart = dStart;
         this.dEnd = dEnd;
         this.bookingMethod = bookingMethod;
@@ -99,6 +103,7 @@ public class SearchHomePost {
         this.numRoom = numRoom;
         this.cityId = cityId;
         this.districtId = districtId;
+        this.fullText = fullText;
     }
 
     public SearchHomePost(Integer indexPage, Integer sizePage, Integer numRoom, String cityId, String districtId) {

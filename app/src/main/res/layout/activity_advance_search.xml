@@ -14,14 +14,16 @@
        android:layout_height="wrap_content">
        <ImageView
            android:id="@+id/tvBack"
-           android:layout_gravity="center"
+           android:layout_gravity="center|left"
            android:src="@drawable/ic_previous"
-           android:layout_width="35dp"
+           android:layout_width="wrap_content"
            android:layout_height="wrap_content" />
        <AutoCompleteTextView
+           android:imeOptions="actionSearch"
+           android:inputType="text"
            android:completionThreshold="1"
            android:id="@+id/edSearch"
-           android:hint="@string/location_or_homestay_name"
+           android:hint="@string/type_anything_you_want_to_search"
            android:drawablePadding="@dimen/default_padding"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"/>

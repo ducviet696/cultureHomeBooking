@@ -48,7 +48,7 @@ public class AutoCompleteSearchAdapter extends ArrayAdapter<AutocompleteBean> {
 
         if (autocompleteBean != null) {
             textViewName.setText(autocompleteBean.getTitle());
-            if(!autocompleteBean.getValue().startsWith("3")){
+            if(!autocompleteBean.getGroup().equals("Homestay")){
                 imageViewFlag.setImageResource(R.drawable.ic_marker_white);
             }
 

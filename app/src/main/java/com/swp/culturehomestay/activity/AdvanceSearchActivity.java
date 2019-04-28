@@ -10,11 +10,15 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.AutoCompleteSearchAdapter;
@@ -46,6 +50,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
 
     public static final int INDEX_PAGE = 0;
     public static final int SIZE_PAGE = 20;
+    public static final int NUM_BETH_ROOM = 1;
     @BindView(R.id.edSearch)
     AutoCompleteTextView edSearch;
     @BindView(R.id.btnDate)
@@ -65,6 +70,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
     int maxPrice = Constants.MAX_PRICE;
     int minPrice = Constants.MIN_PRICE;
     String bookingMethod="";
+    String cityId,districtId,fullText;
     ArrayList<Integer> cultureIdList = new ArrayList<>();
     ArrayList<Integer> amenityIdList = new ArrayList<>();
     ArrayList<String> homeTypeList = new ArrayList<>();
@@ -138,7 +144,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
     }
 
     private void onChangeGuestResult(@Nullable Intent data) {
-        guest = data.getIntExtra("totalGuest",1);
+        guest = data.getIntExtra(Constants.GUEST,1);
         if(guest>1){
             btnGuest.setTextColor(getResources().getColor(R.color.colorWhite));
             btnGuest.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#f4511e")));
@@ -172,22 +178,19 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         for(String city : cities){
 //            listSearch.add("Thành phố "+city+", Việt Nam");
             AutocompleteBean adding = new AutocompleteBean();
-            adding.setValue("1."+city);
+            adding.setValue(city);
             adding.setTitle(city+", Việt Nam");
             adding.setGroup("City");
             results.add(adding);
         }
         for(String district : districts){
             AutocompleteBean adding = new AutocompleteBean();
-            adding.setValue("2."+district);
-            adding.setTitle(district+", Việt Nam");
+            adding.setValue(district);
+            adding.setTitle(district);
             adding.setGroup("District");
             results.add(adding);
 //            listSearch.add("Quận "+district+", Việt Nam");
         }
-//        Collections.addAll(listSearch, cities);
-//        Collections.addAll(listSearch, districts);
-//        ArrayAdapter<AutocompleteBean> adapter = new ArrayAdapter<AutocompleteBean>(this,R.layout.support_simple_spinner_dropdown_item,results);
         getHomestayName();
 
     }
@@ -214,7 +217,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                         List<ContentHomeName> contentHomeNames = homeNameGet.getContent();
                         for(ContentHomeName contentHomeName : contentHomeNames){
                             AutocompleteBean adding = new AutocompleteBean();
-                            adding.setValue("3."+contentHomeName.getHomestayId());
+                            adding.setValue(contentHomeName.getHomestayId());
                             adding.setTitle(contentHomeName.getHomestayMultis().get(0).getHomestayName());
                             adding.setGroup("Homestay");
                             Log.d("HomeNameGet", "onResponse: "+contentHomeName.getHomestayMultis().get(0).getHomestayName());
@@ -225,6 +228,50 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                     AutoCompleteSearchAdapter adapter = new AutoCompleteSearchAdapter(AdvanceSearchActivity.this,results);
                     Log.d("Searcch", "onCreate: "+results.toString());
                     edSearch.setAdapter(adapter);
+                    edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+//                                    actionId == EditorInfo.IME_ACTION_DONE ||
+//                                    event != null &&
+//                                            event.getAction() == KeyEvent.ACTION_DOWN &&
+//                                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+//                                if (event == null || !event.isShiftPressed()) {
+//                                    // the user is done typing.
+//                                    fullText = edSearch.getText().toString();
+//                                    loadHomeBySearch();
+//                                    return true; // consume.
+//                                }
+//                            }
+//                            return false; // pass on to other listeners.
+                            switch (actionId){
+                                case EditorInfo.IME_ACTION_SEARCH:
+                                    fullText = edSearch.getText().toString();
+                                    loadHomeBySearch();
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    edSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            if(results.get(position).getGroup().equals("Homestay")){
+                                Intent intent = new Intent(AdvanceSearchActivity.this,ViewHomeDetailActivity.class);
+                                intent.putExtra(Constants.HOMESTAY_ID,results.get(position).getValue());
+                                startActivity(intent);
+                            } else if(results.get(position).getGroup().equals("District")){
+                                districtId = results.get(position).getValue();
+                                loadHomeBySearch();
+                            } else if(results.get(position).getGroup().equals("City")){
+                                cityId = results.get(position).getValue();
+                                loadHomeBySearch();
+                            }
+
+                        }
+
+
+                    });
                 }
             }
 
@@ -274,7 +321,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         Bundle bundleGuest = new Bundle();
         bundleGuest.putInt("Min",1);
         bundleGuest.putInt("Max",15);
-        bundleGuest.putInt("Guest",guest);
+        bundleGuest.putInt(Constants.GUEST,guest);
         bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.ADVANCE_SEARCH_ACTIVITY);
         intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
         startActivityForResult(intentGuest,Constants.REQUEST_CODE_ADVANCE_SEARCH);
@@ -301,6 +348,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         startActivityForResult(intent, Constants.REQUEST_CODE_ADVANCE_SEARCH);
     }
     public void loadHomeBySearch(){
+        fullText = edSearch.getText().toString();
         String dStart =null;
         String dEnd =null;
         if(listDateBooking!=null && !listDateBooking.isEmpty()){
@@ -309,7 +357,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         }
         Log.d("listDateBooking", "loadHomeBySearch: dStart: "+ dStart+", đEnd: " +dEnd);
 //        SearchHomePost searchHomePost = new SearchHomePost(INDEX_PAGE, SIZE_PAGE,1,"","");
-        SearchHomePost searchHomePost = new SearchHomePost(dStart, dEnd, bookingMethod, homeTypeList, roomTypeList, room, amenityIdList, cultureIdList, guest, minPrice, maxPrice, INDEX_PAGE, SIZE_PAGE,1,"","");
+        SearchHomePost searchHomePost = new SearchHomePost(dStart, dEnd, bookingMethod, homeTypeList, roomTypeList, NUM_BETH_ROOM, amenityIdList, cultureIdList, guest, minPrice, maxPrice, INDEX_PAGE, SIZE_PAGE,room,cityId,districtId, fullText);
         Log.d("listDateBooking", "SearchHomePost : "+ searchHomePost.toString());
         Call<SearchHomeGet> call = Utils.getAPI().getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {

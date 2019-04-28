@@ -120,7 +120,7 @@ public interface IApi {
 
  @HTTP(method = "POST", path = "transaction/pay", hasBody = true)
  Call<PaymentGet> getLinkPayment(@Body PaymentPost paymentPost);
- 
+
  //Get Namestay
  @GET("homestay/queryhomestayname")
  Call<HomeNameGet> getAllHomestayName(

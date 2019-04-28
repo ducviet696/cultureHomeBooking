@@ -67,6 +67,7 @@ for best support.</string>
     If you need to book now, please select the accommodation with the \"Instant\" icon.</string>
     <string name="instant_booking">Booking without waiting for the host to respond</string>
     <string name="purpose_of_trip">What’s the main purpose of this trip ?</string>
+    <string name="type_anything_you_want_to_search">Type anything you want to search...</string>
 
     <string-array name="cities">
         <item>An Giang</item>
