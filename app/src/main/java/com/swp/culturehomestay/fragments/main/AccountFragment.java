@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,12 @@ import com.swp.culturehomestay.activity.CustomerProfileActivity;
 import com.swp.culturehomestay.activity.LoginActivity;
 import com.swp.culturehomestay.activity.SettingActivity;
 import com.swp.culturehomestay.activity.SignUpActivity;
+import com.swp.culturehomestay.models.AuthenticatioModel;
 import com.swp.culturehomestay.models.UserDetailModel;
+import com.swp.culturehomestay.services.ApiClient;
+import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
+import com.swp.culturehomestay.utils.Utils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,6 +44,9 @@ import java.net.URL;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,7 +57,7 @@ public class AccountFragment extends Fragment {
     public AccountFragment() {
         // Required empty public constructor
     }
-
+    private static final String TAG = "Account";
     AccessToken accessToken;
     View viewNoLoginAccount;
     View viewLoginAccount;
@@ -63,39 +71,34 @@ public class AccountFragment extends Fragment {
     RelativeLayout btnCusProfile;
     RelativeLayout btnSetting;
     SharedPreferences sharedpreferences;
+    private LinearLayout account_frag;
+    private RelativeLayout errorLayout;
+    private ImageView errorImage;
+    private TextView errorTitle;
+    private TextView errorMessage;
+    private Button btnRetry;
+    private Context context;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        accessToken = AccessToken.getCurrentAccessToken();
-        boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-        sharedpreferences = this.getActivity().getSharedPreferences(Constants.MyPREFERENCES, Context.MODE_PRIVATE);
         view = inflater.inflate(R.layout.fragment_account, container, false);
-        viewNoLoginAccount = (LinearLayout)view.findViewById(R.id.noLogin_Account);
-        viewLoginAccount = (LinearLayout) view.findViewById(R.id.login_Account);
+        context = view.getContext();
+        account_frag = (LinearLayout) view.findViewById(R.id.login_Account);
+        errorLayout = (RelativeLayout) view.findViewById(R.id.errorLayout);
+        errorImage = (ImageView) view.findViewById(R.id.errorImage);
+        errorTitle = (TextView) view.findViewById(R.id.errorTitle);
+        errorMessage = (TextView) view.findViewById(R.id.errorMessage);
+        btnRetry = (Button) view.findViewById(R.id.btnRetry);
+        sharedpreferences = this.getActivity().getSharedPreferences(Constants.MyPREFERENCES, Context.MODE_PRIVATE);
         proImage = (CircleImageView) view.findViewById(R.id.profileImage);
-        new LoadImage().execute("https://cdn3.iconfinder.com/data/icons/avatars-15/64/-26-512.png");
-        if(checkLogin()){
-            viewNoLoginAccount.setVisibility(View.GONE);
-            userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
-            userName = (TextView) view.findViewById(R.id.lbl_userName);
-            userName.setText(userDetailModel.getFirstName()+" "+ userDetailModel.getLastName());
-            viewLoginAccount.setVisibility(View.VISIBLE);
-        }else{
-            viewNoLoginAccount.setVisibility(View.VISIBLE);
-            viewLoginAccount.setVisibility(View.GONE);
-        }
-        loginBtn = (Button) viewNoLoginAccount.findViewById(R.id.btn_signin_create);
-        loginBtn.setOnClickListener(onSignInClick);
         btnCusProfile = (RelativeLayout) view.findViewById(R.id.btn_cusProfile);
         btnCusProfile.setOnClickListener(onCustomerProfileClick);
         btnSetting = (RelativeLayout) view.findViewById(R.id.btn_setting);
         btnSetting.setOnClickListener(onSettingClick);
-        signUpBtn= (Button)viewNoLoginAccount.findViewById(R.id.btn_signup_create);
-        signUpBtn.setOnClickListener(onSignUpClick);
-//        logoutBtn = (Button) view.findViewById(R.id.btn_logout);
-//        logoutBtn.setOnClickListener(onLogoutClick);
+        userName = (TextView) view.findViewById(R.id.lbl_userName);
+        loadData();
         return view;
     }
     View.OnClickListener onCustomerProfileClick = new View.OnClickListener() {
@@ -105,23 +108,6 @@ public class AccountFragment extends Fragment {
             startActivity(intent);
         }
     };
-
-    View.OnClickListener onSignInClick = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), LoginActivity.class);
-            intent.putExtra("prePos",3);
-            startActivity(intent);
-        }
-    };
-
-    View.OnClickListener onSignUpClick = new View.OnClickListener() {
-        public void onClick(View v) {
-            Intent intent = new Intent(getActivity(), SignUpActivity.class);
-            intent.putExtra("prePos",3);
-            startActivity(intent);
-        }
-    };
-
     View.OnClickListener onSettingClick = new View.OnClickListener() {
         public void onClick(View v) {
             Intent intent = new Intent(getActivity(), SettingActivity.class);
@@ -181,5 +167,76 @@ public class AccountFragment extends Fragment {
         }else{
             return true;
         }
+    }
+    private void loadData(){
+        if(checkLogin()){
+            userDetailModel = new UserDetailModel();
+            String userId = Utils.getUserId(context);
+            Call<UserDetailModel> call =Utils.getAPI().getUserDetailById(userId);
+            call.enqueue(new Callback<UserDetailModel>() {
+                @Override
+                public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                    try {
+                        if (response.isSuccessful() && response.body() != null) {
+                            userDetailModel = response.body();
+                            if(!Utils.isNullOrEmpty(userDetailModel.getImangeUrl())){
+//                        new LoadImage().execute(userDetailModel.getImangeUrl());
+                                Utils.loadProfileImge(context,proImage,userDetailModel.getImangeUrl());
+                                Log.d(TAG,userDetailModel.getImangeUrl() );
+                            }
+                            if(!Utils.isNullOrEmpty(userDetailModel.getFullName())){
+                                userName.setText(userDetailModel.getFullName());
+                            }
+                        }else{
+                            String errorCode;
+                            switch (response.code()) {
+                                case 404:
+                                    errorCode = "404 not found";
+                                    break;
+                                case 500:
+                                    errorCode = "500 server broken";
+                                    break;
+                                default:
+                                    errorCode = "unknown error";
+                                    break;
+                            }
+                            Log.d(TAG, errorCode);
+                        }
+                    }catch (Exception e){
+                        Log.d(TAG, "onResponse: "+e.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<UserDetailModel> call, Throwable t) {
+                    Log.d(TAG, "onResponse: "+t.getMessage());
+                }
+            });
+        }else{
+            showMessageNotLogin(R.drawable.sad, "Please login to see your account", "");
+            showErrorLayout();
+        }
+    }
+    public void showMessageNotLogin(int imageView, String title, String message) {
+
+        showErrorLayout();
+        errorImage.setImageResource(imageView);
+        errorTitle.setText(title);
+        errorMessage.setText(message);
+        btnRetry.setText("Login/SignUp");
+
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    public void showErrorLayout() {
+        account_frag.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.VISIBLE);
     }
 }

@@ -37,6 +37,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class Utils {
 
     public static ColorDrawable[] vibrantLightColorList =
@@ -135,6 +138,21 @@ public class Utils {
     }
     //load imgae via glide
     public static void loadImge(Context context, ImageView imageView, String imgeUrl){
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.loading);
+//        requestOptions.placeholder(Utils.getRandomDrawbleColor());
+        requestOptions.error(R.drawable.image_not_found);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        requestOptions.fitCenter();
+
+        Glide.with(context)
+                .load(imgeUrl)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView);
+    }
+
+    public static void loadProfileImge(Context context, CircleImageView imageView, String imgeUrl){
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(R.drawable.loading);
 //        requestOptions.placeholder(Utils.getRandomDrawbleColor());

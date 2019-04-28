@@ -3,9 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.main.BookingFragment">
+    tools:context=".fragments.main.BookingFragment"
+    >
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
+        android:id="@+id/booking_frag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/default_padding">
@@ -15,8 +17,9 @@
             android:layout_height="wrap_content"
             android:textColor="@color/colorBlack"
             android:text="@string/lbl_myBooking"
-            android:textSize="30dp"
-            android:layout_marginTop="30dp"/>
+            android:textSize="@dimen/large_text"
+            android:textStyle="bold"/>
+
         <TextView
             android:id="@+id/lbl_totalBooking"
             android:layout_width="match_parent"
@@ -32,6 +35,6 @@
             android:layout_height="match_parent"
             android:layout_below="@id/lbl_totalBooking"/>
     </RelativeLayout>
-
+    <include layout="@layout/error"/>
 
 </FrameLayout>

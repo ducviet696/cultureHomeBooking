@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.LoginActivity">
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    tools:context=".activity.LoginActivity"
+    android:background="@drawable/background_login">
         <LinearLayout
+            android:id="@+id/scroll_login"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="56dp"
+            android:paddingTop="200dp"
             android:paddingLeft="24dp"
             android:paddingRight="24dp">
 
@@ -54,24 +53,39 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="24dp"
                 android:padding="12dp"
+                android:backgroundTint="@color/colorPrimaryButtonActive"
                 android:text="Login"/>
-
-            <TextView android:id="@+id/link_signup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:text="No account yet? Create one"
-                android:gravity="center"
-                android:textSize="16dip"/>
-            <com.facebook.login.widget.LoginButton
-                xmlns:facebook="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/btn_facebook_login"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
-                facebook:com_facebook_login_text="@string/login_with_fb"
-                facebook:com_facebook_logout_text="@string/logout"/>
+            <!--<com.facebook.login.widget.LoginButton-->
+                <!--xmlns:facebook="http://schemas.android.com/apk/res-auto"-->
+                <!--android:id="@+id/btn_facebook_login"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginTop="24dp"-->
+                <!--facebook:com_facebook_login_text="@string/login_with_fb"-->
+                <!--facebook:com_facebook_logout_text="@string/logout"/>-->
         </LinearLayout>
-    </ScrollView>
+    <LinearLayout
+        android:id="@+id/link_signup"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="Have not an account? "
+            android:gravity="center"
+            android:textSize="16dip"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="Sign up"
+            android:textColor="@color/colorPrimaryButtonActive"
+            android:gravity="center"
+            android:textSize="16dip"/>
+    </LinearLayout>
 </RelativeLayout>

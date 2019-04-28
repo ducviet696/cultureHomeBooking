@@ -16,6 +16,12 @@ public class Wishlist implements Serializable {
     @SerializedName("homestay")
     @Expose
     private HomeStay homestay;
+    @SerializedName("createdDate")
+    @Expose
+    private long createdDate;
+    @SerializedName("editedDate")
+    @Expose
+    private long editedDate;
 
     public Wishlist(String tenantId, String homestayId) {
         this.tenantId = tenantId;
@@ -46,4 +52,19 @@ public class Wishlist implements Serializable {
         this.homestay = homestay;
     }
 
+    public long getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(long createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public long getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(long editedDate) {
+        this.editedDate = editedDate;
+    }
 }

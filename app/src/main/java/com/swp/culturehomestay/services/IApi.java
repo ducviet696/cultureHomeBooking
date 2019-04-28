@@ -21,6 +21,7 @@ import com.swp.culturehomestay.models.SearchHomeGet;
 import com.swp.culturehomestay.models.SearchHomePost;
 import com.swp.culturehomestay.models.SignUpCredentials;
 import com.swp.culturehomestay.models.SignUpResModel;
+import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.models.UserWant;
 import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.models.WishlistBean;
@@ -105,6 +106,10 @@ public interface IApi {
     @GET ("homestay/amenities")
     Call<List<Amenity>> getAllAmenity();
 
+    //Get user detail by id
+    @GET("user/{id}")
+    Call<UserDetailModel> getUserDetailById(@Path("id") String id);
+
     //Get user by id
  @GET("user/{userid}")
  Call<UserWant> getUserById(@Path("userid") String userId);
@@ -115,11 +120,7 @@ public interface IApi {
 
  @HTTP(method = "POST", path = "transaction/pay", hasBody = true)
  Call<PaymentGet> getLinkPayment(@Body PaymentPost paymentPost);
-
- //Get cityId;
-
- //Get districtId
-
+ 
  //Get Namestay
  @GET("homestay/queryhomestayname")
  Call<HomeNameGet> getAllHomestayName(
@@ -127,7 +128,6 @@ public interface IApi {
          @Query("query") String query,
          @Query("page") int page
  );
-
 
 
 }

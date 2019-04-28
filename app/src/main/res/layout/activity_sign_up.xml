@@ -76,6 +76,7 @@
                         android:id="@+id/createAccBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimaryButtonActive"
                         android:text="Create"
                         android:layout_weight="1"/>
                 </LinearLayout>
