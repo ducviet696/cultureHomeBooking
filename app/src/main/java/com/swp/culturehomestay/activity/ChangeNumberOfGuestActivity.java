@@ -37,7 +37,7 @@ public class ChangeNumberOfGuestActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         minGuest = bundle.getInt("Min");
         maxGuest = bundle.getInt("Max");
-        guest = bundle.getInt("Guest");
+        guest = bundle.getInt(Constants.GUEST);
         txtGuestNum.setText(String.valueOf(guest));
         previousActtivity = bundle.getString(Constants.ACTIVITY_NAME);
         setVisiableButton();
@@ -84,7 +84,7 @@ public class ChangeNumberOfGuestActivity extends AppCompatActivity {
 
     private void onSaveClick() {
         Intent intent = new Intent();
-        intent.putExtra("totalGuest", guest);
+        intent.putExtra(Constants.GUEST, guest);
         setResult(Constants.RESULT_CODE_CHANGE_GUEST, intent);
         finish();
     }

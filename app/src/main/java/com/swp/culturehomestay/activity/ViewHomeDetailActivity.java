@@ -188,8 +188,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void loadHomeStayById(String wishlistsID) {
-        Call<HomeStay> call = mService.getHomeById(wishlistsID,"en");
+    private void loadHomeStayById(String homestayID) {
+        Call<HomeStay> call = mService.getHomeById(homestayID,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
             public void onResponse(Call<HomeStay> call, Response<HomeStay> response) {

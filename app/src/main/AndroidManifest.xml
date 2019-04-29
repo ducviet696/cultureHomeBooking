@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.FilterSearchActivity"></activity>
+        <activity android:name=".activity.BookingHomePaymentActivity"></activity>
+        <activity android:name=".activity.EditUserInfoPaymentActivity" />
+        <activity android:name=".activity.FilterSearchActivity" />
         <activity android:name=".activity.ChangeNumberOfRoomActivity" />
         <activity android:name=".activity.AdvanceSearchActivity" />
         <activity android:name=".activity.ShowHomeByHost" />

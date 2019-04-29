@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/default_padding"
+    tools:context=".activity.BookingHomePaymentActivity">
+
+    <TextView
+        android:id="@+id/tvBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_previous"
+        android:keepScreenOn="true"
+        android:paddingVertical="@dimen/default_padding" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:text="Pricing Detail"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+    <!--Normal day-->
+    <RelativeLayout
+        android:id="@+id/layoutNormalDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Basic Fee"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tvCalPriceDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTotalPricePerNight"
+            android:text="@string/all_of_day" />
+
+        <TextView
+            android:id="@+id/tvTotalPricePerNight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="$0"
+            android:textColor="@color/colorBlack" />
+    </RelativeLayout>
+
+    <!--Weekly-->
+    <RelativeLayout
+        android:id="@+id/layoutWeekly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Holiday fee"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tvCalWeekly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTotalPricePerWeekly"
+            android:text="Holiday price may be applied" />
+
+        <TextView
+            android:id="@+id/tvTotalPricePerWeekly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="$0"
+            android:textColor="@color/colorBlack" />
+    </RelativeLayout>
+
+    <!--Culture fee-->
+    <RelativeLayout
+        android:id="@+id/layoutCultureFee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Culture service Fee"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tvCalCultureFee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTotalPriceCultureFee"
+            android:text="Culture service price may be applied" />
+
+        <TextView
+            android:id="@+id/tvTotalPriceCultureFee"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="$0"
+            android:textColor="@color/colorBlack" />
+    </RelativeLayout>
+    <!--Holiday fee-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding"
+        android:background="@color/colorGray" />
+    <!--Total-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:id="@+id/tvTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:text="$220196"
+            android:textColor="@color/colorBlack" />
+    </RelativeLayout>
+<LinearLayout
+    android:visibility="visible"
+    android:id="@+id/layout_ins"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/default_margin"
+        android:paddingTop="@dimen/default_padding"
+        android:text="Payment Method"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/large_text"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_margin"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/payment_method_image_size"
+                android:layout_height="@dimen/payment_method_image_size"
+                android:background="@color/colorWhite"
+                android:scaleType="centerInside"
+                android:src="@drawable/wantpay" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Want Wallet" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/payment_method_image_size"
+                android:layout_height="@dimen/payment_method_image_size"
+                android:background="@color/colorWhite"
+                android:scaleType="centerInside"
+                android:src="@drawable/paypal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="Paypal" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+        <RadioGroup
+            android:id="@+id/rgPayment"
+            android:weightSum="5"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <RadioButton
+                android:id="@+id/rbWantpayment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+            <View
+                android:layout_width="0dip"
+                android:layout_height="0dp"
+                android:layout_weight="1.5" />
+            <RadioButton
+                android:id="@+id/rbPaypal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </RadioGroup>
+
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom">
+
+        <Button
+            android:id="@+id/btnPayment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|center_vertical"
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="5dp"
+            android:background="@color/colorPrimaryButtonActive"
+            android:text="Pay Now"
+            android:textColor="@color/colorWhite" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>
+    <LinearLayout
+        android:gravity="bottom"
+        android:visibility="gone"
+        android:id="@+id/layout_req"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:paddingTop="@dimen/default_padding"
+            android:text="Your reservation is pending, waiting for host respond."
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/large_text"
+            android:textStyle="bold" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_gravity="bottom">
+            <Button
+                android:id="@+id/btnBackHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|center_vertical"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginVertical="5dp"
+                android:background="@color/colorPrimaryButtonActive"
+                android:text="Back to Search"
+                android:textColor="@color/colorWhite" />
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</LinearLayout>

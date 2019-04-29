@@ -6,12 +6,17 @@ import com.swp.culturehomestay.models.AuthenticatioModel;
 import com.swp.culturehomestay.models.CheckWL;
 import com.swp.culturehomestay.models.CultureService;
 import com.swp.culturehomestay.models.DateBooked;
+import com.swp.culturehomestay.models.HomeNameGet;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.LoginCredentials;
 import com.swp.culturehomestay.models.PostFileBody;
+import com.swp.culturehomestay.models.PaymentGet;
+import com.swp.culturehomestay.models.PaymentPost;
 import com.swp.culturehomestay.models.PriceGet;
 import com.swp.culturehomestay.models.PricePost;
+import com.swp.culturehomestay.models.ReservationContent;
 import com.swp.culturehomestay.models.ReservationModel;
+import com.swp.culturehomestay.models.ReservationPost;
 import com.swp.culturehomestay.models.ResultBookingHistoryModel;
 import com.swp.culturehomestay.models.SearchHomeGet;
 import com.swp.culturehomestay.models.SearchHomePost;
@@ -118,5 +123,20 @@ public interface IApi {
 
     @PUT("homestay/files/")
     Call<SignUpResModel> postFileImage(@Body PostFileBody postFileBody);
+
+    //Reservation
+    @HTTP(method = "POST", path = "transaction/reservation", hasBody = true)
+    Call<ReservationContent> postResvervation(@Body ReservationPost reservationPost);
+
+    @HTTP(method = "POST", path = "transaction/pay", hasBody = true)
+    Call<PaymentGet> getLinkPayment(@Body PaymentPost paymentPost);
+
+    //Get Namestay
+    @GET("homestay/queryhomestayname")
+    Call<HomeNameGet> getAllHomestayName(
+            @Query("lang") String lang,
+            @Query("query") String query,
+            @Query("page") int page
+    );
 
 }

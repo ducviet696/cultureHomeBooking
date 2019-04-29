@@ -137,6 +137,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.LIST_DATE_BOOKING,(Serializable) listDateBooking);
         bundle.putInt(Constants.GUEST,guest);
+        bundle.putString(Constants.ACTIVITY_NAME,Constants.HOME_FRAGMENT);
         intentSearchAdv.putExtra(Constants.BUNDLE,bundle);
         startActivity(intentSearchAdv);
     }
