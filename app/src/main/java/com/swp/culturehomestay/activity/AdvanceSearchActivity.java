@@ -183,27 +183,8 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_advance_search);
         ButterKnife.bind(this);
         getDataFromPreActivity();
+        getDataForSearch();
         loadHomeBySearch();
-
-        String[] cities = getResources().getStringArray(R.array.cities);
-        String[] districts = getResources().getStringArray(R.array.districts);
-        for (String city : cities) {
-//            listSearch.add("Thành phố "+city+", Việt Nam");
-            AutocompleteBean adding = new AutocompleteBean();
-            adding.setValue(city);
-            adding.setTitle(city + ", Việt Nam");
-            adding.setGroup("City");
-            results.add(adding);
-        }
-        for (String district : districts) {
-            AutocompleteBean adding = new AutocompleteBean();
-            adding.setValue(district);
-            adding.setTitle(district);
-            adding.setGroup("District");
-            results.add(adding);
-//            listSearch.add("Quận "+district+", Việt Nam");
-        }
-        getHomestayName();
 
     }
 
@@ -218,7 +199,24 @@ public class AdvanceSearchActivity extends AppCompatActivity {
 
     }
 
-    void getHomestayName() {
+    void getDataForSearch() {
+        String[] cities = getResources().getStringArray(R.array.cities);
+        String[] districts = getResources().getStringArray(R.array.districts);
+        for (String city : cities) {
+            AutocompleteBean adding = new AutocompleteBean();
+            adding.setValue(city);
+            adding.setTitle(city + ", Việt Nam");
+            adding.setGroup("City");
+            results.add(adding);
+        }
+        for (String district : districts) {
+            AutocompleteBean adding = new AutocompleteBean();
+            adding.setValue(district);
+            adding.setTitle(district);
+            adding.setGroup("District");
+            results.add(adding);
+//            listSearch.add("Quận "+district+", Việt Nam");
+        }
         Call<HomeNameGet> call = Utils.getAPI().getAllHomestayName(Constants.LANG, "", 100);
         call.enqueue(new Callback<HomeNameGet>() {
             @Override
@@ -260,6 +258,8 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                             switch (actionId) {
                                 case EditorInfo.IME_ACTION_SEARCH:
                                     fullText = edSearch.getText().toString();
+                                    cityId="";
+                                    districtId="";
                                     loadHomeBySearch();
                                     break;
                             }

@@ -172,11 +172,16 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body()!= null){
                     PaymentGet paymentGet = response.body();
                     if(paymentGet.getCode().equals("00")){
-                        String url = paymentGet.getContent();
-                        Log.d("Payment", "onResponse: "+ url);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse(url));
-                        startActivity(intent);
+                        if(method.equals(ConstantsWant.Transaction.PaymentMethod.type.PAYPAL)){
+                            String url = paymentGet.getContent();
+                            Log.d("Payment", "onResponse: "+ url);
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(url));
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(BookingHomePaymentActivity.this, "Payment Successfully ", Toast.LENGTH_SHORT).show();
+
+                        }
                     }
                     else {
                         switch (paymentGet.getCode()){
