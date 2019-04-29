@@ -32,6 +32,7 @@ import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -129,7 +130,7 @@ public interface IApi {
     @Multipart
 //    @POST("homestay/files/")
     @HTTP(method = "POST", path = "homestay/files/", hasBody = true)
-    Call<SignUpResModel> postFileImage(@Part("file") RequestBody file, @Part("filePath") RequestBody filePath);
+    Call<SignUpResModel> postFileImage(@Part MultipartBody.Part file, @Part("filePath") RequestBody filePath);
 
     //Reservation
     @HTTP(method = "POST", path = "transaction/reservation", hasBody = true)
@@ -145,5 +146,10 @@ public interface IApi {
             @Query("query") String query,
             @Query("page") int page
     );
+
+    @Multipart
+    @POST("homestay/files/")
+    Call<ResponseBody> uploadFile(@Part MultipartBody.Part file,
+                                  @Part("filePath") RequestBody filePath);
 
 }

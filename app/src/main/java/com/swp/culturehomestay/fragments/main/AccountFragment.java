@@ -332,7 +332,7 @@ public class AccountFragment extends Fragment {
                 RequestBody f =  RequestBody.create(MediaType.parse("multipart/form-data"), file);
                 MultipartBody.Part mPart= MultipartBody.Part.createFormData("file",file.getName(),f);
                 RequestBody path = RequestBody.create(MediaType.parse("multipart/form-data"),"user/profile/");
-                Call<SignUpResModel> call = Utils.getAPI().postFileImage(f,path);
+                Call<SignUpResModel> call = Utils.getAPI().postFileImage(mPart,path);
                 call.enqueue(new Callback<SignUpResModel>() {
                     @Override
                     public void onResponse(Call<SignUpResModel> call, Response<SignUpResModel> response) {
@@ -341,7 +341,7 @@ public class AccountFragment extends Fragment {
                             if (response.isSuccessful() && response.body() != null) {
                                 signUpResModel = response.body();
                                 if (signUpResModel.getMessage().equals("suscess")) {
-                                    userDetailModel.setImangeUrl(file.getName());
+                                    userDetailModel.setImangeUrl("user/profile/"+file.getName());
                                     saveImage(userDetailModel);
                                 }
                             } else {
