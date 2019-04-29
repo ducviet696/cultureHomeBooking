@@ -97,6 +97,8 @@ public class LoginActivity extends AppCompatActivity {
                                 break;
                             default:
                                 errorCode = "unknown error";
+                                Toast toast = Toast.makeText(getApplicationContext(),"Username or password is incorrect",Toast.LENGTH_SHORT);
+                                toast.show();
                                 break;
                         }
                         Log.d(TAG, errorCode);

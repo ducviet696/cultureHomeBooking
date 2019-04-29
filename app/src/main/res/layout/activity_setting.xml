@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@id/languageIcon"
-                    android:text="language" />
+                    android:text="Language" />
             </RelativeLayout>
 
             <RelativeLayout

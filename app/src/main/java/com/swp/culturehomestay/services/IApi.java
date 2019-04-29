@@ -30,14 +30,19 @@ import com.swp.culturehomestay.models.WishlistBean;
 import java.util.Date;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
+import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -121,8 +126,10 @@ public interface IApi {
     @PUT("user/update")
     Call<UserDetailModel> updateUserInfo(@Body UserDetailModel user);
 
-    @PUT("homestay/files/")
-    Call<SignUpResModel> postFileImage(@Body PostFileBody postFileBody);
+    @Multipart
+//    @POST("homestay/files/")
+    @HTTP(method = "POST", path = "homestay/files/", hasBody = true)
+    Call<SignUpResModel> postFileImage(@Part("file") RequestBody file, @Part("filePath") RequestBody filePath);
 
     //Reservation
     @HTTP(method = "POST", path = "transaction/reservation", hasBody = true)
