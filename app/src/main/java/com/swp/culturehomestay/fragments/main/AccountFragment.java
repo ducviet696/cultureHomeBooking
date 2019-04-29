@@ -1,18 +1,23 @@
 package com.swp.culturehomestay.fragments.main;
 
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,6 +47,7 @@ import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
+import com.swp.culturehomestay.utils.FileUtils;
 import com.swp.culturehomestay.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -53,9 +59,15 @@ import java.net.URL;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,9 +75,13 @@ import retrofit2.Response;
 public class AccountFragment extends Fragment {
 
 
+    public final static int PICK_IMAGE_REQUEST = 1;
+    private static final int READ_EXTERNAL_REQUEST = 2;
+
     public AccountFragment() {
         // Required empty public constructor
     }
+
     private static final String TAG = "Account";
     public static final int PICK_FROM_GALLERY = 1;
     AccessToken accessToken;
@@ -92,6 +108,7 @@ public class AccountFragment extends Fragment {
     private Context context;
     private LinearLayout changeProImage;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,12 +129,13 @@ public class AccountFragment extends Fragment {
         btnSetting.setOnClickListener(onSettingClick);
         userName = (TextView) view.findViewById(R.id.lbl_userName);
         balance = (TextView) view.findViewById(R.id.balanceLbl);
-        balanceTransfer= (TextView) view.findViewById(R.id.balanceTransferLbl);
+        balanceTransfer = (TextView) view.findViewById(R.id.balanceTransferLbl);
         changeProImage = (LinearLayout) view.findViewById(R.id.changeProImage);
         changeProImage.setOnClickListener(onChangProImageClick);
         loadData();
         return view;
     }
+
     View.OnClickListener onCustomerProfileClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -163,17 +181,18 @@ public class AccountFragment extends Fragment {
         pager.setCurrentItem(0);
     }
 
-    private class  LoadImage extends AsyncTask<String, Void, Bitmap>{
+    private class LoadImage extends AsyncTask<String, Void, Bitmap> {
         Bitmap profileImage = null;
+
         @Override
         protected Bitmap doInBackground(String... strings) {
             try {
                 URL url = new URL(strings[0]);
-                InputStream inputStream =   url.openConnection().getInputStream();
+                InputStream inputStream = url.openConnection().getInputStream();
                 profileImage = BitmapFactory.decodeStream(inputStream);
-            }catch (MalformedURLException e){
+            } catch (MalformedURLException e) {
                 e.printStackTrace();
-            }catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return profileImage;
@@ -186,41 +205,42 @@ public class AccountFragment extends Fragment {
         }
     }
 
-    private boolean checkLogin(){
-        if(sharedpreferences.getString("userId", "")==null|| sharedpreferences.getString("userId", "").isEmpty()){
+    private boolean checkLogin() {
+        if (sharedpreferences.getString("userId", "") == null || sharedpreferences.getString("userId", "").isEmpty()) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
-    private void loadData(){
-        if(checkLogin()){
+    private void loadData() {
+        if (checkLogin()) {
             userDetailModel = new UserDetailModel();
             String userId = Utils.getUserId(context);
-            Call<UserDetailModel> call =Utils.getAPI().getUserDetailById(userId);
+            Call<UserDetailModel> call = Utils.getAPI().getUserDetailById(userId);
             call.enqueue(new Callback<UserDetailModel>() {
                 @Override
                 public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
                     try {
                         if (response.isSuccessful() && response.body() != null) {
                             userDetailModel = response.body();
-                            if(!Utils.isNullOrEmpty(userDetailModel.getImangeUrl())){
+                            if (!Utils.isNullOrEmpty(userDetailModel.getImangeUrl())) {
 //                        new LoadImage().execute(userDetailModel.getImangeUrl());
-                                Utils.loadProfileImge(context,proImage,userDetailModel.getImangeUrl());
-                                Log.d(TAG,userDetailModel.getImangeUrl() );
+                                Utils.loadProfileImge(context, proImage, userDetailModel.getImangeUrl());
+                                Log.d(TAG, userDetailModel.getImangeUrl());
                             }
-                            if(!Utils.isNullOrEmpty(userDetailModel.getFullName())){
+                            if (!Utils.isNullOrEmpty(userDetailModel.getFullName())) {
                                 userName.setText(userDetailModel.getFullName());
-                            }if(userDetailModel.getTenant()!=null){
-                                balance.setText(userDetailModel.getTenant().getBalance()+"$");
-                                balanceTransfer.setText(userDetailModel.getTenant().getBalanceTranfer()+"$");
-                            }else{
+                            }
+                            if (userDetailModel.getTenant() != null) {
+                                balance.setText(userDetailModel.getTenant().getBalance() + "$");
+                                balanceTransfer.setText(userDetailModel.getTenant().getBalanceTranfer() + "$");
+                            } else {
 
                                 balance.setText("0$");
                                 balanceTransfer.setText("0$");
                             }
-                        }else{
+                        } else {
                             String errorCode;
                             switch (response.code()) {
                                 case 404:
@@ -235,17 +255,17 @@ public class AccountFragment extends Fragment {
                             }
                             Log.d(TAG, errorCode);
                         }
-                    }catch (Exception e){
-                        Log.d(TAG, "onResponse: "+e.getMessage());
+                    } catch (Exception e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<UserDetailModel> call, Throwable t) {
-                    Log.d(TAG, "onResponse: "+t.getMessage());
+                    Log.d(TAG, "onResponse: " + t.getMessage());
                 }
             });
-        }else{
+        } else {
             showMessageNotLogin(R.drawable.sad, "Please login to see your account", "");
             showErrorLayout();
         }
@@ -274,71 +294,75 @@ public class AccountFragment extends Fragment {
         errorLayout.setVisibility(View.VISIBLE);
     }
 
-    public void selectImage(){
+    public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_FROM_GALLERY);
     }
 
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri selectedImage = data.getData();
-        File f = new File(selectedImage.getPath());
-        final String[] split = f.getPath().split(":");//split the path.
-        String filePath = split[1];//assign it to a string(your choice)
-        PostFileBody body = new PostFileBody(f,"user/profile/");
-        Call<SignUpResModel> call =Utils.getAPI().postFileImage(body);
-        call.enqueue(new Callback<SignUpResModel>() {
-            @Override
-            public void onResponse(Call<SignUpResModel> call, Response<SignUpResModel> response) {
-                SignUpResModel signUpResModel = new SignUpResModel();
-                try {
-                    if (response.isSuccessful() && response.body() != null) {
-                        signUpResModel = response.body();
-                        if(signUpResModel.getMessage().equals("suscess")){
-                            userDetailModel.setImangeUrl(f.getName());
-                            saveImage(userDetailModel);
+
+        if (requestCode == PICK_FROM_GALLERY && resultCode == Activity.RESULT_OK
+                && data != null && data.getData() != null) {
+            Uri selectedImage = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), selectedImage);
+                proImage.setImageBitmap(bitmap);
+                File f = FileUtils.getFile(getContext(),selectedImage);
+                RequestBody filePath = RequestBody.create(MultipartBody.FORM,"filePath");
+                RequestBody requestBody = RequestBody.create(
+                        MediaType.parse(getActivity().getApplicationContext().getContentResolver().getType(selectedImage)),
+                        f);
+                Log.d(TAG, "onActivityResult: "+f +"fname: "+ f.getName()+" rqbd "+requestBody.toString());
+                MultipartBody.Part filePart =
+                        MultipartBody.Part.createFormData("file", f.getName(), requestBody);
+                Call<ResponseBody> call = Utils.getAPI().uploadFile(filePart,filePath);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response == null || response.body() == null) {
+                            Log.d(TAG, "onResponse: fail");
+                            return;
                         }
-                    }else{
-                        String errorCode;
-                        switch (response.code()) {
-                            case 404:
-                                errorCode = "404 not found";
-                                break;
-                            case 500:
-                                errorCode = "500 server broken";
-                                break;
-                            default:
-                                errorCode = "unknown error";
-                                break;
+                        try {
+                            String responseUrl = response.body().string();
+                            Log.d(TAG, "onResponse: "+responseUrl);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                        Log.d(TAG, errorCode);
                     }
-                }catch (Exception e){
-                    Log.d(TAG, "onResponse: "+e.getMessage());
-                }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.d(TAG, "onResponse: "+t);
+                    }
+                });
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onFailure(Call<SignUpResModel> call, Throwable t) {
-                Log.d(TAG, "onResponse: "+t.getMessage());
-            }
-        });
+
+        }
+
     }
 
-    public void saveImage(UserDetailModel userDetail){
+    public void saveImage(UserDetailModel userDetail) {
         retrofit2.Call<UserDetailModel> call = Utils.getAPI().updateUserInfo(userDetailModel);
         call.enqueue(new Callback<UserDetailModel>() {
             @Override
             public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
                 try {
                     if (response.isSuccessful() && response.body() != null) {
-                        Toast toast = Toast.makeText(getContext(),"Update user information successfully",Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getContext(), "Update user information successfully", Toast.LENGTH_SHORT);
                         toast.show();
                         Log.d(TAG, "Update successfully");
-                    }else{
+                    } else {
                         String errorCode;
                         switch (response.code()) {
                             case 404:
@@ -352,12 +376,12 @@ public class AccountFragment extends Fragment {
                                 break;
                         }
                         Log.d(TAG, errorCode);
-                        Toast toast = Toast.makeText(getContext(),errorCode,Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getContext(), errorCode, Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 } catch (Exception e) {
                     Log.d(TAG, "onResponse: " + e.getMessage());
-                    Toast toast = Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }

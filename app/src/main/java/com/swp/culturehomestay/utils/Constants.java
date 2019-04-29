@@ -10,6 +10,7 @@ public class Constants {
     public static final String BASE_URLIMG = "http://222.252.30.110:8765/homestay/files/homestay/image?path=";
     public static final String USER_ID ="624daf76-c874-4ff3-a6ad-caf1bacce6e6";
     public static final String BASE_URL = "http://222.252.30.110:8765/";
+//    public static final String BASE_URL = "http://192.168.1.190:8765/";
     public static final String HOMESTAY_ID = "HOMESTAY_ID";
     public static final String HOST_ID = "HOST_ID";
     public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
