@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.UserDetailModel;
@@ -35,6 +36,7 @@ public class CustomerProfileActivity extends AppCompatActivity {
     TextInputEditText address;
     String result;
     Button btnCusBack;
+    Button btnCusSave;
     private Context context;
 
     @Override
@@ -46,13 +48,10 @@ public class CustomerProfileActivity extends AppCompatActivity {
         email = (TextInputEditText) findViewById(R.id.email);
         phoneNumber = (TextInputEditText) findViewById(R.id.phoneNumber);
         address = (TextInputEditText) findViewById(R.id.address);
-//        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.gender_array, android.R.layout.simple_spinner_item);
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        genderSpinner.setAdapter(arrayAdapter);
-//        userDetailModel = new UserDetailModel("anhndv","Viet Anh","Nguyen Dung","anhndvse04243@gmail.com", new Date(),true,"","+84333834191","","Hanoi, Vietnam" );
-        fillDataCustomer(userDetailModel);
         btnCusBack = (Button) findViewById(R.id.cusBack);
         btnCusBack.setOnClickListener(onBackClick);
+        btnCusSave = (Button) findViewById(R.id.cusSave);
+        btnCusSave.setOnClickListener(onSaveClick);
         loadData();
     }
 
@@ -63,19 +62,53 @@ public class CustomerProfileActivity extends AppCompatActivity {
         }
     };
 
-    public void fillDataCustomer(UserDetailModel userDetailModel) {
-//        if(userDetailModel.isGender()){
-//            genderSpinner.setSelection(0);
-//        }else{
-//            genderSpinner.setSelection(1);
-//        }
-//        fullName.setText(userDetailModel.getFirstName());
-//        email.setText(userDetailModel.getEmail());
-//        phoneNumber.setText(userDetailModel.getPhoneNumber());
-//        address.setText(userDetailModel.getAddress());
-//        description.setText(userDetailModel.getInfoDescription());
+    View.OnClickListener onSaveClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            userDetailModel.setAddress(address.getText().toString().trim());
+            userDetailModel.setFullName(fullName.getText().toString().trim());
+            userDetailModel.setEmail(email.getText().toString().trim());
+            userDetailModel.setPhone(phoneNumber.getText().toString().trim());
+            retrofit2.Call<UserDetailModel> call = Utils.getAPI().updateUserInfo(userDetailModel);
+            call.enqueue(new Callback<UserDetailModel>() {
+                @Override
+                public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                    try {
+                        if (response.isSuccessful() && response.body() != null) {
+                            Toast toast = Toast.makeText(getApplicationContext(),"Update user information successfully",Toast.LENGTH_SHORT);
+                            toast.show();
+                            Log.d(TAG, "Update successfully");
+                        }else{
+                            String errorCode;
+                            switch (response.code()) {
+                                case 404:
+                                    errorCode = "404 not found";
+                                    break;
+                                case 500:
+                                    errorCode = "500 server broken";
+                                    break;
+                                default:
+                                    errorCode = "unknown error";
+                                    break;
+                            }
+                            Log.d(TAG, errorCode);
+                            Toast toast = Toast.makeText(getApplicationContext(),errorCode,Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    } catch (Exception e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                        Toast toast = Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
 
-    }
+                @Override
+                public void onFailure(Call<UserDetailModel> call, Throwable t) {
+
+                }
+            });
+        }
+    };
 
     private void loadData() {
         userDetailModel = new UserDetailModel();

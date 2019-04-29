@@ -4,10 +4,14 @@ package com.swp.culturehomestay.fragments.main;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -19,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -31,12 +36,16 @@ import com.swp.culturehomestay.activity.LoginActivity;
 import com.swp.culturehomestay.activity.SettingActivity;
 import com.swp.culturehomestay.activity.SignUpActivity;
 import com.swp.culturehomestay.models.AuthenticatioModel;
+import com.swp.culturehomestay.models.PostFileBody;
+import com.swp.culturehomestay.models.SignUpResModel;
 import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -58,6 +67,7 @@ public class AccountFragment extends Fragment {
         // Required empty public constructor
     }
     private static final String TAG = "Account";
+    public static final int PICK_FROM_GALLERY = 1;
     AccessToken accessToken;
     View viewNoLoginAccount;
     View viewLoginAccount;
@@ -76,8 +86,11 @@ public class AccountFragment extends Fragment {
     private ImageView errorImage;
     private TextView errorTitle;
     private TextView errorMessage;
+    private TextView balance;
+    private TextView balanceTransfer;
     private Button btnRetry;
     private Context context;
+    private LinearLayout changeProImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +111,10 @@ public class AccountFragment extends Fragment {
         btnSetting = (RelativeLayout) view.findViewById(R.id.btn_setting);
         btnSetting.setOnClickListener(onSettingClick);
         userName = (TextView) view.findViewById(R.id.lbl_userName);
+        balance = (TextView) view.findViewById(R.id.balanceLbl);
+        balanceTransfer= (TextView) view.findViewById(R.id.balanceTransferLbl);
+        changeProImage = (LinearLayout) view.findViewById(R.id.changeProImage);
+        changeProImage.setOnClickListener(onChangProImageClick);
         loadData();
         return view;
     }
@@ -120,6 +137,13 @@ public class AccountFragment extends Fragment {
         }
     };
 
+    View.OnClickListener onChangProImageClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            selectImage();
+        }
+    };
+
     public void disconnectFromFacebook() {
 
         if (AccessToken.getCurrentAccessToken() == null) {
@@ -138,6 +162,7 @@ public class AccountFragment extends Fragment {
         ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
         pager.setCurrentItem(0);
     }
+
     private class  LoadImage extends AsyncTask<String, Void, Bitmap>{
         Bitmap profileImage = null;
         @Override
@@ -168,6 +193,7 @@ public class AccountFragment extends Fragment {
             return true;
         }
     }
+
     private void loadData(){
         if(checkLogin()){
             userDetailModel = new UserDetailModel();
@@ -186,6 +212,13 @@ public class AccountFragment extends Fragment {
                             }
                             if(!Utils.isNullOrEmpty(userDetailModel.getFullName())){
                                 userName.setText(userDetailModel.getFullName());
+                            }if(userDetailModel.getTenant()!=null){
+                                balance.setText(userDetailModel.getTenant().getBalance()+"$");
+                                balanceTransfer.setText(userDetailModel.getTenant().getBalanceTranfer()+"$");
+                            }else{
+
+                                balance.setText("0$");
+                                balanceTransfer.setText("0$");
                             }
                         }else{
                             String errorCode;
@@ -217,6 +250,7 @@ public class AccountFragment extends Fragment {
             showErrorLayout();
         }
     }
+
     public void showMessageNotLogin(int imageView, String title, String message) {
 
         showErrorLayout();
@@ -238,5 +272,100 @@ public class AccountFragment extends Fragment {
     public void showErrorLayout() {
         account_frag.setVisibility(View.GONE);
         errorLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void selectImage(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_FROM_GALLERY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Uri selectedImage = data.getData();
+        File f = new File(selectedImage.getPath());
+        final String[] split = f.getPath().split(":");//split the path.
+        String filePath = split[1];//assign it to a string(your choice)
+        PostFileBody body = new PostFileBody(f,"user/profile/");
+        Call<SignUpResModel> call =Utils.getAPI().postFileImage(body);
+        call.enqueue(new Callback<SignUpResModel>() {
+            @Override
+            public void onResponse(Call<SignUpResModel> call, Response<SignUpResModel> response) {
+                SignUpResModel signUpResModel = new SignUpResModel();
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        signUpResModel = response.body();
+                        if(signUpResModel.getMessage().equals("suscess")){
+                            userDetailModel.setImangeUrl(f.getName());
+                            saveImage(userDetailModel);
+                        }
+                    }else{
+                        String errorCode;
+                        switch (response.code()) {
+                            case 404:
+                                errorCode = "404 not found";
+                                break;
+                            case 500:
+                                errorCode = "500 server broken";
+                                break;
+                            default:
+                                errorCode = "unknown error";
+                                break;
+                        }
+                        Log.d(TAG, errorCode);
+                    }
+                }catch (Exception e){
+                    Log.d(TAG, "onResponse: "+e.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SignUpResModel> call, Throwable t) {
+                Log.d(TAG, "onResponse: "+t.getMessage());
+            }
+        });
+    }
+
+    public void saveImage(UserDetailModel userDetail){
+        retrofit2.Call<UserDetailModel> call = Utils.getAPI().updateUserInfo(userDetailModel);
+        call.enqueue(new Callback<UserDetailModel>() {
+            @Override
+            public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                try {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast toast = Toast.makeText(getContext(),"Update user information successfully",Toast.LENGTH_SHORT);
+                        toast.show();
+                        Log.d(TAG, "Update successfully");
+                    }else{
+                        String errorCode;
+                        switch (response.code()) {
+                            case 404:
+                                errorCode = "404 not found";
+                                break;
+                            case 500:
+                                errorCode = "500 server broken";
+                                break;
+                            default:
+                                errorCode = "unknown error";
+                                break;
+                        }
+                        Log.d(TAG, errorCode);
+                        Toast toast = Toast.makeText(getContext(),errorCode,Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                } catch (Exception e) {
+                    Log.d(TAG, "onResponse: " + e.getMessage());
+                    Toast toast = Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailModel> call, Throwable t) {
+
+            }
+        });
     }
 }
