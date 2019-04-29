@@ -51,6 +51,7 @@
                     android:text="Full Name"/>
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/fullName"
+                    android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -60,6 +61,7 @@
                     android:text="Email"/>
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/email"
+                    android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -69,6 +71,7 @@
                     android:text="Phone Number"/>
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/phoneNumber"
+                    android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -78,6 +81,7 @@
                     android:text="Where do you live?"/>
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/address"
+                    android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
                 <LinearLayout
@@ -91,6 +95,7 @@
                         android:text="Back"
                         android:layout_weight="1"/>
                     <Button
+                        android:id="@+id/cusSave"
                         android:backgroundTint="@color/colorPrimaryButtonActive"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
