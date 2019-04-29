@@ -208,8 +208,6 @@ public class WishlistFragment extends Fragment implements  SwipeRefreshLayout.On
             recyclerView.setAdapter(adapter);
             initListener(wishLists);
             adapter.notifyDataSetChanged();
-
-//            Constants.wishlists  = wishLists;
         } else {
             showErrorLayout();
             showMessageEmpty(R.drawable.empty_cart,"Wishlist is empty", "Plase back home to choose your homestay!");

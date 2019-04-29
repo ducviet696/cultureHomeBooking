@@ -109,7 +109,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         }
     }
 
-    @OnClick({R.id.tvCheckin,R.id.tvCheckout,R.id.tvTotalGuest,R.id.tvSearch, R.id.btnSearch})
+    @OnClick({R.id.tvCheckin,R.id.tvCheckout,R.id.tvTotalGuest, R.id.btnSearch})
     public void onClickView(View view){
         switch (view.getId()){
             case R.id.tvCheckin:
@@ -121,10 +121,10 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             case R.id.tvTotalGuest:
                 onChangeGuestClick();
                 break;
-            case R.id.tvSearch:
-                Intent intentSearch = new Intent(getContext(), SearchViaMapActivity.class);
-                startActivity(intentSearch);
-                break;
+//            case R.id.tvSearch:
+//                Intent intentSearch = new Intent(getContext(), SearchViaMapActivity.class);
+//                startActivity(intentSearch);
+//                break;
             case R.id.btnSearch:
                 onSearchButtonClick();
                 break;
