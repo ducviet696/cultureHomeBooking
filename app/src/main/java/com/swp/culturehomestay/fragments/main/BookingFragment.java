@@ -88,7 +88,7 @@ public class BookingFragment extends Fragment {
     private void loadData(){
         if (Utils.checkLogin(context)){
             IApi iApi = ApiClient.getApiClient().create(IApi.class);
-            Call<ResultBookingHistoryModel> call = iApi.getReservationsHistory("a0a82435-d293-4703-8a24-494e42609f22");
+            Call<ResultBookingHistoryModel> call = iApi.getReservationsHistory(Utils.getUserId(getActivity()));
             call.enqueue(new Callback<ResultBookingHistoryModel>() {
 
                 @Override

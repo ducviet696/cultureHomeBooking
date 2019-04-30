@@ -143,11 +143,6 @@ public class AccountFragment extends Fragment {
             startActivity(intent);
         }
     };
-    View.OnClickListener onLogoutClick = new View.OnClickListener() {
-        public void onClick(View v) {
-            disconnectFromFacebook();
-        }
-    };
 
     View.OnClickListener onChangProImageClick = new View.OnClickListener() {
         @Override
@@ -155,25 +150,6 @@ public class AccountFragment extends Fragment {
             selectImage();
         }
     };
-
-    public void disconnectFromFacebook() {
-
-        if (AccessToken.getCurrentAccessToken() == null) {
-            return; // already logged out
-        }
-
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE, new GraphRequest
-                .Callback() {
-            @Override
-            public void onCompleted(GraphResponse graphResponse) {
-
-                LoginManager.getInstance().logOut();
-
-            }
-        }).executeAsync();
-        ViewPager pager = (ViewPager) getActivity().findViewById(R.id.pager);
-        pager.setCurrentItem(0);
-    }
 
     private class LoadImage extends AsyncTask<String, Void, Bitmap> {
         Bitmap profileImage = null;
@@ -219,8 +195,8 @@ public class AccountFragment extends Fragment {
                         if (response.isSuccessful() && response.body() != null) {
                             userDetailModel = response.body();
                             if (!Utils.isNullOrEmpty(userDetailModel.getImangeUrl())) {
-//                        new LoadImage().execute(userDetailModel.getImangeUrl());
-                                Utils.loadProfileImge(context, proImage, userDetailModel.getImangeUrl());
+                             new LoadImage().execute("http://222.252.30.110:8765/homestay/files/homestay/image?path="+userDetailModel.getImangeUrl());
+//                                Utils.loadProfileImge(context, proImage, userDetailModel.getImangeUrl());
                                 Log.d(TAG, userDetailModel.getImangeUrl());
                             }
                             if (!Utils.isNullOrEmpty(userDetailModel.getFullName())) {
@@ -330,7 +306,7 @@ public class AccountFragment extends Fragment {
                 cursor.close();
                 File file = new File(filePath);
                 RequestBody f =  RequestBody.create(MediaType.parse("multipart/form-data"), file);
-                MultipartBody.Part mPart= MultipartBody.Part.createFormData("file",file.getName(),f);
+                MultipartBody.Part mPart= MultipartBody.Part.createFormData("file",userDetailModel.getUserId(),f);
                 RequestBody path = RequestBody.create(MediaType.parse("multipart/form-data"),"user/profile/");
                 Call<SignUpResModel> call = Utils.getAPI().postFileImage(mPart,path);
                 call.enqueue(new Callback<SignUpResModel>() {
@@ -341,7 +317,7 @@ public class AccountFragment extends Fragment {
                             if (response.isSuccessful() && response.body() != null) {
                                 signUpResModel = response.body();
                                 if (signUpResModel.getMessage().equals("suscess")) {
-                                    userDetailModel.setImangeUrl("user/profile/"+file.getName());
+                                    userDetailModel.setImangeUrl("user/profile/"+userDetailModel.getUserId());
                                     saveImage(userDetailModel);
                                 }
                             } else {
