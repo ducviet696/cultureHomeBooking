@@ -14,10 +14,12 @@ import com.swp.culturehomestay.models.PaymentGet;
 import com.swp.culturehomestay.models.PaymentPost;
 import com.swp.culturehomestay.models.PriceGet;
 import com.swp.culturehomestay.models.PricePost;
+import com.swp.culturehomestay.models.Reservation;
 import com.swp.culturehomestay.models.ReservationContent;
 import com.swp.culturehomestay.models.ReservationModel;
 import com.swp.culturehomestay.models.ReservationPost;
 import com.swp.culturehomestay.models.ResultBookingHistoryModel;
+import com.swp.culturehomestay.models.ResultGetReservationModel;
 import com.swp.culturehomestay.models.SearchHomeGet;
 import com.swp.culturehomestay.models.SearchHomePost;
 import com.swp.culturehomestay.models.SignUpCredentials;
@@ -151,5 +153,9 @@ public interface IApi {
     @POST("homestay/files/")
     Call<ResponseBody> uploadFile(@Part MultipartBody.Part file,
                                   @Part("filePath") RequestBody filePath);
+
+    @GET("transaction/reservation/{reservationId}")
+    Call<ResultGetReservationModel> getReservationById(
+            @Path("reservationId") String reservationId);
 
 }

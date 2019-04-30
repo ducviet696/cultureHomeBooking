@@ -16,7 +16,9 @@ public class Constants {
     public static final String ACTIVITY_NAME = "ACTIVITY_NAME";
     public static final String CULTURE_ID_LIST = "cultureIdList";
     public static final String BOOKINGHOMEDETAILACTIVITY = "BookingHomeDetailActivity";
+    public static final String BOOKING_HOME_CONFIRM = "BookingHomeConfirmActivity";
     public static final String HOME_FRAGMENT = "HomeFragment";
+    public static final String BOOKING_FRAGMENT = "BookingFragment";
     public static final String ADVANCE_SEARCH_ACTIVITY = "AdvanceSearchActivity";
     public static final String CANCEL_TYPE = "CANCEL_TYPE";
     public static final String CANCEL_FLEX = "flex";

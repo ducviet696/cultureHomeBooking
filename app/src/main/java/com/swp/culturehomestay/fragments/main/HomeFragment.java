@@ -121,10 +121,6 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             case R.id.tvTotalGuest:
                 onChangeGuestClick();
                 break;
-//            case R.id.tvSearch:
-//                Intent intentSearch = new Intent(getContext(), SearchViaMapActivity.class);
-//                startActivity(intentSearch);
-//                break;
             case R.id.btnSearch:
                 onSearchButtonClick();
                 break;

@@ -19,17 +19,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.swp.culturehomestay.R;
+import com.swp.culturehomestay.activity.BookingHomePaymentActivity;
 import com.swp.culturehomestay.activity.LoginActivity;
+import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.adapter.BookingAdapter;
+import com.swp.culturehomestay.adapter.VerticalListHomeAdapter;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.OrderBookingModel;
 import com.swp.culturehomestay.models.ReservationModel;
 import com.swp.culturehomestay.models.ResultBookingHistoryModel;
 import com.swp.culturehomestay.models.SearchBody;
+import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.HomeStayService;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
+import com.swp.culturehomestay.utils.ConstantsWant;
 import com.swp.culturehomestay.utils.Utils;
 
 import org.w3c.dom.Text;
@@ -103,6 +108,7 @@ public class BookingFragment extends Fragment {
                             adapter = new BookingAdapter(reservationList);
                             rv.setAdapter(adapter);
                             totalCountHistory.setText("Total booking: "+reservationList.size());
+                            initListener(reservationList);
                         } else {
                             String errorCode;
                             switch (response.code()) {
@@ -156,5 +162,31 @@ public class BookingFragment extends Fragment {
     public void showErrorLayout() {
         booking_frag.setVisibility(View.GONE);
         errorLayout.setVisibility(View.VISIBLE);
+    }
+    //event when click each reservation
+    private void initListener(List<ReservationModel> reservationList) {
+
+        adapter.setOnItemClickListener(new BookingAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                String homestayId = reservationList.get(position).getHomestayId();
+                String status = reservationList.get(position).getStatus();
+                String reservationId = reservationList.get(position).getReservationId();
+                Log.d("homestayId", "onItemClick: "+homestayId+" stt: "+status+" reservationId "+reservationId);
+
+                if (status.equals(ConstantsWant.Transaction.Reservation.Status.NOT_ACTIVE)) {
+                    Intent intent = new Intent(getContext(), BookingHomePaymentActivity.class);
+                    intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_FRAGMENT);
+                    intent.putExtra("reservationId", reservationId);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(getContext(), ViewHomeDetailActivity.class);
+                    intent.putExtra(Constants.HOMESTAY_ID, homestayId);
+                    startActivity(intent);
+                }
+
+            }
+        });
     }
 }

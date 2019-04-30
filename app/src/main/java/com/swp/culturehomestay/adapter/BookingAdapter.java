@@ -18,6 +18,7 @@ import java.util.List;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHolder> {
 
+    private OnItemClickListener onItemClickListener;
     @Override
     public ViewHolder onCreateViewHolder( ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
@@ -27,7 +28,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         View itemBooingView = inflater.inflate(R.layout.item_booking, viewGroup, false);
 
         // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(itemBooingView);
+        ViewHolder viewHolder = new ViewHolder(itemBooingView,onItemClickListener);
         return viewHolder;
     }
 
@@ -53,13 +54,14 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         return mOrders.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         private TextView homestayName;
         private TextView totalPayment;
         private TextView roomname;
         private TextView dateCheckIn;
         private TextView dateCheckOut;
-        public ViewHolder(View itemView) {
+        OnItemClickListener onItemClickListener;
+        public ViewHolder(View itemView, OnItemClickListener onItemClickListener) {
             // Stores the itemView in a public final member variable that can be used
             // to access the context from any ViewHolder instance.
             super(itemView);
@@ -68,6 +70,13 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
             roomname = (TextView) itemView.findViewById(R.id.roomName);
             dateCheckIn = (TextView) itemView.findViewById(R.id.date_checkin);
             dateCheckOut = (TextView) itemView.findViewById(R.id.date_checkout);
+            itemView.setOnClickListener(this);
+            this.onItemClickListener = onItemClickListener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            onItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
     private List<ReservationModel> mOrders;
@@ -119,5 +128,12 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         }else{
             roomname.setText("");
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 }

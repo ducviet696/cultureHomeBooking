@@ -199,6 +199,7 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
                 if(response.isSuccessful() && response.body()!= null){
                     reservationContent = response.body();
                     Intent intent = new Intent(BookingHomeConfirmActivity.this,BookingHomePaymentActivity.class);
+                    intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_HOME_CONFIRM);
                     intent.putExtra("reservationContent",reservationContent);
                     startActivity(intent);
                     Log.d("ReservationBean", "onResponse: "+reservationContent.toString());
