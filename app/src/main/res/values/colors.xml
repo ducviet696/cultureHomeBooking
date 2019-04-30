@@ -16,4 +16,7 @@
     <color name="colorRed">#F62226</color>
     <color name="colorSliderInactive">#8095A1</color>
     <color name="colorSliderActive">#303F9F</color>
+    <color name="colorSuccess">#28a745</color>
+    <color name="colorWarning">#ffc107</color>
+    <color name="colorDanger">#dc3545</color>
 </resources>

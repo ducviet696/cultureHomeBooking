@@ -1,6 +1,7 @@
 package com.swp.culturehomestay.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,13 +40,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
         TextView roomname = viewHolder.roomname;
         TextView dateCheckIn = viewHolder.dateCheckIn;
         TextView dateCheckOut = viewHolder.dateCheckOut;
-        homestayName.setText(order.getHouseCode());
+        homestayName.setText(order.getReservationCode());
         totalPayment.setText(order.getTotalFee()+"$");
-        if(order.getNumRoom()!= null){
-            roomname.setText(order.getNumRoom().toString());
-        }else{
-            roomname.setText("");
-        }
+        setStatus(roomname, order.getStatus());
         dateCheckIn.setText(sf.format(new Date(order.getDStart())));
         dateCheckOut.setText(sf.format(new Date(order.getDEnd())));
 
@@ -78,5 +75,49 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.ViewHold
     // Pass in the contact array into the constructor
     public BookingAdapter(List<ReservationModel> orders) {
         mOrders= orders;
+    }
+    public void setStatus( TextView roomname , String status){
+        if(status!= null){
+
+            switch (status){
+                case "na":
+                    roomname.setText("NOT ACTIVE");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#BBBBBB"));
+                    break;
+                case "ac":
+                    roomname.setText("ACTIVE");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#ffc107"));
+                    break;
+                case "Ucan":
+                    roomname.setText("USER CANCEL");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#dc3545"));
+                    break;
+                case "pen":
+                    roomname.setText("PENDING");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#ffc107"));
+                    break;
+                case "hcan":
+                    roomname.setText("HOST CANCEL");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#dc3545"));
+                    break;
+                case "su":
+                    roomname.setText("SUCCESS");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#28a745"));
+                    break;
+                case "acc":
+                    roomname.setText("ACCEPT");
+                    roomname.setTextColor(Color.WHITE);
+                    roomname.setBackgroundColor(Color.parseColor("#ffc107"));
+                    break;
+            }
+        }else{
+            roomname.setText("");
+        }
     }
 }
