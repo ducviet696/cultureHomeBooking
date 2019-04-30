@@ -438,14 +438,20 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     private void startPickDateActivity() {
-        Intent intent = new Intent(ViewHomeDetailActivity.this, BookingHomePickDateActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.HOMESTAY_ID, homestayID);
-        bundle.putInt("Max",maxRoom);
-        bundle.putString(Constants.ACTIVITY_NAME,Constants.ADVANCE_SEARCH_ACTIVITY);
-        bundle.putString("roomType",roomType);
-        intent.putExtra(Constants.BUNDLE, bundle);
-        startActivity(intent);
+        if(Utils.checkLogin(ViewHomeDetailActivity.this)){
+            Intent intent = new Intent(ViewHomeDetailActivity.this, BookingHomePickDateActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.HOMESTAY_ID, homestayID);
+            bundle.putInt("Max",maxRoom);
+            bundle.putString(Constants.ACTIVITY_NAME,Constants.ADVANCE_SEARCH_ACTIVITY);
+            bundle.putString("roomType",roomType);
+            intent.putExtra(Constants.BUNDLE, bundle);
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(ViewHomeDetailActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
     }
 
 
