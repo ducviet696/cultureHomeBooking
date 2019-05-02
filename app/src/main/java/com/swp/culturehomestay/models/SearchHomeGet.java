@@ -36,7 +36,7 @@ public class SearchHomeGet {
     @SerializedName("numberOfElements")
     @Expose
     private Integer numberOfElements;
-
+    
     public Pageable getPageable() {
         return pageable;
     }

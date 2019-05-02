@@ -62,7 +62,7 @@ for best support.</string>
     <string name="all_of_day">Monday - Sunday</string>
     <string name="location_or_homestay_name">Location or Homestay name</string>
     <string name="search">Search</string>
-    <string name="most_culture_listing">Most Culture Listing</string>
+    <string name="most_culture_listing">Most Popularity Listing</string>
     <string name="warning">Choosing this accommodation, You will have to wait for the host to confirm the room before payment.
     If you need to book now, please select the accommodation with the \"Instant\" icon.</string>
     <string name="instant_booking">Booking without waiting for the host to respond</string>
@@ -112,7 +112,7 @@ for best support.</string>
         <item>Quảng Nam</item>
         <item>Quảng Ngãi</item>
         <item>Quảng Ninh</item>
-        <item>"Quảng Trị</item>
+        <item>Quảng Trị</item>
         <item>Sóc Trăng</item>
         <item>Sơn La</item>
         <item>Tây Ninh</item>
@@ -134,37 +134,5 @@ for best support.</string>
         <item>Đồng Nai</item>
         <item>Đồng Tháp</item>
     </string-array>
-    <string-array name="districts">
-        <item>Ba Vì</item>
-        <item>Ba Đình</item>
-        <item>Bắc Từ Liêm</item>
-        <item>Cầu Giấy</item>
-        <item>Chương Mỹ</item>
-        <item>Gia Lâm</item>
-        <item>Hà Đông</item>
-        <item>Hai Bà Trưng</item>
-        <item>Hoài Đức</item>
-        <item>Hoàn Kiếm</item>
-        <item>Hoàng Mai</item>
-        <item>Long Biên</item>
-        <item>Mê Linh</item>
-        <item>Mỹ Đức</item>
-        <item>Nam Từ Liêm</item>
-        <item>Phú Xuyên</item>
-        <item>Phúc Thọ</item>
-        <item>Quốc Oai</item>
-        <item>Sóc Sơn</item>
-        <item>Sơn Tây</item>
-        <item>Tây Hồ</item>
-        <item>Thạch Thất</item>
-        <item>Thanh Oai</item>
-        <item>Thanh Trì</item>
-        <item>Thanh Xuân</item>
-        <item>Thường Tín</item>
-        <item>Ứng Hòa</item>
-        <item>Đan Phượng</item>
-        <item>Đông Anh</item>
-        <item>Đống Đa</item>
 
-    </string-array>
 </resources>

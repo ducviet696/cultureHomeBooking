@@ -300,7 +300,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     public void loadJsonSimilarList(String cityId){
-        SearchHomePost searchHomePost = new SearchHomePost(0,5,1,cityId,"");
+        SearchHomePost searchHomePost = new SearchHomePost(0,10,1,cityId,"","ac");
         Call<SearchHomeGet> call = mService.getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {
             @Override

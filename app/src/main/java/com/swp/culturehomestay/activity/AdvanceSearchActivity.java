@@ -211,8 +211,8 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         }
         for (String district : districts) {
             AutocompleteBean adding = new AutocompleteBean();
-            adding.setValue(district);
-            adding.setTitle(district);
+            adding.setValue(district.trim());
+            adding.setTitle(district.trim());
             adding.setGroup("District");
             results.add(adding);
 //            listSearch.add("Quận "+district+", Việt Nam");
@@ -242,19 +242,6 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                     edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                         @Override
                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-//                                    actionId == EditorInfo.IME_ACTION_DONE ||
-//                                    event != null &&
-//                                            event.getAction() == KeyEvent.ACTION_DOWN &&
-//                                            event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-//                                if (event == null || !event.isShiftPressed()) {
-//                                    // the user is done typing.
-//                                    fullText = edSearch.getText().toString();
-//                                    loadHomeBySearch();
-//                                    return true; // consume.
-//                                }
-//                            }
-//                            return false; // pass on to other listeners.
                             switch (actionId) {
                                 case EditorInfo.IME_ACTION_SEARCH:
                                     fullText = edSearch.getText().toString();
@@ -391,7 +378,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         }
         Log.d("listDateBooking", "loadHomeBySearch: dStart: " + dStart + ", đEnd: " + dEnd);
 //        SearchHomePost searchHomePost = new SearchHomePost(INDEX_PAGE, SIZE_PAGE,1,"","");
-        SearchHomePost searchHomePost = new SearchHomePost(dStart, dEnd, bookingMethod, homeTypeList, roomTypeList, NUM_BETH_ROOM, amenityIdList, cultureIdList, guest, minPrice, maxPrice, INDEX_PAGE, SIZE_PAGE, room, cityId, districtId, fullText);
+        SearchHomePost searchHomePost = new SearchHomePost(dStart, dEnd, bookingMethod, homeTypeList, roomTypeList, NUM_BETH_ROOM, amenityIdList, cultureIdList, guest, minPrice, maxPrice, INDEX_PAGE, SIZE_PAGE, room, cityId, districtId, fullText, "ac");
         Log.d("listDateBooking", "SearchHomePost : " + searchHomePost.toString());
         Call<SearchHomeGet> call = Utils.getAPI().getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {

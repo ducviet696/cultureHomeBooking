@@ -30,7 +30,10 @@ import com.swp.culturehomestay.activity.PickDateActivity;
 import com.swp.culturehomestay.activity.SearchViaMapActivity;
 import com.swp.culturehomestay.activity.ViewHomeDetailActivity;
 import com.swp.culturehomestay.adapter.HorizontalListHomeAdapter;
+import com.swp.culturehomestay.adapter.VerticalListSearchAdapter;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.SearchHomeGet;
+import com.swp.culturehomestay.models.SearchHomePost;
 import com.swp.culturehomestay.models.Wishlist;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
@@ -75,9 +78,15 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public List<HomeStay> homeStays = new ArrayList<>();
     public List<HomeStay> homeStays2 = new ArrayList<>();
     private HorizontalListHomeAdapter horAdapter;
+    private HorizontalListHomeAdapter searchAdapter;
     @BindView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     private List<Date> listDateBooking = new ArrayList<>();
+    public static final int INDEX_PAGE = 0;
+    public static final int SIZE_PAGE = 10;
+    public static final String ORDER_BY_RATE = "rate";
+    public static final String ORDER_BY_PRICE = "price";
+    public static final String ASC_DESC = "desc";
 
 
     @Override
@@ -88,7 +97,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         ButterKnife.bind(this, view);
         mService = Utils.getAPI();
         swipeRefreshLayout.setOnRefreshListener(this);
-        displayMostCultureHomeStayList();
+        displayMostPopularity();
         displayHomestayForRickList();
         return view;
     }
@@ -163,55 +172,54 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         super.onAttach(context);
     }
 
-    public void displayMostCultureHomeStayList() {
 
-        Call<List<HomeStay>> call = mService.getListHomestayByHostId(Constants.USER_ID, "en");
-        call.enqueue(new Callback<List<HomeStay>>() {
+
+    public void displayMostPopularity() {
+        SearchHomePost searchHomePost = new SearchHomePost(INDEX_PAGE,SIZE_PAGE,ORDER_BY_RATE,ASC_DESC, "ac");
+        Log.d("listDateBooking", "SearchHomePost : " + searchHomePost.toString());
+        Call<SearchHomeGet> call = Utils.getAPI().getHomeBySearch(searchHomePost, Constants.LANG);
+        call.enqueue(new Callback<SearchHomeGet>() {
             @Override
-            public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
+            public void onResponse(Call<SearchHomeGet> call, Response<SearchHomeGet> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    if(!homeStays.isEmpty()) {
-                        homeStays.clear();
-                    }
-                    homeStays = response.body();
-                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
-                    rvrvMostCulture.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                    rvrvMostCulture.setAdapter(horAdapter);
-                    horAdapter.notifyDataSetChanged();
-                    initListener();
+                        List<HomeStay> homeStays = response.body().getHomeStayList();
+                        Log.d("homeStays", "onResponse: " + response.body());
+                        searchAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
+                        rvrvMostCulture.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                        rvrvMostCulture.setAdapter(searchAdapter);
+                        searchAdapter.notifyDataSetChanged();
+                        onClickHomestay(homeStays);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<HomeStay>> call, Throwable t) {
-
+            public void onFailure(Call<SearchHomeGet> call, Throwable t) {
+                Log.d("homeStays", "onFailure: "+t.getMessage());
             }
         });
 
     }
 
+
     public void displayHomestayForRickList() {
 
-        Call<List<HomeStay>> call = mService.getListHomestayByHostId(Constants.USER_ID, "en");
-        call.enqueue(new Callback<List<HomeStay>>() {
+        SearchHomePost searchHomePost = new SearchHomePost(INDEX_PAGE,SIZE_PAGE,ORDER_BY_PRICE,ASC_DESC, "ac");
+        Log.d("listDateBooking", "SearchHomePost : " + searchHomePost.toString());
+        Call<SearchHomeGet> call = Utils.getAPI().getHomeBySearch(searchHomePost, Constants.LANG);
+        call.enqueue(new Callback<SearchHomeGet>() {
             @Override
-            public void onResponse(Call<List<HomeStay>> call, Response<List<HomeStay>> response) {
+            public void onResponse(Call<SearchHomeGet> call, Response<SearchHomeGet> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    if(!homeStays2.isEmpty()) {
-                        homeStays2.clear();
-                    }
-                    homeStays2 = response.body();
-                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays2);
+                    List<HomeStay> homeStays = response.body().getHomeStayList();
+                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
                     rvForRick.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
                     horAdapter.notifyDataSetChanged();
                     rvForRick.setAdapter(horAdapter);
-//                    rvSimilarListing.setLayoutManager(new GridLayoutManager(ViewHomeDetailActivity.this, 2));
-                    initListener();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<HomeStay>> call, Throwable t) {
+            public void onFailure(Call<SearchHomeGet> call, Throwable t) {
 
             }
         });
@@ -219,9 +227,9 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     //event when click homestay
-    private void initListener() {
+    private void onClickHomestay(List<HomeStay> homeStays) {
 
-        horAdapter.setOnItemClickListener(new HorizontalListHomeAdapter.OnItemClickListener() {
+        searchAdapter.setOnItemClickListener(new HorizontalListHomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getContext(), ViewHomeDetailActivity.class);
@@ -230,12 +238,13 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(false);
-        displayMostCultureHomeStayList();
+        displayMostPopularity();
         displayHomestayForRickList();
     }
 

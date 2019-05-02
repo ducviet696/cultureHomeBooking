@@ -77,7 +77,7 @@ public class HorizontalListHomeAdapter extends RecyclerView.Adapter<HorizontalLi
 
     @Override
     public int getItemCount() {
-        return listHomestay.size();
+        return listHomestay!=null?listHomestay.size():0;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

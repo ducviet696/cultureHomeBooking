@@ -151,6 +151,20 @@ public class Utils {
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageView);
     }
+    public static void loadImge(Context context, CircleImageView imageView, String imgeUrl){
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.loading);
+//        requestOptions.placeholder(Utils.getRandomDrawbleColor());
+        requestOptions.error(R.drawable.image_not_found);
+        requestOptions.diskCacheStrategy(DiskCacheStrategy.AUTOMATIC);
+        requestOptions.fitCenter();
+
+        Glide.with(context)
+                .load(imgeUrl)
+                .apply(requestOptions)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView);
+    }
 
     public static void loadProfileImge(Context context, CircleImageView imageView, String imgeUrl){
         RequestOptions requestOptions = new RequestOptions();
