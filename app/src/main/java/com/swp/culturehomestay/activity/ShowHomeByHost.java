@@ -116,6 +116,5 @@ public class ShowHomeByHost extends AppCompatActivity {
         });
 
     }
-
-
+    
 }

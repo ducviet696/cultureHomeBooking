@@ -211,10 +211,11 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onResponse(Call<SearchHomeGet> call, Response<SearchHomeGet> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<HomeStay> homeStays = response.body().getHomeStayList();
-                    horAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
+                    searchAdapter = new HorizontalListHomeAdapter(getContext(), homeStays);
                     rvForRick.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
-                    horAdapter.notifyDataSetChanged();
-                    rvForRick.setAdapter(horAdapter);
+                    searchAdapter.notifyDataSetChanged();
+                    rvForRick.setAdapter(searchAdapter);
+                    onClickHomestay(homeStays);
                 }
             }
 

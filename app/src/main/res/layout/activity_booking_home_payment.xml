@@ -221,6 +221,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
             <RadioButton
+                android:checked="true"
                 android:id="@+id/rbWantpayment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
