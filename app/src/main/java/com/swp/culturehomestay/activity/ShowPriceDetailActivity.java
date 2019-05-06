@@ -14,6 +14,7 @@ import com.swp.culturehomestay.models.PricePost;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,7 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
     @BindView(R.id.tvTotalPriceCultureFee)
     TextView tvTotalPriceCultureFee;
     String homestayId;
+    ArrayList<Integer> cultureIdList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +58,11 @@ public class ShowPriceDetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         homestayId = bundle.getString(Constants.HOMESTAY_ID);
+        cultureIdList = bundle.getIntegerArrayList(Constants.LIST_CULTURE_SELECTED);
         int guest = bundle.getInt(Constants.GUEST);
         int roomNum = bundle.getInt(Constants.ROOM);
         List<Date> listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
-        PricePost pricePost = new PricePost(Constants.cultureIdList,homestayId,roomNum,guest,listDateBooking.get(0)
+        PricePost pricePost = new PricePost(cultureIdList,homestayId,roomNum,guest,listDateBooking.get(0)
                 .getTime(),listDateBooking.get(listDateBooking.size()-1).getTime());
         Call<PriceGet> call = Utils.getAPI().getPrice(pricePost,Constants.LANG);
         call.enqueue(new Callback<PriceGet>() {

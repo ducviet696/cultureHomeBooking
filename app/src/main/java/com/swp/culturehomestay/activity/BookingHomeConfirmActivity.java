@@ -7,17 +7,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.HomeStay;
 import com.swp.culturehomestay.models.ReservationBean;
 import com.swp.culturehomestay.models.ReservationContent;
 import com.swp.culturehomestay.models.ReservationPost;
+import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.models.UserWant;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.ConstantsWant;
@@ -66,13 +67,16 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
     TextView tvUserPhone;
     String homestayId, userId;
     List<Date> listDateBooking = new ArrayList<>();
+    ArrayList<Integer> cultureIdList = new ArrayList<>();
     int guest, totalPrice, numRoom;
     @BindView(R.id.tvEditInfo)
     TextView tvEditInfo;
     String fullName,email,phone, hostId, purpose, houseCode,hostEmail,tenantId;
+    double balace;
     String status;
     Date dStart, dEnd;
     ReservationContent reservationContent;
+    UserDetailModel userDetailModel = new UserDetailModel();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -97,7 +101,7 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
         getSelectedRadioButton();
         getData();
         loadHomestayById();
-        LoadUserById();
+        loadUserById();
     }
 
     private void getSelectedRadioButton() {
@@ -119,8 +123,35 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
         }
     }
 
-    private void LoadUserById() {
-        Call<UserWant> call = Utils.getAPI().getUserById(userId);
+    private void loadUserById() {
+        String userId = Utils.getUserId(BookingHomeConfirmActivity.this);
+        Call<UserDetailModel> call = Utils.getAPI().getUserDetailById(userId);
+        call.enqueue(new Callback<UserDetailModel>() {
+            @Override
+            public void onResponse(retrofit2.Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        userDetailModel = response.body();
+                        if (!Utils.isNullOrEmpty(userDetailModel.getFullName())) {
+                            fullName = userDetailModel.getFullName();
+                            tvUserName.setText(fullName);
+                        }
+                        if(!Utils.isNullOrEmpty(userDetailModel.getEmail())){
+                            email = userDetailModel.getEmail();
+                            tvUserMail.setText(email);
+                        }
+                        if(!Utils.isNullOrEmpty(userDetailModel.getPhone())){
+                            phone = userDetailModel.getPhone();
+                            tvUserPhone.setText(phone);
+                        }
+                        balace = userDetailModel.getTenant().getBalance();
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailModel> call, Throwable t) {
+
+            }
+        });
     }
 
     private void loadHomestayById() {
@@ -158,6 +189,7 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
         tenantId = Utils.getUserId(BookingHomeConfirmActivity.this);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
+        cultureIdList = bundle.getIntegerArrayList(Constants.LIST_CULTURE_SELECTED);
         homestayId = bundle.getString(Constants.HOMESTAY_ID);
         guest = bundle.getInt(Constants.GUEST);
         numRoom = bundle.getInt(Constants.ROOM);
@@ -190,7 +222,7 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
     private void onNextClick() {
         getSelectedRadioButton();
         ReservationBean reservationBean = new ReservationBean(homestayId,phone,fullName,hostId,purpose,email,houseCode,status);
-        ReservationPost reservationPost = new ReservationPost(Constants.cultureIdList,guest,numRoom,dStart.getTime(),dEnd.getTime(),homestayId,hostEmail,tenantId,reservationBean);
+        ReservationPost reservationPost = new ReservationPost(cultureIdList,guest,numRoom,dStart.getTime(),dEnd.getTime(),homestayId,hostEmail,tenantId,reservationBean);
         Log.d("ReservationBean", "ReservationBean: "+ reservationPost.toString());
         Call<ReservationContent> call = Utils.getAPI().postResvervation(reservationPost);
         call.enqueue(new Callback<ReservationContent>() {
@@ -201,16 +233,15 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
                     Intent intent = new Intent(BookingHomeConfirmActivity.this,BookingHomePaymentActivity.class);
                     intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_HOME_CONFIRM);
                     intent.putExtra("reservationContent",reservationContent);
+                    intent.putExtra("balace",balace);
                     startActivity(intent);
-                    Log.d("ReservationBean", "onResponse: "+reservationContent.toString());
 
                 }
-                Log.d("ReservationBean", "onResponse: response null");
             }
 
             @Override
             public void onFailure(Call<ReservationContent> call, Throwable t) {
-                Log.d("ReservationBean", "onFailure: "+ t.getMessage());
+                Toast.makeText(BookingHomeConfirmActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
