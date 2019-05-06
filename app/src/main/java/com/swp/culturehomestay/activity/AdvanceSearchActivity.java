@@ -126,6 +126,10 @@ public class AdvanceSearchActivity extends AppCompatActivity {
 
     private void onChangeDateResult(@Nullable Intent data) {
         listDateBooking = (List<Date>) data.getSerializableExtra(Constants.LIST_DATE_BOOKING);
+        dateFilter(listDateBooking);
+    }
+
+    private void dateFilter(List<Date> listDateBooking) {
         if (listDateBooking != null && !listDateBooking.isEmpty()) {
             btnDate.setTextColor(getResources().getColor(R.color.colorWhite));
             btnDate.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#f4511e")));
@@ -157,6 +161,10 @@ public class AdvanceSearchActivity extends AppCompatActivity {
 
     private void onChangeGuestResult(@Nullable Intent data) {
         guest = data.getIntExtra(Constants.GUEST, 1);
+        guestFilter(guest);
+    }
+
+    private void guestFilter(int guest) {
         if (guest > 1) {
             btnGuest.setTextColor(getResources().getColor(R.color.colorWhite));
             btnGuest.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#f4511e")));
@@ -194,7 +202,9 @@ public class AdvanceSearchActivity extends AppCompatActivity {
         String previousActivity = bundle.getString(Constants.ACTIVITY_NAME);
         if (previousActivity.equals(Constants.HOME_FRAGMENT)) {
             guest = bundle.getInt(Constants.GUEST);
+            guestFilter(guest);
             listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
+            dateFilter(listDateBooking);
         }
 
     }

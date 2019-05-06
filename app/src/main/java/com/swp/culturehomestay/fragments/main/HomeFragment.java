@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 tvCheckin.setTextColor(getResources().getColor(R.color.colorBlack));
                 tvCheckout.setTextColor(getResources().getColor(R.color.colorBlack));
             } else if(resultCode==Constants.RESULT_CODE_CHANGE_GUEST) {
-                guest = data.getIntExtra("totalGuest",1);
+                guest = data.getIntExtra(Constants.GUEST,1);
                 tvTotalGuest.setText(guest+" Guest(s)");
             }
         }
