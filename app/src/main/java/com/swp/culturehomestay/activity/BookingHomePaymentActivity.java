@@ -3,7 +3,6 @@ package com.swp.culturehomestay.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,17 +16,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swp.culturehomestay.R;
-import com.swp.culturehomestay.fragments.main.HomeFragment;
-import com.swp.culturehomestay.models.Content;
 import com.swp.culturehomestay.models.PaymentGet;
 import com.swp.culturehomestay.models.PaymentPost;
 import com.swp.culturehomestay.models.PaymentWantBean;
-import com.swp.culturehomestay.models.PriceGet;
-import com.swp.culturehomestay.models.PricePost;
 import com.swp.culturehomestay.models.Reservation;
 import com.swp.culturehomestay.models.ReservationContent;
 import com.swp.culturehomestay.models.ReservationGet;
 import com.swp.culturehomestay.models.ResultGetReservationModel;
+import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.ConstantsWant;
 import com.swp.culturehomestay.utils.Utils;
@@ -44,6 +40,7 @@ import retrofit2.Response;
 public class BookingHomePaymentActivity extends AppCompatActivity {
 
     public static final String TENANT_TO_WANT = "ttw";
+    public static final String PURPOSE_RESERVATION = "re";
     @BindView(R.id.layoutNormalDay)
     RelativeLayout layoutNormalDay;
     @BindView(R.id.layoutWeekly)
@@ -74,7 +71,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
     ArrayList<Integer> listCultureChoice = new ArrayList<>();
     @BindView(R.id.btnPayment)
     Button btnPayment;
-    double balace;
+    double balance, balanceTranfer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +80,33 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         getData();
     }
+    private void loadBalance() {
+        String userId = Utils.getUserId(BookingHomePaymentActivity.this);
+        Call<UserDetailModel> call = Utils.getAPI().getUserDetailById(userId);
+        call.enqueue(new Callback<UserDetailModel>() {
+            @Override
+            public void onResponse(retrofit2.Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    balance = response.body().getTenant().getBalance();
+                    balanceTranfer = response.body().getTenant().getBalanceTranfer();
+                    double totalBalance = balance+balanceTranfer;
+                    tvWantWl.setText("Want Wallet($"+totalBalance+")");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailModel> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void getData() {
         Intent intent = getIntent();
         previousActivity = intent.getStringExtra(Constants.ACTIVITY_NAME);
         if (Constants.BOOKING_FRAGMENT.equals(previousActivity)) {
             reservationId = intent.getStringExtra("reservationId");
+            loadBalance();
             Call<ResultGetReservationModel> call = Utils.getAPI().getReservationById(reservationId);
             call.enqueue(new Callback<ResultGetReservationModel>() {
                 @Override
@@ -101,7 +119,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                         hostEmail = reservation.getHostEmail();
                         interact = Utils.getUserId(BookingHomePaymentActivity.this);
                         type = TENANT_TO_WANT;
-                        numRoom = reservation.getNumRoom();
+                        numRoom = reservation.getNumRoom()!=null?reservation.getNumRoom():1;
                         numberPeople = reservation.getNumberPeople();
                         purpose = reservation.getPurpose();
                         reservationCode = reservation.getReservationCode();
@@ -125,7 +143,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                         showPriceDetail(totalPrice, basicFee, cultureServiceFee, holidayFee);
 
                         //click
-                        PaymentWantBean paymentWantBean = new PaymentWantBean(method, interact, type, purpose, reservationCode);
+                        PaymentWantBean paymentWantBean = new PaymentWantBean(method, interact, type, PURPOSE_RESERVATION, reservationCode);
                         PaymentPost paymentPost = new PaymentPost(listCultureChoice, numberPeople, dStart, dEnd, homestayId, hostEmail, paymentWantBean);
                         btnPayment.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -149,7 +167,8 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                 }
             });
         } else if (Constants.BOOKING_HOME_CONFIRM.equals(previousActivity)) {
-            balace = intent.getDoubleExtra("balace",0);
+//            balance = intent.getDoubleExtra("balance",0);
+            loadBalance();
             ReservationContent reservationContent = (ReservationContent) intent.getSerializableExtra("reservationContent");
             ReservationGet reservationGet = reservationContent.getContent();
             Log.d("ReservationBean", "getData: " + reservationContent.toString());
@@ -169,7 +188,6 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
             basicFee = reservationGet.getBasicFee();
             cultureServiceFee = reservationGet.getCultureServiceFee();
             holidayFee = reservationGet.getHolidayFee();
-            tvWantWl.setText("Want Wallet($"+balace+")");
             showPriceDetail(totalPrice, basicFee, cultureServiceFee, holidayFee);
             btnPayment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -220,17 +238,15 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
     }
 
     private void onBackHomeClick() {
-        Intent intent = new Intent(BookingHomePaymentActivity.this, AdvanceSearchActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.ACTIVITY_NAME, "bookinghome");
-        intent.putExtra(Constants.BUNDLE, bundle);
+        Intent intent = new Intent(BookingHomePaymentActivity.this,MainActivity.class);
+        intent.putExtra("checkFragment",0);
         startActivity(intent);
         finish();
     }
 
     private void onPaymentClick() {
         getSelectedRadioButton();
-        PaymentWantBean paymentWantBean = new PaymentWantBean(method, interact, type, purpose, reservationCode);
+        PaymentWantBean paymentWantBean = new PaymentWantBean(method, interact, type, PURPOSE_RESERVATION, reservationCode);
         PaymentPost paymentPost = new PaymentPost(Constants.cultureIdList, numberPeople, dStart, dEnd, homestayId, hostEmail, paymentWantBean);
         Log.d("PaymentPost", "onPaymentClick: " + paymentPost.toString());
         Call<PaymentGet> call = Utils.getAPI().getLinkPayment(paymentPost);
@@ -246,6 +262,9 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                             intent.setData(Uri.parse(url));
                             startActivity(intent);
                         } else {
+                            Intent intent = new Intent(BookingHomePaymentActivity.this,MainActivity.class);
+                            intent.putExtra("checkFragment",2);
+                            startActivity(intent);
                             Toast.makeText(BookingHomePaymentActivity.this, "Payment Successfully ", Toast.LENGTH_SHORT).show();
                         }
                     } else {
@@ -285,6 +304,9 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                             intent.setData(Uri.parse(url));
                             startActivity(intent);
                         } else {
+                            Intent intent = new Intent(BookingHomePaymentActivity.this,MainActivity.class);
+                            intent.putExtra("checkFragment",2);
+                            startActivity(intent);
                             Toast.makeText(BookingHomePaymentActivity.this, "Payment Successfully ", Toast.LENGTH_SHORT).show();
 
                         }

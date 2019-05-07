@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Bundle bundleGuest = new Bundle();
         bundleGuest.putInt("Min",1);
         bundleGuest.putInt("Max",20);
-        bundleGuest.putInt("Guest",guest);
+        bundleGuest.putInt(Constants.GUEST,guest);
         bundleGuest.putString(Constants.ACTIVITY_NAME,Constants.HOME_FRAGMENT);
         intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
         startActivityForResult(intentGuest,Constants.REQUEST_CODE_HOME_FRAGMENT);

@@ -183,6 +183,7 @@ public class BookingFragment extends Fragment {
                 } else {
                     Intent intent = new Intent(getContext(), ViewHomeDetailActivity.class);
                     intent.putExtra(Constants.HOMESTAY_ID, homestayId);
+                    intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_FRAGMENT);
                     startActivity(intent);
                 }
 

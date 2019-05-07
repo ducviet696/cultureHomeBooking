@@ -233,7 +233,7 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
                     Intent intent = new Intent(BookingHomeConfirmActivity.this,BookingHomePaymentActivity.class);
                     intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_HOME_CONFIRM);
                     intent.putExtra("reservationContent",reservationContent);
-                    intent.putExtra("balace",balace);
+                    intent.putExtra("balance",balace);
                     startActivity(intent);
 
                 }

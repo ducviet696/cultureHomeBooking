@@ -144,7 +144,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     @BindView(R.id.btnHostDetail)
     LinearLayout btnHostDetail;
     HomeStay homeStay;
-    String hostId, bookingMethod, roomType;
+    String hostId, bookingMethod, roomType, previousActivity;
     String cityId ="";
     int maxRoom;
     @Override
@@ -158,9 +158,8 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         wishlistService = new WishlistService();
         Intent intent = getIntent();
         homestayID = intent.getStringExtra(Constants.HOMESTAY_ID);
-        Log.d("homestayID", "onCreate: "+homestayID);
+        previousActivity = intent.getStringExtra(Constants.ACTIVITY_NAME);
         loadHomeStayById(homestayID);
-//        loadHomeBySearch(cityId);
         setSupportActionBar(toolbar);
         if(getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -329,7 +328,18 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (Constants.BOOKING_FRAGMENT.equals(previousActivity)){
+                    Intent intent = new Intent(ViewHomeDetailActivity.this,MainActivity.class);
+                    intent.putExtra("checkFragment",2);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(ViewHomeDetailActivity.this,MainActivity.class);
+                    intent.putExtra("checkFragment",1);
+                    startActivity(intent);
+                    finish();
+                }
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

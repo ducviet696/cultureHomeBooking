@@ -146,6 +146,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
         bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
         bundle.putSerializable(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
         PricePost pricePost = new PricePost(cultureIdList,homestaysID,room,1,listDateBooking.get(0).getTime(),listDateBooking.get(listDateBooking.size()-1).getTime());
+        Log.d(TAG, "onNextClick: "+pricePost);
         Call<PriceGet> call = Utils.getAPI().getPrice(pricePost,Constants.LANG);
         call.enqueue(new Callback<PriceGet>() {
             @Override
@@ -188,7 +189,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
             layout_pickRoom.setVisibility(View.GONE);
         }
         tvroomNum.setText(String.valueOf(room));
-
+        setVisiableButton();
 
     }
     public void setVisiableButton() {
