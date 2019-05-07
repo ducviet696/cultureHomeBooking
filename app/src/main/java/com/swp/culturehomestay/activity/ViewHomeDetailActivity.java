@@ -116,6 +116,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     public List<Amenity> listAmenity = new ArrayList<>();
     public List<HomeStay> homeStays = new ArrayList<>();
     public List<FeedBack> feedBackList = new ArrayList<>();
+    ArrayList<Integer> cultureIdList = new ArrayList<>();
     String homestayID;
     int totalRate;
     String cancelType, standartGuest, maximunGuest, priceNightly, priceWeekend, priceLongTerm;
@@ -184,7 +185,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
         if(requestCode==Constants.REQUEST_CODE)
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK){
-            Constants.cultureIdList = data.getIntegerArrayListExtra(Constants.CULTURE_ID_LIST);
+            cultureIdList = data.getIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED);
         }
     }
 
@@ -300,7 +301,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     }
 
     public void loadJsonSimilarList(String cityId){
-        SearchHomePost searchHomePost = new SearchHomePost(0,5,1,cityId,"");
+        SearchHomePost searchHomePost = new SearchHomePost(0,10,1,cityId,"","ac");
         Call<SearchHomeGet> call = mService.getHomeBySearch(searchHomePost, Constants.LANG);
         call.enqueue(new Callback<SearchHomeGet>() {
             @Override
@@ -378,6 +379,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             case  R.id.btnCulture:
                 Intent intentCul = new Intent(ViewHomeDetailActivity.this,ShowHomeCultureActivity.class);
                 intentCul.putExtra(Constants.HOMESTAY_ID,homestayID);
+                intentCul.putIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED,cultureIdList);
                 startActivityForResult(intentCul,Constants.REQUEST_CODE);
                 break;
             case  R.id.btnShowAllReview:
@@ -413,7 +415,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     private void showDialogReqBook(){
         AlertDialog.Builder builder1 = new AlertDialog.Builder(ViewHomeDetailActivity.this);
         builder1.setMessage(R.string.warning);
-        builder1.setTitle("Warning");
+        builder1.setTitle("Recommendation");
         builder1.setCancelable(true);
 
         builder1.setPositiveButton(
@@ -445,6 +447,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
             bundle.putInt("Max",maxRoom);
             bundle.putString(Constants.ACTIVITY_NAME,Constants.ADVANCE_SEARCH_ACTIVITY);
             bundle.putString("roomType",roomType);
+            bundle.putIntegerArrayList(Constants.LIST_CULTURE_SELECTED,cultureIdList);
             intent.putExtra(Constants.BUNDLE, bundle);
             startActivity(intent);
         } else {

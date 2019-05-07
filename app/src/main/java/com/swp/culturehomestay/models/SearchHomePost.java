@@ -9,8 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 public class SearchHomePost {
-
-
+    @SerializedName("homestayStatus")
+    @Expose
+    String homestayStatus;
     @SerializedName("fullText")
     @Expose
     private String fullText;
@@ -59,15 +60,31 @@ public class SearchHomePost {
     @SerializedName("cityId")
     @Expose
     private String cityId;
+    @SerializedName("orderBy")
+    @Expose
+    private String orderBy;
     @SerializedName("districtId")
     @Expose
     private String districtId;
+    @SerializedName("ascOrDesc")
+    @Expose
+    private String ascOrDesc;
+
+
+    public SearchHomePost(Integer indexPage, Integer sizePage, String orderBy, String ascOrDesc, String homestayStatus) {
+        this.indexPage = indexPage;
+        this.sizePage = sizePage;
+        this.orderBy = orderBy;
+        this.ascOrDesc = ascOrDesc;
+        this.homestayStatus = homestayStatus;
+    }
 
     @Override
     public String toString() {
         return "SearchHomePost{" +
-                "dStart=" + dStart +
-                ", dEnd=" + dEnd +
+                "fullText='" + fullText + '\'' +
+                ", dStart='" + dStart + '\'' +
+                ", dEnd='" + dEnd + '\'' +
                 ", bookingMethod='" + bookingMethod + '\'' +
                 ", homestayTypes=" + homestayTypes +
                 ", roomTypes=" + roomTypes +
@@ -81,12 +98,15 @@ public class SearchHomePost {
                 ", sizePage=" + sizePage +
                 ", numRoom=" + numRoom +
                 ", cityId='" + cityId + '\'' +
+                ", orderBy='" + orderBy + '\'' +
                 ", districtId='" + districtId + '\'' +
-                ", fullText='" + fullText + '\'' +
+                ", ascOrDesc='" + ascOrDesc + '\'' +
                 '}';
     }
 
-    public SearchHomePost(@Nullable String dStart, @Nullable String dEnd, @Nullable String bookingMethod, @Nullable List<String> homestayTypes, @Nullable List<String> roomTypes, @Nullable Integer numBethRoom, @Nullable List<Integer> amenityBeans, @Nullable List<Integer> cultureServiceBeans, @Nullable Integer numberPeople, @Nullable Integer minPrice, @Nullable Integer maxPrice, @Nullable Integer indexPage, @Nullable Integer sizePage, @Nullable Integer numRoom, @Nullable String cityId, @Nullable String districtId, @Nullable String fullText) {
+
+
+    public SearchHomePost(@Nullable String dStart, @Nullable String dEnd, @Nullable String bookingMethod, @Nullable List<String> homestayTypes, @Nullable List<String> roomTypes, @Nullable Integer numBethRoom, @Nullable List<Integer> amenityBeans, @Nullable List<Integer> cultureServiceBeans, @Nullable Integer numberPeople, @Nullable Integer minPrice, @Nullable Integer maxPrice, @Nullable Integer indexPage, @Nullable Integer sizePage, @Nullable Integer numRoom, @Nullable String cityId, @Nullable String districtId, @Nullable String fullText, String homestayStatus) {
         this.dStart = dStart;
         this.dEnd = dEnd;
         this.bookingMethod = bookingMethod;
@@ -104,15 +124,18 @@ public class SearchHomePost {
         this.cityId = cityId;
         this.districtId = districtId;
         this.fullText = fullText;
+        this.homestayStatus = homestayStatus;
     }
 
-    public SearchHomePost(Integer indexPage, Integer sizePage, Integer numRoom, String cityId, String districtId) {
+    public SearchHomePost(Integer indexPage, Integer sizePage, Integer numRoom, String cityId, String districtId, String homestayStatus) {
         this.indexPage = indexPage;
         this.sizePage = sizePage;
         this.numRoom = numRoom;
         this.cityId = cityId;
         this.districtId = districtId;
+        this.homestayStatus = homestayStatus;
     }
+
 
     public Integer getIndexPage() {
         return indexPage;

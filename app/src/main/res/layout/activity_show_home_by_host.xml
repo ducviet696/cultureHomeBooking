@@ -13,15 +13,64 @@
         android:drawableLeft="@drawable/ic_previous"
         android:keepScreenOn="true"
         android:paddingVertical="@dimen/default_padding" />
-    <TextView
-        android:id="@+id/tvHostName"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:textColor="@color/colorBlack"
-        android:textSize="@dimen/large_text"
-        android:text="Chu Duc Viet"
+    <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/default_padding">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/ic_profile_feedback"
+            android:paddingRight="@dimen/default_padding"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:id="@+id/civHostImgage"/>
+    <TextView
+        android:drawablePadding="@dimen/default_padding"
+        android:drawableLeft="@drawable/ic_user"
+        android:layout_toRightOf="@id/civHostImgage"
+        android:paddingBottom="@dimen/default_padding"
+        android:id="@+id/tvHostName"
+        android:gravity="bottom"
+        android:textColor="@color/colorBlack"
+        android:text="Chu Duc Viet"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+        <TextView
+            android:drawableLeft="@drawable/ic_mail"
+            android:drawablePadding="@dimen/default_padding"
+            android:layout_toRightOf="@id/civHostImgage"
+            android:layout_below="@id/tvHostName"
+            android:paddingBottom="@dimen/default_padding"
+            android:id="@+id/tvHostMail"
+            android:gravity="bottom"
+            android:textColor="@color/colorBlack"
+            android:text="Vietcdse04473@gmail.com"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:drawableLeft="@drawable/ic_marker_white"
+            android:drawablePadding="@dimen/default_padding"
+            android:layout_toRightOf="@id/civHostImgage"
+            android:layout_below="@id/tvHostMail"
+            android:paddingBottom="@dimen/default_padding"
+            android:id="@+id/tvLocation"
+            android:gravity="bottom"
+            android:textColor="@color/colorBlack"
+            android:text="Bac Giang"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:drawablePadding="@dimen/default_padding"
+            android:drawableLeft="@drawable/ic_joined"
+            android:layout_toRightOf="@id/civHostImgage"
+            android:layout_below="@id/tvLocation"
+            android:paddingBottom="@dimen/default_padding"
+            android:id="@+id/tvDateCreated"
+            android:gravity="bottom"
+            android:textColor="@color/colorBlack"
+            android:text="22/01/96"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

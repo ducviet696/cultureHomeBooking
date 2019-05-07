@@ -11,15 +11,18 @@ import android.widget.TextView;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.adapter.HorizontalListHomeAdapter;
 import com.swp.culturehomestay.models.HomeStay;
+import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +33,12 @@ public class ShowHomeByHost extends AppCompatActivity {
     RecyclerView rvHomeByHost;
     @BindView(R.id.tvHostName)
     TextView tvHostName;
+    @BindView(R.id.tvHostMail)
+    TextView tvHostMail;
+    @BindView(R.id.tvDateCreated)
+    TextView tvDateCreated;
+    @BindView(R.id.civHostImgage)
+    CircleImageView civHostImgage;
     HorizontalListHomeAdapter horAdapter;
     List<HomeStay> homeStays = new ArrayList<>();
     @Override
@@ -37,16 +46,41 @@ public class ShowHomeByHost extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_home_by_host);
         ButterKnife.bind(this);
-        displayListHomeStayByHost();
+        Intent intent = getIntent();
+        String hostID = intent.getStringExtra(Constants.HOST_ID);
+        displayListHomeStayByHost(hostID);
+        displayHostInfo(hostID);
+    }
+
+    private void displayHostInfo(String hostID) {
+        Call<UserDetailModel> call = Utils.getAPI().getUserDetailById(hostID);
+        call.enqueue(new Callback<UserDetailModel>() {
+            @Override
+            public void onResponse(Call<UserDetailModel> call, Response<UserDetailModel> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    UserDetailModel host = response.body();
+                    if(host.getImangeUrl()!=null){
+                        Utils.loadImge(ShowHomeByHost.this,civHostImgage,Constants.BASE_URL+host.getImangeUrl());
+                    }
+                    tvHostName.setText("Full name: "+host.getFullName());
+                    tvHostMail.setText("Email: "+host.getEmail());
+                    tvDateCreated.setText("Joined: "+Utils.formatDate(new Date(host.getCreatedDate())));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailModel> call, Throwable t) {
+
+            }
+        });
     }
 
     @OnClick(R.id.tvBack)
     void clickBack(){
         finish();
     }
-    public void displayListHomeStayByHost() {
-        Intent intent = getIntent();
-        String hostID = intent.getStringExtra(Constants.HOST_ID);
+    public void displayListHomeStayByHost(String hostID) {
+
         Call<List<HomeStay>> call = Utils.getAPI().getListHomestayByHostId(hostID, "en");
         call.enqueue(new Callback<List<HomeStay>>() {
             @Override
@@ -82,6 +116,5 @@ public class ShowHomeByHost extends AppCompatActivity {
         });
 
     }
-
-
+    
 }

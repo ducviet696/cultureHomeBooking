@@ -24,13 +24,13 @@ import butterknife.ButterKnife;
 public class CultureAdapter extends RecyclerView.Adapter<CultureAdapter.MyViewHolder> {
     List<HomestayCulture> homestayCultureList;
     Context context;
-    int res;
     CheckboxCheckedListener checkboxCheckedListener;
+    ArrayList<Integer> cultureIdList = new ArrayList<>();
 
-    public CultureAdapter(List<HomestayCulture> homestayCultureList, Context context, int res) {
+    public CultureAdapter(List<HomestayCulture> homestayCultureList, Context context, ArrayList<Integer> cultureIdList) {
         this.homestayCultureList = homestayCultureList;
         this.context = context;
-        this.res = res;
+        this.cultureIdList = cultureIdList;
     }
     @NonNull
     @Override
@@ -45,6 +45,9 @@ public class CultureAdapter extends RecyclerView.Adapter<CultureAdapter.MyViewHo
         HomestayCulture homestayCulture = homestayCultureList.get(i);
         myViewHolder.tvDesCul.setText(homestayCulture.getDiscription());
         myViewHolder.tvNameCul.setText(homestayCulture.getCultureService().getEnglisgName());
+        if(cultureIdList!= null && cultureIdList.contains(Integer.valueOf(homestayCultureList.get(i).getCultureServiceId()))){
+            myViewHolder.cbCulture.setChecked(true);
+        }
         myViewHolder.tvPriceCul.setText(Utils.formatPrice(homestayCulture.getPrice()));
         myViewHolder.cbCulture.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,10 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.timessquare.CalendarPickerView;
 import com.swp.culturehomestay.R;
 import com.swp.culturehomestay.models.DateBooked;
+import com.swp.culturehomestay.models.PriceGet;
+import com.swp.culturehomestay.models.PricePost;
 import com.swp.culturehomestay.utils.Constants;
 import com.swp.culturehomestay.utils.Utils;
 
@@ -62,6 +65,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
     @BindView(R.id.tvBack)
     TextView txtBack;
     String homestaysID, roomType;
+    ArrayList<Integer> cultureIdList = new ArrayList<>();
     List<Date> listDateBooking = new ArrayList<>();
     List<Date> listDateDisable = new ArrayList<>();
 
@@ -141,10 +145,31 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
         bundle.putSerializable(Constants.LIST_DATE_DISABLE, (Serializable) listDateDisable);
-        bundle.putString(Constants.HOMESTAY_ID, homestaysID);
-        bundle.putInt(Constants.ROOM, room);
-        intent.putExtra(Constants.BUNDLE, bundle);
-        startActivity(intent);
+        PricePost pricePost = new PricePost(cultureIdList,homestaysID,room,1,listDateBooking.get(0).getTime(),listDateBooking.get(listDateBooking.size()-1).getTime());
+        Call<PriceGet> call = Utils.getAPI().getPrice(pricePost,Constants.LANG);
+        call.enqueue(new Callback<PriceGet>() {
+            @Override
+            public void onResponse(Call<PriceGet> call, Response<PriceGet> response) {
+                if(response.isSuccessful() && response.body()!= null){
+                    if(response.body().getCode().equals(Constants.CODE_OK)){
+                        bundle.putIntegerArrayList(Constants.LIST_CULTURE_SELECTED,cultureIdList);
+                        bundle.putString(Constants.HOMESTAY_ID, homestaysID);
+                        bundle.putInt(Constants.ROOM, room);
+                        intent.putExtra(Constants.BUNDLE, bundle);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(BookingHomePickDateActivity.this, "Date booking isn't available. Please choose other date or other homestay!", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PriceGet> call, Throwable t) {
+                Toast.makeText(BookingHomePickDateActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        
     }
 
     @OnClick(R.id.tvBack)
@@ -156,6 +181,7 @@ public class BookingHomePickDateActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         roomType = bundle.getString("roomType");
+        cultureIdList = bundle.getIntegerArrayList(Constants.LIST_CULTURE_SELECTED);
         homestaysID = bundle.getString(Constants.HOMESTAY_ID);;
         maxRoom = bundle.getInt("Max");
         if(roomType.equals(Constants.ROOMTYPE_ENTIRE)){

@@ -62,20 +62,16 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
     @BindView(R.id.sbRommNum)
     BubbleSeekBar sbRommNum;
     int minGuest, maxGuest;
-    int priceNightly, priceWeekend, priceLongTerm, totalPrice, totalPricePerNight, totalPricePerWeekly;
-    List<Date> weeklyListBooking = new ArrayList<>();
-    List<Date> dayListBooking = new ArrayList<>();
+    int totalPrice;
     List<Date> listDateBooking = new ArrayList<>();
     List<Date> listDateDisable = new ArrayList<>();
+    ArrayList<Integer> cultureIdList = new ArrayList<>();
     String homeStayId;
     int guest = 1;
     int roomNum = 1;
     IApi mService;
     Date dStart;
     Date dEnd;
-
-
-//    List<Date> dateList;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -113,6 +109,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         listDateBooking = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_BOOKING);
         listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
+        cultureIdList = bundle.getIntegerArrayList(Constants.LIST_CULTURE_SELECTED);
         roomNum = bundle.getInt(Constants.ROOM);
         homeStayId = bundle.getString(Constants.HOMESTAY_ID);
     }
@@ -150,6 +147,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         bundle.putInt(Constants.ROOM,roomNum);
         bundle.putString(Constants.HOMESTAY_ID,homeStayId);
         bundle.putInt("totalPrice",totalPrice);
+        bundle.putIntegerArrayList(Constants.LIST_CULTURE_SELECTED,cultureIdList);
         intentNext.putExtra(Constants.BUNDLE,bundle);
         startActivity(intentNext);
     }
@@ -169,6 +167,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         Bundle bundlePrice = new Bundle();
         bundlePrice.putString(Constants.HOMESTAY_ID, homeStayId);
         bundlePrice.putSerializable(Constants.LIST_DATE_BOOKING, (Serializable) listDateBooking);
+        bundlePrice.putIntegerArrayList(Constants.LIST_CULTURE_SELECTED,cultureIdList);
         bundlePrice.putInt(Constants.GUEST,guest);
         bundlePrice.putInt(Constants.ROOM,roomNum);
         intent.putExtra(Constants.BUNDLE, bundlePrice);
@@ -217,7 +216,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
         });
     }
     public void getTotalPrice(){
-        PricePost pricePost = new PricePost(Constants.cultureIdList,homeStayId,roomNum,guest,dStart.getTime(),dEnd.getTime());
+        PricePost pricePost = new PricePost(cultureIdList,homeStayId,roomNum,guest,dStart.getTime(),dEnd.getTime());
         Call<PriceGet> call = mService.getPrice(pricePost,Constants.LANG);
         call.enqueue(new Callback<PriceGet>() {
             @Override

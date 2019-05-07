@@ -1,0 +1,649 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="districts">
+        <item>Ba Vì</item>
+        <item>Ba Đình</item>
+        <item>Bắc Từ Liêm</item>
+        <item>Cầu Giấy</item>
+        <item>Chương Mỹ</item>
+        <item>Gia Lâm</item>
+        <item>Hà Đông</item>
+        <item>Hai Bà Trưng</item>
+        <item>Hoài Đức</item>
+        <item>Hoàn Kiếm</item>
+        <item>Hoàng Mai</item>
+        <item>Long Biên</item>
+        <item>Mê Linh</item>
+        <item>Mỹ Đức</item>
+        <item>Nam Từ Liêm</item>
+        <item>Phú Xuyên</item>
+        <item>Phúc Thọ</item>
+        <item>Quốc Oai</item>
+        <item>Sóc Sơn</item>
+        <item>Sơn Tây</item>
+        <item>Tây Hồ</item>
+        <item>Thạch Thất</item>
+        <item>Thanh Oai</item>
+        <item>Thanh Trì</item>
+        <item>Thanh Xuân</item>
+        <item>Thường Tín</item>
+        <item>Ứng Hòa</item>
+        <item>Đan Phượng</item>
+        <item>Đông Anh</item>
+        <item>Đống Đa</item>
+        <item>	An Phú	</item>
+        <item>	Châu Phú	</item>
+        <item>	Châu Thành	</item>
+        <item>	Chợ Mới	</item>
+        <item>	Phú Tân	</item>
+        <item>	Tân Châu town	</item>
+        <item>	Thoại Sơn	</item>
+        <item>	Tịnh Biên	</item>
+        <item>	Tri Tôn	</item>
+        <item>	Côn Đảo Island	</item>
+        <item>	Đất Đỏ	</item>
+        <item>	Long Điền	</item>
+        <item>	Phú Mỹ town	</item>
+        <item>	Xuyên Mộc	</item>
+        <item>	Hiệp Hòa	</item>
+        <item>	Lạng Giang	</item>
+        <item>	Lục Nam	</item>
+        <item>	Lục Ngạn	</item>
+        <item>	Sơn Động	</item>
+        <item>	Tân Yên	</item>
+        <item>	Việt Yên	</item>
+        <item>	Yên Dũng	</item>
+        <item>	Yên Thế	</item>
+        <item>	Ba Bể	</item>
+        <item>	Bạch Thông	</item>
+        <item>	Chợ Đồn	</item>
+        <item>	Chợ Mới	</item>
+        <item>	Na Rì	</item>
+        <item>	Pác Nặm	</item>
+        <item>	Đông Hải	</item>
+        <item>	Giá Rai town	</item>
+        <item>	Hòa Bình	</item>
+        <item>	Hồng Dân	</item>
+        <item>	Phước Long	</item>
+        <item>	Vĩnh Lợi	</item>
+        <item>	Gia Bình	</item>
+        <item>	Lương Tài	</item>
+        <item>	Quế Võ	</item>
+        <item>	Thuận Thành	</item>
+        <item>	Tiên Du	</item>
+        <item>	Từ Sơn town	</item>
+        <item>	Yên Phong	</item>
+        <item>	Ba Tri	</item>
+        <item>	Bình Đại	</item>
+        <item>	Châu Thành	</item>
+        <item>	Chợ Lách	</item>
+        <item>	Giồng Trôm	</item>
+        <item>	Mỏ Cày Bắc	</item>
+        <item>	Mỏ Cày Nam	</item>
+        <item>	Thạnh Phú	</item>
+        <item>	An Lão	</item>
+        <item>	An Nhơn town	</item>
+        <item>	Hoài Ân	</item>
+        <item>	Hoài Nhơn	</item>
+        <item>	Phù Cát	</item>
+        <item>	Phù Mỹ	</item>
+        <item>	Tây Sơn	</item>
+        <item>	Tuy Phước	</item>
+        <item>	Vân Canh	</item>
+        <item>	Vĩnh Thạnh	</item>
+        <item>	Bắc Tân Uyên	</item>
+        <item>	Bàu Bàng	</item>
+        <item>	Bến Cát town	</item>
+        <item>	Dầu Tiếng	</item>
+        <item>	Dĩ An town	</item>
+        <item>	Phú Giáo	</item>
+        <item>	Tân Uyên town	</item>
+        <item>	Thuận An town	</item>
+        <item>	Bình Long town	</item>
+        <item>	Bù Đăng	</item>
+        <item>	Bù Đốp	</item>
+        <item>	Bù Gia Mập	</item>
+        <item>	Chơn Thành	</item>
+        <item>	Đồng Phú	</item>
+        <item>	Hớn Quản	</item>
+        <item>	Lộc Ninh	</item>
+        <item>	Phú Riềng	</item>
+        <item>	Phước Long town	</item>
+        <item>	Bắc Bình	</item>
+        <item>	Đức Linh	</item>
+        <item>	Hàm Tân	</item>
+        <item>	Hàm Thuận Bắc	</item>
+        <item>	Hàm Thuận Nam	</item>
+        <item>	La Gi town	</item>
+        <item>	Phú Quý Island	</item>
+        <item>	Tánh Linh	</item>
+        <item>	Tuy Phong	</item>
+        <item>	Cái Nước	</item>
+        <item>	Đầm Dơi	</item>
+        <item>	Năm Căn	</item>
+        <item>	Ngọc Hiển	</item>
+        <item>	Phú Tân	</item>
+        <item>	Thới Bình	</item>
+        <item>	Trần Văn Thời	</item>
+        <item>	U Minh	</item>
+        <item>	Cần Thơ	</item>
+        <item>	Urban districts	</item>
+        <item>	Bình Thủy	</item>
+        <item>	Cái Răng	</item>
+        <item>	Ninh Kiều	</item>
+        <item>	Ô Môn	</item>
+        <item>	Thốt Nốt	</item>
+        <item>	Rural districts	</item>
+        <item>	Cờ Đỏ	</item>
+        <item>	Phong Điền	</item>
+        <item>	Thới Lai	</item>
+        <item>	Vĩnh Thạnh	</item>
+        <item>	Bảo Lạc	</item>
+        <item>	Bảo Lâm	</item>
+        <item>	Hạ Lang	</item>
+        <item>	Hà Quảng	</item>
+        <item>	Hòa An	</item>
+        <item>	Nguyên Bình	</item>
+        <item>	Phục Hòa	</item>
+        <item>	Quảng Uyên	</item>
+        <item>	Thạch An	</item>
+        <item>	Thông Nông	</item>
+        <item>	Trà Lĩnh	</item>
+        <item>	Trùng Khánh	</item>
+        <item>	Đà Nẵng	</item>
+        <item>	Urban districts	</item>
+        <item>	Cẩm Lệ	</item>
+        <item>	Hải Châu	</item>
+        <item>	Liên Chiểu	</item>
+        <item>	Ngũ Hành Sơn	</item>
+        <item>	Sơn Trà	</item>
+        <item>	Thanh Khê	</item>
+        <item>	Rural districts	</item>
+        <item>	Hòa Vang	</item>
+        <item>	Hoàng Sa Island	</item>
+        <item>	Buôn Đôn	</item>
+        <item>	Buôn Hồ town	</item>
+        <item>	Cư Kuin	</item>
+        <item>	Ea Kar	</item>
+        <item>	Ea Súp	</item>
+        <item>	Krông Ana	</item>
+        <item>	Krông Bông	</item>
+        <item>	Krông Buk	</item>
+        <item>	Krông Năng	</item>
+        <item>	Krông Pắk	</item>
+        <item>	Lắk	</item>
+        <item>	Cư Jút	</item>
+        <item>	Đắk Glong	</item>
+        <item>	Đắk Mil	</item>
+        <item>	Đắk Song	</item>
+        <item>	Krông Nô	</item>
+        <item>	Tuy Đức	</item>
+        <item>	Điện Biên	</item>
+        <item>	Điện Biên Đông	</item>
+        <item>	Mường Ảng	</item>
+        <item>	Mường Chà	</item>
+        <item>	Mường Lay town	</item>
+        <item>	Mường Nhé	</item>
+        <item>	Nậm Pồ	</item>
+        <item>	Tủa Chùa	</item>
+        <item>	Tuần Giáo	</item>
+        <item>	Cẩm Mỹ	</item>
+        <item>	Định Quán	</item>
+        <item>	Long Khánh town	</item>
+        <item>	Long Thành	</item>
+        <item>	Nhơn Trạch	</item>
+        <item>	Tân Phú	</item>
+        <item>	Thống Nhất	</item>
+        <item>	Trảng Bom	</item>
+        <item>	Vĩnh Cữu	</item>
+        <item>	Xuân Lộc	</item>
+        <item>	Cao Lãnh	</item>
+        <item>	Châu Thành	</item>
+        <item>	Hồng Ngự town	</item>
+        <item>	Hồng Ngự	</item>
+        <item>	Lai Vung	</item>
+        <item>	Lấp Vò	</item>
+        <item>	Tam Nông	</item>
+        <item>	Tân Hồng	</item>
+        <item>	Thanh Bình	</item>
+        <item>	Tháp Mười	</item>
+        <item>	Ayun Pa town	</item>
+        <item>	An Khê town	</item>
+        <item>	Chư Păh	</item>
+        <item>	Chư Prông	</item>
+        <item>	Chư Pưh	</item>
+        <item>	Chư Sê	</item>
+        <item>	Đắk Đoa	</item>
+        <item>	Đắk Pơ	</item>
+        <item>	Đức Cơ	</item>
+        <item>	Ia Grai	</item>
+        <item>	Ia Pa	</item>
+        <item>	Kông Chro	</item>
+        <item>	Krông Pa	</item>
+        <item>	Mang Yang	</item>
+        <item>	Phú Thiện	</item>
+        <item>	Bắc Mê	</item>
+        <item>	Bắc Quang	</item>
+        <item>	Đồng Văn	</item>
+        <item>	Hoàng Su Phì	</item>
+        <item>	Mèo Vạc	</item>
+        <item>	Quản Bạ	</item>
+        <item>	Quảng Bình	</item>
+        <item>	Vị Xuyên	</item>
+        <item>	Xín Mần	</item>
+        <item>	Yên Minh	</item>
+        <item>	Bình Lục	</item>
+        <item>	Duy Tiên	</item>
+        <item>	Kim Bảng	</item>
+        <item>	Lý Nhân	</item>
+        <item>	Thanh Liêm	</item>
+        <item>	Cẩm Xuyên	</item>
+        <item>	Can Lộc	</item>
+        <item>	Đức Thọ	</item>
+        <item>	Hồng Lĩnh town	</item>
+        <item>	Hương Khê	</item>
+        <item>	Hương Sơn	</item>
+        <item>	Kỳ Anh town	</item>
+        <item>	Kỳ Anh	</item>
+        <item>	Lộc Hà	</item>
+        <item>	Nghi Xuân	</item>
+        <item>	Thạch Hà	</item>
+        <item>	Vũ Quang	</item>
+        <item>	Bình Giang	</item>
+        <item>	Cẩm Giàng	</item>
+        <item>	Chí Linh town	</item>
+        <item>	Gia Lộc	</item>
+        <item>	Kim Thành	</item>
+        <item>	Kinh Môn	</item>
+        <item>	Nam Sách	</item>
+        <item>	Ninh Giang	</item>
+        <item>	Thanh Hà	</item>
+        <item>	Thanh Miện	</item>
+        <item>	Tứ Kỳ	</item>
+        <item>	Hải Phòng	</item>
+        <item>	Urban districts	</item>
+        <item>	Đồ Sơn	</item>
+        <item>	Dương Kinh	</item>
+        <item>	Hải An	</item>
+        <item>	Hồng Bàng	</item>
+        <item>	Kiến An	</item>
+        <item>	Lê Chân	</item>
+        <item>	Ngô Quyền	</item>
+        <item>	Rural districts	</item>
+        <item>	An Dương	</item>
+        <item>	An Lão	</item>
+        <item>	Bạch Long Vĩ Island	</item>
+        <item>	Cát Hải Island	</item>
+        <item>	Kiến Thuỵ	</item>
+        <item>	Thủy Nguyên	</item>
+        <item>	Tiên Lãng	</item>
+        <item>	Vĩnh Bảo	</item>
+        <item>	Châu Thành	</item>
+        <item>	Châu Thành A	</item>
+        <item>	Long Mỹ town	</item>
+        <item>	Long Mỹ	</item>
+        <item>	Ngã Bảy town	</item>
+        <item>	Phụng Hiệp	</item>
+        <item>	Vị Thủy	</item>
+        <item>	Hồ Chí Minh City	</item>
+        <item>	Urban districts	</item>
+        <item>	District 1	</item>
+        <item>	District 2	</item>
+        <item>	District 3	</item>
+        <item>	District 4	</item>
+        <item>	District 5	</item>
+        <item>	District 6	</item>
+        <item>	District 7	</item>
+        <item>	District 8	</item>
+        <item>	District 9	</item>
+        <item>	District 10	</item>
+        <item>	District 11	</item>
+        <item>	District 12	</item>
+        <item>	Bình Tân	</item>
+        <item>	Bình Thạnh	</item>
+        <item>	Gò Vấp	</item>
+        <item>	Phú Nhuận	</item>
+        <item>	Tân Bình	</item>
+        <item>	Tân Phú	</item>
+        <item>	Thủ Đức	</item>
+        <item>	Rural districts	</item>
+        <item>	Bình Chánh	</item>
+        <item>	Cần Giờ	</item>
+        <item>	Củ Chi	</item>
+        <item>	Hóc Môn	</item>
+        <item>	Nhà Bè	</item>
+        <item>	Cao Phong	</item>
+        <item>	Đà Bắc	</item>
+        <item>	Kim Bôi	</item>
+        <item>	Kỳ Sơn	</item>
+        <item>	Lạc Sơn	</item>
+        <item>	Lạc Thủy	</item>
+        <item>	Lương Sơn	</item>
+        <item>	Mai Châu	</item>
+        <item>	Tân Lạc	</item>
+        <item>	Yên Thủy	</item>
+        <item>	Ân Thi	</item>
+        <item>	Khoái Châu	</item>
+        <item>	Kim Động	</item>
+        <item>	Mỹ Hào	</item>
+        <item>	Phù Cừ	</item>
+        <item>	Tiên Lữ	</item>
+        <item>	Văn Giang	</item>
+        <item>	Văn Lâm	</item>
+        <item>	Yên Mỹ	</item>
+        <item>	Cam Lâm	</item>
+        <item>	Diên Khánh	</item>
+        <item>	Khánh Sơn	</item>
+        <item>	Khánh Vĩnh	</item>
+        <item>	Ninh Hòa town	</item>
+        <item>	Trường Sa Island	</item>
+        <item>	Vạn Ninh	</item>
+        <item>	An Biên	</item>
+        <item>	An Minh	</item>
+        <item>	Châu Thành	</item>
+        <item>	Giang Thành	</item>
+        <item>	Giồng Riềng	</item>
+        <item>	Gò Quao	</item>
+        <item>	Hòn Đất	</item>
+        <item>	Kiên Hải Island	</item>
+        <item>	Kiên Lương	</item>
+        <item>	Phú Quốc Island	</item>
+        <item>	Tân Hiệp	</item>
+        <item>	Vĩnh Thuận	</item>
+        <item>	U Minh Thượng	</item>
+        <item>	Đắk Glei	</item>
+        <item>	Đắk Hà	</item>
+        <item>	Đắk Tô	</item>
+        <item>	Kon Plông	</item>
+        <item>	Kon Rẫy	</item>
+        <item>	Ngọc Hồi	</item>
+        <item>	Sa Thầy	</item>
+        <item>	Tu Mơ Rông	</item>
+        <item>	Mường Tè	</item>
+        <item>	Nậm Nhùn	</item>
+        <item>	Phong Thổ	</item>
+        <item>	Sìn Hồ	</item>
+        <item>	Tam Đường	</item>
+        <item>	Than Uyên	</item>
+        <item>	Tân Uyên	</item>
+        <item>	Bảo Lâm	</item>
+        <item>	Cát Tiên	</item>
+        <item>	Đạ Huoai	</item>
+        <item>	Đạ Tẻh	</item>
+        <item>	Đam Rông	</item>
+        <item>	Di Linh	</item>
+        <item>	Đơn Dương	</item>
+        <item>	Đức Trọng	</item>
+        <item>	Lạc Dương	</item>
+        <item>	Lâm Hà	</item>
+        <item>	Bắc Sơn	</item>
+        <item>	Bình Gia	</item>
+        <item>	Cao Lộc	</item>
+        <item>	Chi Lăng	</item>
+        <item>	Đình Lập	</item>
+        <item>	Hữu Lũng	</item>
+        <item>	Lộc Bình	</item>
+        <item>	Tràng Định	</item>
+        <item>	Văn Lãng	</item>
+        <item>	Văn Quân	</item>
+        <item>	Bắc Hà	</item>
+        <item>	Bảo Thắng	</item>
+        <item>	Bảo Yên	</item>
+        <item>	Bát Xát	</item>
+        <item>	Mường Khương	</item>
+        <item>	Sa Pa	</item>
+        <item>	Si Ma Cai	</item>
+        <item>	Văn Bàn	</item>
+        <item>	Bến Lức	</item>
+        <item>	Cần Đước	</item>
+        <item>	Cần Giuộc	</item>
+        <item>	Châu Thành	</item>
+        <item>	Đức Hòa	</item>
+        <item>	Đức Huệ	</item>
+        <item>	Kiến Tường town	</item>
+        <item>	Mộc Hóa	</item>
+        <item>	Tân Hưng	</item>
+        <item>	Tân Thạnh	</item>
+        <item>	Tân Trụ	</item>
+        <item>	Thạnh Hóa	</item>
+        <item>	Thủ Thừa	</item>
+        <item>	Vĩnh Hưng	</item>
+        <item>	Giao Thủy	</item>
+        <item>	Hải Hậu	</item>
+        <item>	Mỹ Lộc	</item>
+        <item>	Nam Trực	</item>
+        <item>	Nghĩa Hưng	</item>
+        <item>	Trực Ninh	</item>
+        <item>	Vụ Bản	</item>
+        <item>	Xuân Trường	</item>
+        <item>	Ý Yên	</item>
+        <item>	Anh Sơn	</item>
+        <item>	Con Cuông	</item>
+        <item>	Cửa Lò town	</item>
+        <item>	Diễn Châu	</item>
+        <item>	Đô Lương	</item>
+        <item>	Hoàng Mai town	</item>
+        <item>	Hưng Nguyên	</item>
+        <item>	Kỳ Sơn	</item>
+        <item>	Nam Đàn	</item>
+        <item>	Nghi Lộc	</item>
+        <item>	Nghĩa Đàn	</item>
+        <item>	Quế Phong	</item>
+        <item>	Quỳ Châu	</item>
+        <item>	Quỳ Hợp	</item>
+        <item>	Quỳnh Lưu	</item>
+        <item>	Tân Kỳ	</item>
+        <item>	Thanh Chương	</item>
+        <item>	Tương Dương	</item>
+        <item>	Yên Thành	</item>
+        <item>	Thái Hòa town	</item>
+        <item>	Gia Viễn	</item>
+        <item>	Hoa Lư	</item>
+        <item>	Kim Sơn	</item>
+        <item>	Nho Quan	</item>
+        <item>	Yên Khánh	</item>
+        <item>	Yên Mô	</item>
+        <item>	Bác Ái	</item>
+        <item>	Ninh Hải	</item>
+        <item>	Ninh Phước	</item>
+        <item>	Ninh Sơn	</item>
+        <item>	Thuận Bắc	</item>
+        <item>	Thuận Nam	</item>
+        <item>	Cẩm Khê	</item>
+        <item>	Đoan Hùng	</item>
+        <item>	Hạ Hòa	</item>
+        <item>	Lâm Thao	</item>
+        <item>	Phù Ninh	</item>
+        <item>	Phú Thọ town	</item>
+        <item>	Tam Nông	</item>
+        <item>	Tân Sơn	</item>
+        <item>	Thanh Ba	</item>
+        <item>	Thanh Sơn	</item>
+        <item>	Thanh Thủy	</item>
+        <item>	Yên Lập	</item>
+        <item>	Đông Hòa	</item>
+        <item>	Đồng Xuân	</item>
+        <item>	Phú Hòa	</item>
+        <item>	Sơn Hòa	</item>
+        <item>	Sông Cầu town	</item>
+        <item>	Sông Hinh	</item>
+        <item>	Tây Hòa	</item>
+        <item>	Tuy An	</item>
+        <item>	Ba Đồn town	</item>
+        <item>	Bố Trạch	</item>
+        <item>	Lệ Thủy	</item>
+        <item>	Minh Hóa	</item>
+        <item>	Quảng Ninh	</item>
+        <item>	Quảng Trạch	</item>
+        <item>	Tuyên Hóa	</item>
+        <item>	Bắc Trà My	</item>
+        <item>	Đại Lộc	</item>
+        <item>	Điện Bàn town	</item>
+        <item>	Đông Giang	</item>
+        <item>	Duy Xuyên	</item>
+        <item>	Hiệp Đức	</item>
+        <item>	Nam Giang	</item>
+        <item>	Nam Trà My	</item>
+        <item>	Nông Sơn	</item>
+        <item>	Núi Thành	</item>
+        <item>	Phước Sơn	</item>
+        <item>	Quế Sơn	</item>
+        <item>	Tây Giang	</item>
+        <item>	Thăng Bình	</item>
+        <item>	Tiên Phước	</item>
+        <item>	Ba Tơ	</item>
+        <item>	Bình Sơn	</item>
+        <item>	Đức Phổ	</item>
+        <item>	Lý Sơn Island	</item>
+        <item>	Minh Long	</item>
+        <item>	Mộ Đức	</item>
+        <item>	Nghĩa Hành	</item>
+        <item>	Sơn Hà	</item>
+        <item>	Sơn Tây	</item>
+        <item>	Sơn Tịnh	</item>
+        <item>	Tây Trà	</item>
+        <item>	Trà Bồng	</item>
+        <item>	Tư Nghĩa	</item>
+        <item>	Ba Chẽ	</item>
+        <item>	Bình Liêu	</item>
+        <item>	Cô Tô Island	</item>
+        <item>	Đầm Hà	</item>
+        <item>	Đông Triều town	</item>
+        <item>	Hải Hà	</item>
+        <item>	Hoành Bồ	</item>
+        <item>	Quảng Yên town	</item>
+        <item>	Tiên Yên	</item>
+        <item>	Vân Đồn Island	</item>
+        <item>	Cam Lộ	</item>
+        <item>	Cồn Cỏ Island	</item>
+        <item>	Đa Krông	</item>
+        <item>	Gio Linh	</item>
+        <item>	Hải Lăng	</item>
+        <item>	Hướng Hóa	</item>
+        <item>	Quảng Trị town	</item>
+        <item>	Triệu Phong	</item>
+        <item>	Vĩnh Linh	</item>
+        <item>	Châu Thành	</item>
+        <item>	Cù Lao Dung	</item>
+        <item>	Long Phú	</item>
+        <item>	Kế Sách	</item>
+        <item>	Mỹ Tú	</item>
+        <item>	Mỹ Xuyên	</item>
+        <item>	Ngã Năm town	</item>
+        <item>	Thạnh Trị	</item>
+        <item>	Trần Đề	</item>
+        <item>	Vĩnh Châu town	</item>
+        <item>	Bắc Yên	</item>
+        <item>	Mai Sơn	</item>
+        <item>	Mộc Châu	</item>
+        <item>	Mường La	</item>
+        <item>	Phù Yên	</item>
+        <item>	Quỳnh Nhai	</item>
+        <item>	Sông Mã	</item>
+        <item>	Sốp Cộp	</item>
+        <item>	Thuận Châu	</item>
+        <item>	Vân Hồ	</item>
+        <item>	Yên Châu	</item>
+        <item>	Bến Cầu	</item>
+        <item>	Châu Thành	</item>
+        <item>	Dương Minh Châu	</item>
+        <item>	Gò Dầu	</item>
+        <item>	Hòa Thành	</item>
+        <item>	Tân Biên	</item>
+        <item>	Tân Châu	</item>
+        <item>	Trảng Bàng	</item>
+        <item>	Đông Hưng	</item>
+        <item>	Hưng Hà	</item>
+        <item>	Kiến Xương	</item>
+        <item>	Quỳnh Ph 	</item>
+        <item>	Thái Thụy	</item>
+        <item>	Tiền Hải	</item>
+        <item>	Vũ Thư	</item>
+        <item>	Đại Từ	</item>
+        <item>	Định Hóa	</item>
+        <item>	Đồng Hỷ	</item>
+        <item>	Phổ Yên town	</item>
+        <item>	Phú Bình	</item>
+        <item>	Phú Lương	</item>
+        <item>	Võ Nhai	</item>
+        <item>	Bá Thước	</item>
+        <item>	Bỉm Sơn town	</item>
+        <item>	Cẩm Thủy	</item>
+        <item>	Đông Sơn	</item>
+        <item>	Hà Trung	</item>
+        <item>	Hậu Lộc	</item>
+        <item>	Hoằng Hóa	</item>
+        <item>	Lang Chánh	</item>
+        <item>	Mường Lát	</item>
+        <item>	Nga Sơn	</item>
+        <item>	Ngọc Lặc	</item>
+        <item>	Như Thanh	</item>
+        <item>	Như Xuân	</item>
+        <item>	Nông Cống	</item>
+        <item>	Quan Hóa	</item>
+        <item>	Quan Sơn	</item>
+        <item>	Quảng Xương	</item>
+        <item>	Thạch Thành	</item>
+        <item>	Thiệu Hóa	</item>
+        <item>	Thọ Xuân	</item>
+        <item>	Thường Xuân	</item>
+        <item>	Tĩnh Gia	</item>
+        <item>	Triệu Sơn	</item>
+        <item>	Vĩnh Lộc	</item>
+        <item>	Yên Định	</item>
+        <item>	A Lưới	</item>
+        <item>	Hương Thủy town	</item>
+        <item>	Hương Trà town	</item>
+        <item>	Nam Đông	</item>
+        <item>	Phong Điền	</item>
+        <item>	Phú Lộc	</item>
+        <item>	Phú Vang	</item>
+        <item>	Quảng Điền	</item>
+        <item>	Cái Bè	</item>
+        <item>	Cai Lậy town	</item>
+        <item>	Cai Lậy	</item>
+        <item>	Châu Thành	</item>
+        <item>	Chợ Gạo	</item>
+        <item>	Gò Công town	</item>
+        <item>	Gò Công Dông	</item>
+        <item>	Gò Công Tây	</item>
+        <item>	Tân Phú Đông	</item>
+        <item>	Tân Phước	</item>
+        <item>	Càng Long	</item>
+        <item>	Cầu Kè	</item>
+        <item>	Cầu Ngang	</item>
+        <item>	Châu Thành	</item>
+        <item>	Duyên Hải town	</item>
+        <item>	Duyên Hải	</item>
+        <item>	Tiểu Cần	</item>
+        <item>	Trà Cú	</item>
+        <item>	Chiêm Hóa	</item>
+        <item>	Hàm Yên	</item>
+        <item>	Lâm Bình	</item>
+        <item>	Nà Hang	</item>
+        <item>	Sơn Dương	</item>
+        <item>	Yên Sơn	</item>
+        <item>	Bình Minh town	</item>
+        <item>	Bình Tân	</item>
+        <item>	Long Hồ	</item>
+        <item>	Mang Thít	</item>
+        <item>	Tâm Bình	</item>
+        <item>	Trà Ôn	</item>
+        <item>	Vũng Liêm	</item>
+        <item>	Bình Xuyên	</item>
+        <item>	Lập Thạch	</item>
+        <item>	Sông Lô	</item>
+        <item>	Tam Đảo	</item>
+        <item>	Tam Dương	</item>
+        <item>	Vĩnh Tường	</item>
+        <item>	Yên Lạc	</item>
+        <item>	Lục Yên	</item>
+        <item>	Mù Cang Chải	</item>
+        <item>	Nghĩa Lộ town	</item>
+        <item>	Trạm Tấu	</item>
+        <item>	Trấn Yên	</item>
+        <item>	Văn Chấn	</item>
+        <item>	Văn Yên	</item>
+        <item>	Yên Bình	</item>
+    </string-array>
+</resources>

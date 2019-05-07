@@ -59,7 +59,7 @@ public class ShowHomeCultureActivity extends AppCompatActivity {
     @OnClick(R.id.btnSave)
     void onSave(){
         Intent intent = new Intent();
-        intent.putIntegerArrayListExtra(Constants.CULTURE_ID_LIST,cultureIdList);
+        intent.putIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED,cultureIdList);
         setResult(RESULT_OK,intent);
         finish();
         Log.d("cultureIdList", "cultureIdList finish: " + cultureIdList);
@@ -68,6 +68,9 @@ public class ShowHomeCultureActivity extends AppCompatActivity {
     public void getData() {
         Intent intent = getIntent();
         String homestayId = intent.getStringExtra(Constants.HOMESTAY_ID);
+        if (intent.getIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED) != null) {
+            cultureIdList = intent.getIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED);
+        }
         Call<HomeStay> call = Utils.getAPI().getHomeById(homestayId,"en");
         call.enqueue(new Callback<HomeStay>() {
             @Override
@@ -83,7 +86,7 @@ public class ShowHomeCultureActivity extends AppCompatActivity {
                         layoutNotEmpty.setVisibility(View.VISIBLE);
                         layoutEmpty.setVisibility(View.GONE);
                         tvTotalCul.setText("("+ homestayCultureList.size()+")");
-                        CultureAdapter adapter = new CultureAdapter(homestayCultureList,ShowHomeCultureActivity.this,R.layout.item_culture);
+                        CultureAdapter adapter = new CultureAdapter(homestayCultureList,ShowHomeCultureActivity.this,cultureIdList);
                         rvCul.setLayoutManager(new LinearLayoutManager(ShowHomeCultureActivity.this, LinearLayoutManager.VERTICAL, false));
                         rvCul.setAdapter(adapter);
                         adapter.setCheckboxCheckedListener(new CultureAdapter.CheckboxCheckedListener() {

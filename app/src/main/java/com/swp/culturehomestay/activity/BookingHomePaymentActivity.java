@@ -60,6 +60,8 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
     TextView tvTotalPrice;
     @BindView(R.id.tvTotalPriceCultureFee)
     TextView tvTotalPriceCultureFee;
+    @BindView(R.id.wantWl)
+    TextView tvWantWl;
     @BindView(R.id.rgPayment)
     RadioGroup groupPayment;
     int numberPeople, numRoom, totalPrice, basicFee, cultureServiceFee, holidayFee;
@@ -72,6 +74,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
     ArrayList<Integer> listCultureChoice = new ArrayList<>();
     @BindView(R.id.btnPayment)
     Button btnPayment;
+    double balace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +149,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
                 }
             });
         } else if (Constants.BOOKING_HOME_CONFIRM.equals(previousActivity)) {
+            balace = intent.getDoubleExtra("balace",0);
             ReservationContent reservationContent = (ReservationContent) intent.getSerializableExtra("reservationContent");
             ReservationGet reservationGet = reservationContent.getContent();
             Log.d("ReservationBean", "getData: " + reservationContent.toString());
@@ -165,8 +169,8 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
             basicFee = reservationGet.getBasicFee();
             cultureServiceFee = reservationGet.getCultureServiceFee();
             holidayFee = reservationGet.getHolidayFee();
+            tvWantWl.setText("Want Wallet($"+balace+")");
             showPriceDetail(totalPrice, basicFee, cultureServiceFee, holidayFee);
-
             btnPayment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -235,16 +239,14 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
             public void onResponse(Call<PaymentGet> call, Response<PaymentGet> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     PaymentGet paymentGet = response.body();
-                    if (paymentGet.getCode().equals("00")) {
+                    if (paymentGet.getCode().equals(Constants.CODE_OK)) {
                         if (method.equals(ConstantsWant.Transaction.PaymentMethod.type.PAYPAL)) {
                             String url = paymentGet.getContent();
-                            Log.d("Payment", "onResponse: " + url);
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(url));
                             startActivity(intent);
                         } else {
                             Toast.makeText(BookingHomePaymentActivity.this, "Payment Successfully ", Toast.LENGTH_SHORT).show();
-
                         }
                     } else {
                         switch (paymentGet.getCode()) {
