@@ -19,6 +19,7 @@ import com.swp.culturehomestay.models.SignUpResModel;
 import com.swp.culturehomestay.models.UserWant;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
+import com.swp.culturehomestay.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,10 +120,15 @@ public class SignUpActivity extends AppCompatActivity {
     };
 
     private boolean validateFormSignUp(){
-        if(email.getText().toString().trim().matches(emailPattern) && email.getText().toString().trim().length() > 0){
+        if(Utils.emailIsValid(email.getText().toString())){
 
         }else{
             Toast toast = Toast.makeText(getApplicationContext(),"Invalid email format.",Toast.LENGTH_SHORT);
+            toast.show();
+            return false;
+        }
+        if(!Utils.isValidPassword(password.getText().toString())||!Utils.isValidPassword(repassword.getText().toString())){
+            Toast toast = Toast.makeText(getApplicationContext(),"Invalid password format.",Toast.LENGTH_SHORT);
             toast.show();
             return false;
         }

@@ -45,6 +45,7 @@ import com.swp.culturehomestay.models.UserDetailModel;
 import com.swp.culturehomestay.services.ApiClient;
 import com.swp.culturehomestay.services.IApi;
 import com.swp.culturehomestay.utils.Constants;
+import com.swp.culturehomestay.utils.FileUtils;
 import com.swp.culturehomestay.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
@@ -279,31 +280,29 @@ public class AccountFragment extends Fragment {
             try {
                 String root = Environment.getExternalStorageDirectory().toString();
                 Uri selectedImage = data.getData();
-                Bitmap bitmap = null;
-
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), selectedImage);
-                String wholeID = DocumentsContract.getDocumentId(selectedImage);
-
-                // Split at colon, use second item in the array
-                String id = wholeID.split(":")[1];
-
-                String[] column = { MediaStore.Images.Media.DATA };
-
-                // where id is equal to
-                String sel = MediaStore.Images.Media._ID + "=?";
-
-                Cursor cursor = getActivity().getContentResolver().
-                        query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                column, sel, new String[]{ id }, null);
-
-                String filePath = "";
-
-                int columnIndex = cursor.getColumnIndex(column[0]);
-
-                if (cursor.moveToFirst()) {
-                    filePath = cursor.getString(columnIndex);
-                }
-                cursor.close();
+//                Bitmap bitmap = null;
+//
+//                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), selectedImage);
+//                String wholeID = DocumentsContract.getDocumentId(selectedImage);
+//
+//                // Split at colon, use second item in the array
+//                String id = wholeID.split(":")[1];
+//
+//                String[] column = { MediaStore.Images.Media.DATA };
+//
+//                // where id is equal to
+//                String sel = MediaStore.Images.Media._ID + "=?";
+//
+//                Cursor cursor = getActivity().getContentResolver(). query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,column, sel, new String[]{ id }, null);
+//
+                String filePath = FileUtils.getPath(getActivity(),selectedImage);
+//
+//                int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//                if (cursor.moveToFirst()) {
+//                    filePath = cursor.getString(columnIndex);
+//                }
+//                cursor.close();
                 File file = new File(filePath);
                 RequestBody f =  RequestBody.create(MediaType.parse("multipart/form-data"), file);
                 MultipartBody.Part mPart= MultipartBody.Part.createFormData("file",userDetailModel.getUserId(),f);
@@ -345,7 +344,7 @@ public class AccountFragment extends Fragment {
                         Log.d(TAG, "onResponse: " + t.getMessage());
                     }
                 });
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
