@@ -36,6 +36,12 @@ public class UserDetailModel {
     @SerializedName("phone")
     @Expose
     private String phone;
+    @SerializedName("status")
+    @Expose
+    private String status;
+    @SerializedName("block")
+    @Expose
+    private String block;
 
     public UserDetailModel() {
     }
@@ -120,4 +126,19 @@ public class UserDetailModel {
         this.phone = phone;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBlock() {
+        return block;
+    }
+
+    public void setBlock(String block) {
+        this.block = block;
+    }
 }
