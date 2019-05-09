@@ -1,6 +1,7 @@
 package com.swp.culturehomestay.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,6 +79,9 @@ public class CustomerProfileActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(getApplicationContext(),"Update user information successfully",Toast.LENGTH_SHORT);
                             toast.show();
                             Log.d(TAG, "Update successfully");
+                            Intent intent = new Intent(CustomerProfileActivity.this, MainActivity.class);
+                            intent.putExtra("checkFragment",3);
+                            startActivity(intent);
                         }else{
                             String errorCode;
                             switch (response.code()) {
