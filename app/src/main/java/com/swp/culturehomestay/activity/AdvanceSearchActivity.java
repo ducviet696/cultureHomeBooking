@@ -52,7 +52,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
 
     public static final int INDEX_PAGE = 0;
     public static final int SIZE_PAGE = 20;
-    public static final int NUM_BETH_ROOM = 1;
+    public static final int NUM_BETH_ROOM = 0;
     @BindView(R.id.edSearch)
     AutoCompleteTextView edSearch;
     @BindView(R.id.btnDate)
@@ -68,7 +68,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
     String previousActtivity;
     List<Date> listDateBooking = new ArrayList<>();
     int guest = 1;
-    int room = 0;
+    int room = 1;
     int maxPrice = Constants.MAX_PRICE;
     int minPrice = Constants.MIN_PRICE;
     String bookingMethod = "";
@@ -176,7 +176,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
 
     private void onChangeRoomResult(@Nullable Intent data) {
         room = data.getIntExtra("totalRoom", 0);
-        if (room != 0) {
+        if (room != 1) {
             btnBedroom.setTextColor(getResources().getColor(R.color.colorWhite));
             btnBedroom.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#f4511e")));
             btnBedroom.setText(room + " Bedrooms");
@@ -241,13 +241,10 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                             adding.setValue(contentHomeName.getHomestayId());
                             adding.setTitle(contentHomeName.getHomestayMultis().get(0).getHomestayName());
                             adding.setGroup("Homestay");
-                            Log.d("HomeNameGet", "onResponse: " + contentHomeName.getHomestayMultis().get(0).getHomestayName());
                             results.add(adding);
-                            Log.d("HomeNameGet", "onResponse: " + results);
                         }
                     }
                     AutoCompleteSearchAdapter adapter = new AutoCompleteSearchAdapter(AdvanceSearchActivity.this, results);
-                    Log.d("Searcch", "onCreate: " + results.toString());
                     edSearch.setAdapter(adapter);
                     edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                         @Override
@@ -272,9 +269,11 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                                 startActivity(intent);
                             } else if (results.get(position).getGroup().equals("District")) {
                                 districtId = results.get(position).getValue();
+                                fullText ="";
                                 loadHomeBySearch();
                             } else if (results.get(position).getGroup().equals("City")) {
                                 cityId = results.get(position).getValue();
+                                fullText ="";
                                 loadHomeBySearch();
                             }
 
@@ -341,8 +340,8 @@ public class AdvanceSearchActivity extends AppCompatActivity {
     private void onBedRoomClick() {
         Intent intentGuest = new Intent(AdvanceSearchActivity.this, ChangeNumberOfRoomActivity.class);
         Bundle bundleGuest = new Bundle();
-        bundleGuest.putInt("Min", 0);
-        bundleGuest.putInt("Max", 12);
+        bundleGuest.putInt("Min", 1);
+        bundleGuest.putInt("Max", 15);
         bundleGuest.putInt("Room", room);
         bundleGuest.putString(Constants.ACTIVITY_NAME, Constants.ADVANCE_SEARCH_ACTIVITY);
         intentGuest.putExtra(Constants.BUNDLE, bundleGuest);
@@ -379,7 +378,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
     }
 
     public void loadHomeBySearch() {
-        fullText = edSearch.getText().toString();
+//        fullText = edSearch.getText().toString();
         String dStart = null;
         String dEnd = null;
         if (listDateBooking != null && !listDateBooking.isEmpty()) {

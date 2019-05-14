@@ -84,7 +84,6 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
             if(resultCode==RESULT_OK){
                 Bundle bundle = data.getBundleExtra(Constants.BUNDLE);
                 fullName =  bundle.getString("fullName");
-                email = bundle.getString("email");
                 phone = bundle.getString("phone");
                 tvUserName.setText(fullName);
                 tvUserMail.setText(email);
@@ -232,6 +231,7 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
                     reservationContent = response.body();
                     Intent intent = new Intent(BookingHomeConfirmActivity.this,BookingHomePaymentActivity.class);
                     intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_HOME_CONFIRM);
+                    intent.putIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED,cultureIdList);
                     intent.putExtra("reservationContent",reservationContent);
                     intent.putExtra("balance",balace);
                     startActivity(intent);
@@ -250,7 +250,6 @@ public class BookingHomeConfirmActivity extends AppCompatActivity {
         Intent intent = new Intent(BookingHomeConfirmActivity.this, EditUserInfoPaymentActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("fullName",fullName);
-        bundle.putString("email",email);
         bundle.putString("phone",phone);
         intent.putExtra(Constants.BUNDLE,bundle);
         startActivityForResult(intent,Constants.REQUEST_CODE_BOOKING);

@@ -63,7 +63,7 @@ public class PickDateActivity extends AppCompatActivity {
         if(previousActtivity.equals(Constants.BOOKINGHOMEDETAILACTIVITY)){
             listDateDisable = (List<Date>) bundle.getSerializable(Constants.LIST_DATE_DISABLE);
         }
-        if(previousActtivity.equals(Constants.ADVANCE_SEARCH_ACTIVITY)){
+        if(previousActtivity.equals(Constants.ADVANCE_SEARCH_ACTIVITY) ||previousActtivity.equals(Constants.HOME_FRAGMENT)){
             btnSave.setEnabled(true);
             btnSave.setBackgroundColor(getResources().getColor(R.color.colorPrimaryButtonActive));
         }
@@ -87,7 +87,7 @@ public class PickDateActivity extends AppCompatActivity {
         datePicker.init(today, nextYear.getTime())
                 .inMode(CalendarPickerView.SelectionMode.RANGE)
         .withHighlightedDates(listDateBookingPrevious);
-//                .withSelectedDates(Constants.dateList);
+//                .withSelectedDates(listDateBookingPrevious);
         datePicker.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
             @Override
             public void onDateSelected(Date date) {

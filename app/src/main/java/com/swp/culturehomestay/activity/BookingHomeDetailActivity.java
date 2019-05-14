@@ -197,7 +197,7 @@ public class BookingHomeDetailActivity extends AppCompatActivity {
                     txtHomeName.setText(homeStay.getHomestayMultis().get(0).getHomestayName());
                     txtCodelist.setText(homeStay.getHouseCode());
                     txtLocation.setText(homeStay.getAddress().getAddressFull());
-                    minGuest = homeStay.getStandartGuest();
+                    minGuest = 1;
                     maxGuest = homeStay.getMaximunGuest();
                     guest = minGuest;
                     txtTotalGuest.setText(String.valueOf(guest));

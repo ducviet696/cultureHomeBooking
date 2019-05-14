@@ -80,8 +80,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     TextView txtMaximunGuest;
     @BindView(R.id.tvRoomNm)
     TextView txtnumberRoom;
-    @BindView(R.id.tvBedNum)
-    TextView txtBedNum;
     @BindView(R.id.tvBathNum)
     TextView txtBathNum;
     @BindView(R.id.tvAboutHome)
@@ -225,7 +223,6 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
                     tvRoomType.setText(homeStay.getRoomType().toUpperCase());
                     txtMaximunGuest.setText(homeStay.getMaximunGuest().toString()+ " Persons");
                     txtnumberRoom.setText(String.valueOf(homeStay.getNumberRoom() + " Rooms"));
-                    txtBedNum.setText(String.valueOf(homeStay.getNumberRoom()*2) + " Beds");
                     Utils.checkStringNull(txtBathNum, String.valueOf(homeStay.getBathRoom()));
                     txtBathNum.setText(homeStay.getBathRoom()!=null? String.valueOf(homeStay.getBathRoom())+" Bathrooms": "1 Bathrooms");
                     txtAboutHome.setText(homestayMulti.getDescription());
@@ -328,18 +325,7 @@ public class ViewHomeDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                if (Constants.BOOKING_FRAGMENT.equals(previousActivity)){
-                    Intent intent = new Intent(ViewHomeDetailActivity.this,MainActivity.class);
-                    intent.putExtra("checkFragment",2);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Intent intent = new Intent(ViewHomeDetailActivity.this,MainActivity.class);
-                    intent.putExtra("checkFragment",1);
-                    startActivity(intent);
-                    finish();
-                }
-
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

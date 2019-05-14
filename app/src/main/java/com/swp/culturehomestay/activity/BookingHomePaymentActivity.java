@@ -173,6 +173,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
             ReservationGet reservationGet = reservationContent.getContent();
             Log.d("ReservationBean", "getData: " + reservationContent.toString());
             //get Data
+            listCultureChoice = intent.getIntegerArrayListExtra(Constants.LIST_CULTURE_SELECTED);
             homestayId = reservationGet.getHomestayId();
             hostEmail = reservationGet.getHostEmail();
             interact = Utils.getUserId(BookingHomePaymentActivity.this);
@@ -192,7 +193,7 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
             btnPayment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onPaymentClick();
+                    onPaymentClick(listCultureChoice);
                 }
             });
 
@@ -244,10 +245,10 @@ public class BookingHomePaymentActivity extends AppCompatActivity {
         finish();
     }
 
-    private void onPaymentClick() {
+    private void onPaymentClick(ArrayList<Integer> listCultureChoice) {
         getSelectedRadioButton();
         PaymentWantBean paymentWantBean = new PaymentWantBean(method, interact, type, PURPOSE_RESERVATION, reservationCode);
-        PaymentPost paymentPost = new PaymentPost(Constants.cultureIdList, numberPeople, dStart, dEnd, homestayId, hostEmail, paymentWantBean);
+        PaymentPost paymentPost = new PaymentPost(listCultureChoice, numberPeople, dStart, dEnd, homestayId, hostEmail, paymentWantBean);
         Log.d("PaymentPost", "onPaymentClick: " + paymentPost.toString());
         Call<PaymentGet> call = Utils.getAPI().getLinkPayment(paymentPost);
         call.enqueue(new Callback<PaymentGet>() {

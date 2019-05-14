@@ -36,25 +36,11 @@ public class EditUserInfoPaymentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(Constants.BUNDLE);
         fullName =  bundle.getString("fullName");
-        email = bundle.getString("email");
         phone = bundle.getString("phone");
-        textInputEmail.getEditText().setText(email);
         textInputPhone.getEditText().setText(phone);
         textInputUsername.getEditText().setText(fullName);
     }
 
-    private boolean validateEmail() {
-        String emailInput = textInputEmail.getEditText().getText().toString().trim();
-
-        if (emailInput.isEmpty()) {
-            textInputEmail.setError("Field can't be empty");
-            return false;
-        } else {
-            textInputEmail.setError(null);
-            email = textInputEmail.getEditText().getText().toString();
-            return true;
-        }
-    }
 
     private boolean validateUsername() {
         String usernameInput = textInputUsername.getEditText().getText().toString().trim();
@@ -86,13 +72,12 @@ public class EditUserInfoPaymentActivity extends AppCompatActivity {
     }
 
     public void confirmInput(View v) {
-        if (!validateEmail() | !validateUsername() | !validatePassword()) {
+        if ( !validateUsername() | !validatePassword()) {
             return;
         }
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
         bundle.putString("fullName",fullName);
-        bundle.putString("email",email);
         bundle.putString("phone",phone);
         intent.putExtra(Constants.BUNDLE,bundle);
         setResult(RESULT_OK, intent);

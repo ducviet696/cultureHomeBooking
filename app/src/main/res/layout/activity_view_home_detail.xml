@@ -184,7 +184,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/default_padding"
-                android:weightSum="5">
+                android:weightSum="4">
 
                 <TextView
                     android:id="@+id/tvRoomType"
@@ -210,15 +210,6 @@
                     android:layout_weight="1"
                     android:drawableTop="@drawable/ic_door"
                     android:text="3"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:id="@+id/tvBedNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/ic_bed"
-                    android:text="3 beds"
                     android:textAlignment="center" />
 
                 <TextView

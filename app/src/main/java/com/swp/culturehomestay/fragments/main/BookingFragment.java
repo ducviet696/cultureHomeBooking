@@ -175,7 +175,7 @@ public class BookingFragment extends Fragment {
                 String reservationId = reservationList.get(position).getReservationId();
                 Log.d("homestayId", "onItemClick: "+homestayId+" stt: "+status+" reservationId "+reservationId);
 
-                if (status.equals(ConstantsWant.Transaction.Reservation.Status.NOT_ACTIVE)) {
+                if (status.equals(ConstantsWant.Transaction.Reservation.Status.NOT_ACTIVE) || status.equals(ConstantsWant.Transaction.Reservation.Status.ACCPET)) {
                     Intent intent = new Intent(getContext(), BookingHomePaymentActivity.class);
                     intent.putExtra(Constants.ACTIVITY_NAME,Constants.BOOKING_FRAGMENT);
                     intent.putExtra("reservationId", reservationId);

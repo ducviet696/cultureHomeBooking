@@ -95,6 +95,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         ButterKnife.bind(this, view);
+        listDateBooking.clear();
+        Log.d("listDateBookingHome", "onCreateView: "+listDateBooking);
         mService = Utils.getAPI();
         swipeRefreshLayout.setOnRefreshListener(this);
         displayMostPopularity();
@@ -107,10 +109,12 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         if(requestCode==Constants.REQUEST_CODE_HOME_FRAGMENT){
             if(resultCode==RESULT_OK) {
                 listDateBooking = (List<Date>)data.getSerializableExtra(Constants.LIST_DATE_BOOKING);
-                tvCheckin.setText(Utils.formatDayOfWeekFull(listDateBooking.get(0)));
-                tvCheckout.setText(Utils.formatDayOfWeekFull(listDateBooking.get(listDateBooking.size()-1)));
-                tvCheckin.setTextColor(getResources().getColor(R.color.colorBlack));
-                tvCheckout.setTextColor(getResources().getColor(R.color.colorBlack));
+                if(listDateBooking != null && !listDateBooking.isEmpty()){
+                    tvCheckin.setText(Utils.formatDayOfWeekFull(listDateBooking.get(0)));
+                    tvCheckout.setText(Utils.formatDayOfWeekFull(listDateBooking.get(listDateBooking.size()-1)));
+                    tvCheckin.setTextColor(getResources().getColor(R.color.colorBlack));
+                    tvCheckout.setTextColor(getResources().getColor(R.color.colorBlack));
+                }
             } else if(resultCode==Constants.RESULT_CODE_CHANGE_GUEST) {
                 guest = data.getIntExtra(Constants.GUEST,1);
                 tvTotalGuest.setText(guest+" Guest(s)");
